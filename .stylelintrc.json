@@ -1,0 +1,15 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-css-modules"],
+  "rules": {
+    "selector-class-pattern": [
+      "^[a-z][a-zA-Z0-9]*$",
+      { "message": "Use camelCase class names so they map to styles.className in TSX." }
+    ],
+    "import-notation": "string",
+    "at-rule-disallowed-list": [
+      ["tailwind", "apply", "screen", "config", "theme"],
+      { "message": "Tailwind directives are not allowed in this project." }
+    ]
+  },
+  "ignoreFiles": [".next/**", "node_modules/**"]
+}

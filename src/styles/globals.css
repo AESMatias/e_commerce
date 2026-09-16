@@ -1,0 +1,12 @@
+/*
+ * Global stylesheet entry point — imported ONLY in src/app/layout.tsx.
+ *
+ * Every global rule lives inside a cascade layer. CSS Modules are unlayered,
+ * and unlayered styles always beat layered ones, so component styles win
+ * over globals regardless of the order Next.js injects the stylesheets.
+ */
+@layer reset, tokens, base;
+
+@import "./reset.css";
+@import "./tokens.css";
+@import "./base.css";

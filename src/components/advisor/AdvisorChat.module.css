@@ -1,0 +1,292 @@
+/* The angle the border light is pointing at. Registering it makes it an
+   animatable angle instead of an opaque string. */
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.chat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+/*
+ * While the advisor is thinking, the panel's outline lights up from the
+ * middle outwards, reaching one corner per beat and moving to the next
+ * corner on the beat after — not a light running laps around the frame.
+ */
+.chat[data-busy="true"]::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 1.5px;
+  border-radius: inherit;
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    #a5f3fc 0%,
+    #67e8f9 28%,
+    #3b82f6 55%,
+    transparent 76%
+  );
+  background-repeat: no-repeat;
+  content: "";
+  pointer-events: none;
+  mask-image:
+    linear-gradient(#000 0 0),
+    linear-gradient(#000 0 0);
+  mask-clip: content-box, border-box;
+  mask-composite: exclude;
+  animation:
+    think-swell 4.4s var(--ease-out) infinite,
+    think-corner 17.6s steps(4, jump-none) infinite;
+}
+
+/* Each beat: out from the centre, past the edges, gone. */
+@keyframes think-swell {
+  0% {
+    background-size: 6% 12%;
+    opacity: 0;
+  }
+
+  22% {
+    opacity: 1;
+  }
+
+  100% {
+    background-size: 240% 240%;
+    opacity: 0;
+  }
+}
+
+/* One corner per beat, in turn. */
+@keyframes think-corner {
+  0% {
+    background-position: 22% 20%;
+  }
+
+  33% {
+    background-position: 78% 80%;
+  }
+
+  66% {
+    background-position: 78% 20%;
+  }
+
+  100% {
+    background-position: 22% 80%;
+  }
+}
+
+/* The send button breathes on the same beat while the answer is on its way. */
+.chat[data-busy="true"] .send {
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.chat[data-busy="true"] .send::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    #cfe4ff 0%,
+    #60a5fa 45%,
+    transparent 72%
+  );
+  content: "";
+  opacity: 0;
+  animation: send-pulse 2.2s var(--ease-out) infinite;
+}
+
+@keyframes send-pulse {
+  0% {
+    opacity: 0;
+    scale: 0.25;
+  }
+
+  22% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+    scale: 2.6;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.status {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-success);
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-height: 20rem;
+  max-height: 30rem;
+  overflow-y: auto;
+  padding: var(--space-5);
+}
+
+/* Empty state */
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: auto 0;
+}
+
+.emptyTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+}
+
+.emptyText {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.suggestion {
+  max-width: 100%;
+  height: auto;
+  padding-block: var(--space-2);
+  white-space: normal;
+  text-align: left;
+}
+
+/* Messages */
+.message {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 85%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.user {
+  align-self: flex-end;
+  border-color: transparent;
+  background-color: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+.assistant {
+  align-self: flex-start;
+  background-color: var(--color-surface-raised);
+}
+
+.text {
+  font-size: var(--text-sm);
+  white-space: pre-wrap;
+}
+
+.error {
+  align-self: center;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+/* Typing indicator */
+.typing {
+  display: inline-flex;
+  gap: var(--space-1);
+  padding-block: var(--space-1);
+}
+
+.dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-text-subtle);
+  animation: blink 1.2s var(--ease-out) infinite;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Composer */
+.composer {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-surface-raised);
+}
+
+.textarea {
+  flex: 1;
+  min-height: 3rem;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg);
+  font-size: var(--text-sm);
+  resize: vertical;
+}
+
+.textarea::placeholder {
+  color: var(--color-text-subtle);
+}
+
+.textarea:disabled {
+  opacity: 0.6;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}

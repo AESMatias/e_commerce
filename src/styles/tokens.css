@@ -1,0 +1,133 @@
+/*
+ * Design tokens.
+ *
+ * Light is the default theme. The dark palette only redefines colors, under
+ * :root[data-theme="dark"], which ThemeToggle sets on <html>. Everything else
+ * (type, spacing, motion...) is shared, so no component knows about themes:
+ * they all read the same variable names.
+ *
+ * Defined on :root so content rendered by Radix portals (Dialog, Select,
+ * Popover...) outside the component tree still inherits them.
+ */
+@layer tokens {
+  :root {
+    color-scheme: light;
+
+    /* Colors — surfaces */
+    --color-bg: #f7f8fb;
+    --color-bg-translucent: rgb(247 248 251 / 85%);
+    --color-surface: #fff;
+    --color-surface-raised: #f1f3f8;
+    --color-surface-soft: #e9eefb;
+    --color-border: #e3e7f0;
+    --color-border-strong: #c8cfde;
+    --color-overlay: rgb(16 20 30 / 45%);
+
+    /* Colors — text */
+    --color-text: #11151f;
+    --color-text-muted: #545e75;
+    --color-text-subtle: #78819a;
+
+    /* Colors — brand & feedback */
+    --color-accent: #2f6bff;
+    --color-accent-hover: #1f56e0;
+    --color-accent-text: #1d4ed8;
+    --color-accent-contrast: #fff;
+    --color-accent-soft: rgb(47 107 255 / 10%);
+    --color-success: #12875a;
+    --color-focus-ring: #2f6bff;
+
+    /* Shadows */
+    --shadow-md: 0 8px 24px -10px rgb(16 24 40 / 18%);
+    --shadow-lg: 0 24px 64px -16px rgb(16 24 40 / 22%), 0 0 0 1px rgb(16 24 40 / 4%);
+
+    /* Typography — font variables come from next/font in layout.tsx */
+    --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-display: var(--font-space-grotesk), var(--font-sans);
+    --font-mono: ui-monospace, "SF Mono", menlo, monospace;
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: clamp(1.75rem, 1.4rem + 1.5vw, 2.25rem);
+    --text-4xl: clamp(2.25rem, 1.6rem + 3vw, 3.5rem);
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+    --leading-tight: 1.15;
+    --leading-normal: 1.6;
+
+    /* Spacing — 4px scale */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-20: 5rem;
+    --space-24: 6rem;
+
+    /* Radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-full: 999px;
+
+    /* Motion */
+    --duration-fast: 120ms;
+    --duration-base: 200ms;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+
+    /* Layout */
+    --container-max: 72rem;
+    --container-gutter: clamp(1rem, 4vw, 2rem);
+    --bar-progress: 0;
+    --header-height: 6.25rem;
+    --header-height-scrolled: calc(var(--header-height) * 0.6);
+
+    /* Stacking */
+    --z-header: 10;
+    --z-overlay: 50;
+    --z-modal: 60;
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+
+    /* Colors — surfaces */
+    --color-bg: #0b0d12;
+    --color-bg-translucent: rgb(11 13 18 / 80%);
+    --color-surface: #12151c;
+    --color-surface-raised: #181c25;
+    --color-surface-soft: #1b2436;
+    --color-border: #232834;
+    --color-border-strong: #313849;
+    --color-overlay: rgb(5 6 10 / 72%);
+
+    /* Colors — text */
+    --color-text: #e8ebf2;
+    --color-text-muted: #9aa3b5;
+    --color-text-subtle: #6b7385;
+
+    /* Colors — brand & feedback */
+    --color-accent: #2f6bff;
+    --color-accent-hover: #4d82ff;
+    --color-accent-text: #8fb0ff;
+    --color-accent-contrast: #fff;
+    --color-accent-soft: rgb(47 107 255 / 16%);
+    --color-success: #3ecf8e;
+    --color-focus-ring: #7ea2ff;
+
+    /* Shadows */
+    --shadow-md: 0 8px 24px -8px rgb(0 0 0 / 50%);
+    --shadow-lg: 0 24px 64px -12px rgb(0 0 0 / 60%), 0 0 0 1px rgb(255 255 255 / 3%);
+  }
+}

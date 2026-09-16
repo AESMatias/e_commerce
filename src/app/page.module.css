@@ -1,0 +1,176 @@
+/* Hero */
+.hero {
+  position: relative;
+  display: flex;
+  align-items: safe center;
+  min-height: 100svh;
+  overflow: hidden;
+  padding-block: var(--space-24) var(--space-20);
+}
+
+.heroInner > * {
+  position: relative;
+}
+
+.hero::before {
+  position: absolute;
+  top: -12rem;
+  left: 50%;
+  width: 60rem;
+  height: 36rem;
+  background: radial-gradient(closest-side, var(--color-accent-soft), transparent);
+  content: "";
+  pointer-events: none;
+  translate: -50% 0;
+}
+
+.heroInner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  text-align: center;
+}
+
+.heroTitle {
+  max-width: 48rem;
+}
+
+.highlight {
+  color: var(--color-accent-text);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+  perspective: 700px;
+}
+
+/* The buttons fall in from above, overshoot, and settle. */
+.actions > * {
+  transform-origin: 50% 0;
+  animation: drop-in 1.5s cubic-bezier(0.16, 1.4, 0.32, 1) 0.35s both;
+  will-change: transform;
+}
+
+.actions > *:nth-child(2) {
+  animation-delay: 0.55s;
+}
+
+@keyframes drop-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -160px, 320px) rotateX(55deg) scale(1.25);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate3d(0, 10px, 0) rotateX(-8deg) scale(0.88);
+  }
+
+  72% {
+    transform: translate3d(0, -4px, 0) rotateX(3deg) scale(1.04);
+  }
+
+  88% {
+    transform: translate3d(0, 1px, 0) scale(0.99);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Sections */
+.section {
+  display: flex;
+  align-items: flex-start;
+  min-height: 100svh;
+  padding-block: var(--space-10) var(--space-16);
+}
+
+.sectionAlt {
+  display: flex;
+  align-items: flex-start;
+  min-height: 100svh;
+  padding-block: var(--space-10) var(--space-16);
+  border-block: 1px solid var(--color-border);
+
+  /* Translucent so the Earth keeps showing through as it drifts past. */
+  background-color: color-mix(in srgb, var(--color-surface) 72%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 40rem;
+  margin-bottom: var(--space-8);
+}
+
+.advisorLayout .sectionHeader {
+  margin-bottom: 0;
+}
+
+/* AI advisor */
+.advisorLayout {
+  display: grid;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+@media (width >= 60rem) {
+  .advisorLayout {
+    grid-template-columns: 1fr 1.43fr;
+  }
+}
+
+/* Services grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+  gap: var(--space-4);
+}
+
+.gridItem {
+  display: flex;
+}
+
+/* Steps */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--space-8);
+  counter-reset: step;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-5);
+  border-top: 2px solid var(--color-border-strong);
+  counter-increment: step;
+}
+
+.step::before {
+  color: var(--color-accent-text);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  content: counter(step, decimal-leading-zero);
+}
+
+.stepTitle {
+  font-size: var(--text-lg);
+}
+
+.stepText {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}

@@ -1,0 +1,36 @@
+.toggle {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.toggle:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+/* Light theme shows the moon (what you switch to); dark shows the sun. */
+.sun {
+  display: none;
+}
+
+.moon {
+  display: block;
+}
+
+:global(html[data-theme="dark"]) .sun {
+  display: block;
+}
+
+:global(html[data-theme="dark"]) .moon {
+  display: none;
+}
+

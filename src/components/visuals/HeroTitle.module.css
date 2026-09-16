@@ -1,0 +1,117 @@
+/*
+ * The heading assembles word by word, then a band of light runs across it on
+ * a loop.
+ *
+ * The band is a gradient painted into the glyphs with background-clip: text.
+ * It lives on each word rather than on the heading, because a transform or a
+ * filter on a child of a clipped element breaks the clip and the text
+ * disappears. Each word then runs the same sweep a beat after the one before
+ * it, which reads as one band travelling along the line.
+ */
+.title {
+  --sweep-cycle: 6.5s;
+  --sweep-start: 1.2s;
+  --word-step: 0.09s;
+
+  max-width: 22ch;
+  margin-inline: auto;
+  font-size: var(--text-4xl);
+  text-wrap: balance;
+}
+
+.word {
+  --i: 0;
+
+  display: inline-block;
+  animation: word-in 0.7s var(--ease-out) calc(0.06s + var(--i) * 0.08s) both;
+}
+
+.word:nth-child(2) {
+  --i: 1;
+}
+
+.word:nth-child(3) {
+  --i: 2;
+}
+
+.word:nth-child(4) {
+  --i: 3;
+}
+
+.word:nth-child(5) {
+  --i: 4;
+}
+
+.word:nth-child(6) {
+  --i: 5;
+}
+
+.word:nth-child(7) {
+  --i: 6;
+}
+
+.word:nth-child(8) {
+  --i: 7;
+}
+
+.word:nth-child(9) {
+  --i: 8;
+}
+
+.word:nth-child(10) {
+  --i: 9;
+}
+
+.accent {
+  color: var(--color-accent-text);
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .word {
+    background-image: linear-gradient(
+      78deg,
+      currentcolor 0 30%,
+      var(--color-accent) 42%,
+      #67e8f9 50%,
+      var(--color-accent) 58%,
+      currentcolor 70% 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 900% 100%;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation:
+      word-in 0.7s var(--ease-out) calc(0.06s + var(--i) * 0.08s) both,
+      sweep var(--sweep-cycle) linear calc(var(--sweep-start) + var(--i) * var(--word-step)) infinite;
+  }
+}
+
+@keyframes word-in {
+  from {
+    opacity: 0;
+    translate: 0 0.45em;
+    scale: 0.96;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+/* The band crosses the word in the first fifth of the cycle and waits out
+   the rest off to one side, so the loop is invisible. */
+@keyframes sweep {
+  0% {
+    background-position: 100% 0;
+  }
+
+  18% {
+    background-position: 0% 0;
+  }
+
+  100% {
+    background-position: 0% 0;
+  }
+}

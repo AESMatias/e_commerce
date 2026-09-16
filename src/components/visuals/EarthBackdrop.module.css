@@ -1,0 +1,143 @@
+/*
+ * Three stacked layers, all behind the page content:
+ *   .layer  the Earth photograph, drifting with --parallax
+ *   .veil   a wash of the page background so text stays readable
+ *   .bloom  the one-off light that opens from the centre on load
+ */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.layer {
+  --parallax: 0;
+
+  position: absolute;
+  inset: -12% -5% -18%;
+  translate: 0 calc(var(--parallax) * -6vh);
+  scale: calc(1 + var(--parallax) * 0.012);
+  transition: translate 120ms linear;
+  will-change: translate;
+}
+
+.earthLight,
+.earthDark {
+  position: absolute;
+  inset: 0;
+  background-position: 50% 42%;
+  background-size: cover;
+  filter: blur(3px) saturate(115%);
+  opacity: 0.55;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.earthLight {
+  background-image: url("/earth-light.jpg");
+}
+
+.earthDark {
+  background-image: url("/earth-dark.jpg");
+  opacity: 0;
+}
+
+:global(html[data-theme="dark"]) .earthLight {
+  opacity: 0;
+}
+
+:global(html[data-theme="dark"]) .earthDark {
+  opacity: 0.62;
+  filter: blur(3px) saturate(130%) brightness(90%);
+}
+
+/* Keeps the centre calm enough to read and fades the photo into the page. */
+.veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 18%, transparent 0%, var(--color-bg) 78%),
+    linear-gradient(to bottom, rgb(0 0 0 / 0%) 0%, var(--color-bg) 92%);
+  opacity: 0.94;
+}
+
+.bloomCore,
+.bloomRing {
+  position: absolute;
+  inset: -25%;
+  opacity: 0;
+}
+
+/* The white flash: bright, small, and gone within the first second. */
+.bloomCore {
+  background: radial-gradient(
+    circle at 50% 40%,
+    rgb(255 255 255 / 95%) 0%,
+    rgb(255 255 255 / 55%) 22%,
+    transparent 55%
+  );
+  animation: bloom-core 1.5s var(--ease-out) both;
+}
+
+/* The blue wave that carries it outwards, slow enough to barely register. */
+.bloomRing {
+  background: radial-gradient(
+    circle at 50% 40%,
+    transparent 0%,
+    var(--color-accent) 38%,
+    #67e8f9 52%,
+    transparent 72%
+  );
+  animation: bloom-ring 5.5s cubic-bezier(0.19, 1, 0.22, 1) 0.25s both;
+}
+
+/* Screen blending makes light add to light, which reads on a dark page but
+   washes out on a white one, so the light theme paints normally instead. */
+:global(html[data-theme="dark"]) .bloomCore {
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+
+:global(html[data-theme="dark"]) .bloomRing {
+  mix-blend-mode: screen;
+  filter: saturate(80%);
+  opacity: 0;
+}
+
+@keyframes bloom-core {
+  0% {
+    opacity: 0;
+    scale: 0.05;
+  }
+
+  12% {
+    opacity: 1;
+    scale: 0.35;
+  }
+
+  100% {
+    opacity: 0;
+    scale: 1.4;
+  }
+}
+
+@keyframes bloom-ring {
+  0% {
+    opacity: 0;
+    scale: 0.1;
+  }
+
+  14% {
+    opacity: 0.55;
+  }
+
+  55% {
+    opacity: 0.28;
+  }
+
+  100% {
+    opacity: 0;
+    scale: 3.2;
+  }
+}

@@ -1,0 +1,70 @@
+.group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  gap: var(--space-3);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-raised);
+  text-align: left;
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+.card:hover {
+  border-color: var(--color-border-strong);
+}
+
+.card[data-state="checked"] {
+  --color-text: #fff;
+  --color-text-muted: rgb(255 255 255 / 82%);
+  --color-text-subtle: rgb(255 255 255 / 72%);
+  --color-accent-text: #fff;
+
+  border-color: transparent;
+  background-color: #1d4ed8;
+  background-image: linear-gradient(135deg, #0f2f9e 0%, #1d4ed8 48%, #3b82f6 100%);
+  color: #fff;
+  box-shadow: var(--shadow-md);
+}
+
+.card[data-disabled] {
+  opacity: 0.5;
+}
+
+.indicatorRing {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: grid;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+}
+
+.card[data-state="checked"] .indicatorRing {
+  border-color: rgb(255 255 255 / 80%);
+  background-color: rgb(255 255 255 / 15%);
+}
+
+.indicatorDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent);
+}
+
+.card[data-state="checked"] .indicatorDot {
+  background-color: #fff;
+}

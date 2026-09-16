@@ -1,0 +1,19 @@
+/* Shared typography classes. Import as `text` in any component. */
+.eyebrow {
+  display: inline-block;
+  color: var(--color-accent-text);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.heading {
+  font-size: var(--text-3xl);
+}
+
+.lead {
+  max-width: 40rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-lg);
+}

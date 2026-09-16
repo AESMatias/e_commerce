@@ -1,0 +1,181 @@
+.card {
+  /* Read by the "Compare packages" button, which lives in another module. */
+  --cta-glow: 0;
+  --cta-fg: var(--color-text);
+
+  /* The light that pulls back into the corners: white on the dark theme,
+     blue on the light one, where white would be invisible. */
+  --retreat-core: #1d4ed8;
+  --retreat-edge: #60a5fa;
+
+
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    border-radius 420ms var(--ease-out),
+    scale 420ms var(--ease-out),
+    box-shadow 420ms var(--ease-out);
+}
+
+/*
+ * The white ring, shown only while the pointer is leaving: it runs from the
+ * sides back into the four corners and fades. React marks that moment with
+ * data-leaving, because CSS cannot tell entering from leaving.
+ */
+.card::before {
+  position: absolute;
+  inset: -1px;
+  padding: 1.5px;
+  border-radius: inherit;
+  background-image:
+    radial-gradient(circle at 0% 0%, var(--retreat-core) 0%, var(--retreat-edge) 38%, transparent 72%),
+    radial-gradient(circle at 100% 0%, var(--retreat-core) 0%, var(--retreat-edge) 38%, transparent 72%),
+    radial-gradient(circle at 100% 100%, var(--retreat-core) 0%, var(--retreat-edge) 38%, transparent 72%),
+    radial-gradient(circle at 0% 100%, var(--retreat-core) 0%, var(--retreat-edge) 38%, transparent 72%);
+  background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+  background-repeat: no-repeat;
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  mask-image:
+    linear-gradient(#000 0 0),
+    linear-gradient(#000 0 0);
+  mask-clip: content-box, border-box;
+  mask-composite: exclude;
+}
+
+.card[data-leaving="true"]::before {
+  /* An even curve: --ease-out is so front-loaded the retreat was over
+     before the eye caught it. */
+  animation: corner-retreat 430ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Rises while the blue is still fading, so one colour washes into the other
+   instead of swapping. */
+@keyframes corner-retreat {
+  0% {
+    background-size: 88% 88%;
+    opacity: 0;
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    background-size: 20% 20%;
+    opacity: 0;
+  }
+}
+
+/*
+ * One ring of light masked to the card's outline. Each corner gradient has a
+ * white core and a blue spread, so the same layer reads as blue along the
+ * sides when it is wide and as white corners when it shrinks back.
+ *
+ * Entering, the geometry jumps straight to its wide state and only the light
+ * fades in, so the sides light up without a visible sweep. Leaving, it
+ * retreats slowly into the corners — that is when the white shows.
+ */
+.card::after {
+  position: absolute;
+  inset: -1px;
+  padding: 1.5px;
+  border-radius: inherit;
+  background-image:
+    radial-gradient(circle at 0% 0%, #60a5fa 0%, #3b82f6 34%, transparent 72%),
+    radial-gradient(circle at 100% 0%, #60a5fa 0%, #3b82f6 34%, transparent 72%),
+    radial-gradient(circle at 100% 100%, #60a5fa 0%, #3b82f6 34%, transparent 72%),
+    radial-gradient(circle at 0% 100%, #60a5fa 0%, #3b82f6 34%, transparent 72%);
+  background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+  background-repeat: no-repeat;
+  background-size: 26% 26%;
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  mask-image:
+    linear-gradient(#000 0 0),
+    linear-gradient(#000 0 0);
+  mask-clip: content-box, border-box;
+  mask-composite: exclude;
+  transition: opacity 300ms var(--ease-out);
+}
+
+.card:hover {
+  --cta-glow: 1;
+  --cta-fg: #fff;
+
+  z-index: 1;
+  border-color: transparent;
+  border-radius: 2px;
+  scale: 1.035;
+  box-shadow: var(--shadow-lg);
+}
+
+.card:hover::after {
+  background-size: 88% 88%;
+  opacity: 1;
+  transition: opacity 320ms var(--ease-out);
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: var(--space-1);
+  border-radius: var(--radius-md);
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent-text);
+}
+
+.name {
+  font-size: var(--text-xl);
+}
+
+.tagline {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.price {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+}
+
+.priceLabel {
+  margin-right: var(--space-2);
+  color: var(--color-text-subtle);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+}
+
+.packageCount {
+  color: var(--color-text-subtle);
+  font-size: var(--text-sm);
+}
+
+:global(html[data-theme="dark"]) .card {
+  --retreat-core: #fff;
+  --retreat-edge: #e0ecff;
+}
