@@ -11,7 +11,7 @@ import type { PackageRecommendation } from "@/types/advisor";
 export const maxDuration = 30;
 
 // Override with GOOGLE_ADVISOR_MODEL when Google retires or renames a model.
-const MODEL = process.env.GOOGLE_ADVISOR_MODEL ?? "gemini-3.6-flash";
+const MODEL = process.env.GOOGLE_ADVISOR_MODEL?.trim() || "gemini-3.6-flash";
 const MAX_MESSAGES = 30;
 const MAX_INPUT_CHARS = 8000;
 
@@ -129,6 +129,9 @@ export async function POST(request: Request) {
   });
 
   return result.toUIMessageStreamResponse({
-    onError: () => "The advisor could not answer right now. Please try again.",
+    onError: (error) => {
+      console.error("[advisor] model call failed", { model: MODEL, error });
+      return "The advisor could not answer right now. Please try again.";
+    },
   });
 }
