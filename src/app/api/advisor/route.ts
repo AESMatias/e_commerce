@@ -12,8 +12,9 @@ export const maxDuration = 30;
 
 // Override with GOOGLE_ADVISOR_MODEL when Google retires or renames a model.
 const MODEL = process.env.GOOGLE_ADVISOR_MODEL?.trim() || "gemini-3.6-flash";
-const MAX_MESSAGES = 30;
-const MAX_INPUT_CHARS = 8000;
+const MAX_MESSAGES = 10;
+const MAX_MESSAGE_CHARS = 500;
+const MAX_INPUT_CHARS = 3000;
 
 const requestSchema = z.object({
   messages: z
@@ -27,14 +28,12 @@ const requestSchema = z.object({
     .max(MAX_MESSAGES),
 });
 
+function messageTextLength(message: UIMessage): number {
+  return message.parts.reduce((sum, part) => (part.type === "text" ? sum + part.text.length : sum), 0);
+}
+
 function textLength(messages: UIMessage[]): number {
-  return messages.reduce((total, message) => {
-    const messageText = message.parts.reduce(
-      (sum, part) => (part.type === "text" ? sum + part.text.length : sum),
-      0,
-    );
-    return total + messageText;
-  }, 0);
+  return messages.reduce((total, message) => total + messageTextLength(message), 0);
 }
 
 function plainTextResponse(body: string, status: number, headers?: HeadersInit): Response {
@@ -68,6 +67,11 @@ export async function POST(request: Request) {
   }
 
   const messages = parsed.data.messages as unknown as UIMessage[];
+  const lastMessage = messages[messages.length - 1];
+  if (lastMessage.role === "user" && messageTextLength(lastMessage) > MAX_MESSAGE_CHARS) {
+    return plainTextResponse(`Please keep your message under ${MAX_MESSAGE_CHARS} characters.`, 413);
+  }
+
   if (textLength(messages) > MAX_INPUT_CHARS) {
     return plainTextResponse("This conversation is too long. Please start a new one.", 413);
   }

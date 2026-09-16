@@ -161,7 +161,7 @@ export function AdvisorChat() {
           onKeyDown={handleKeyDown}
           placeholder="What are you trying to build or solve?"
           rows={2}
-          maxLength={1000}
+          maxLength={500}
           disabled={isBusy}
         />
         <Button
