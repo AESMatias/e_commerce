@@ -1,24 +1,22 @@
 import "server-only";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
- * In-memory rate limiting for the AI advisor.
+ * Rate limiting for the AI advisor.
  *
- * Deliberately fail-closed: when a limit is hit we reject the request instead
- * of paying for more model calls. Three limits apply in order:
- *   1. a global daily cap (hard spending ceiling),
- *   2. a global short window (absorbs bursts / DDoS attempts),
- *   3. a per-IP short window (stops a single visitor from draining the quota).
- *
- * Counters live in the process memory, so each server instance has its own.
- * That is fine for a single instance; move to Redis (Upstash) if the app is
- * ever deployed to several instances.
+ * Deliberately fail-closed: when a limit is hit, or the global counters cannot
+ * be read, we reject the request instead of paying for more model calls.
+ *   1. Per-IP short window (in memory): stops a single visitor from draining
+ *      the quota. Best effort, since each server instance has its own counters.
+ *   2. Global daily cap and global short window (in Supabase): the hard
+ *      spending ceiling, shared by every instance and kept across deploys.
  */
 
 const MINUTE = 60_000;
 
 const IP_LIMIT = { limit: 10, windowMs: 5 * MINUTE };
-const GLOBAL_LIMIT = { limit: 120, windowMs: 5 * MINUTE };
-const GLOBAL_DAILY_LIMIT = { limit: 1500, windowMs: 24 * 60 * MINUTE };
+const GLOBAL_DAILY_LIMIT = 1500;
+const GLOBAL_WINDOW_LIMIT = { limit: 120, windowSeconds: 5 * 60 };
 
 const LOGIN_LIMIT = { limit: 8, windowMs: 10 * MINUTE };
 
@@ -46,35 +44,88 @@ function sweep(now: number): void {
   }
 }
 
-export function checkAdvisorRateLimit(ip: string): RateLimitResult {
+async function consumeGlobalQuota(): Promise<RateLimitResult> {
+  const { data, error } = await createAdminClient().rpc("consume_advisor_quota", {
+    p_daily_limit: GLOBAL_DAILY_LIMIT,
+    p_window_limit: GLOBAL_WINDOW_LIMIT.limit,
+    p_window_seconds: GLOBAL_WINDOW_LIMIT.windowSeconds,
+  });
+
+  if (error || typeof data !== "number") {
+    console.error("[rate-limit] global quota check failed", error);
+    return { ok: false, scope: "global", retryAfterSeconds: 60 };
+  }
+
+  return data === 0 ? { ok: true } : { ok: false, scope: "global", retryAfterSeconds: data };
+}
+
+export async function checkAdvisorRateLimit(ip: string): Promise<RateLimitResult> {
   const now = Date.now();
 
   if (counters.size > MAX_TRACKED_IPS) sweep(now);
 
-  const checks = [
-    { key: "global:day", ...GLOBAL_DAILY_LIMIT, scope: "global" as const },
-    { key: "global:window", ...GLOBAL_LIMIT, scope: "global" as const },
-    { key: `ip:${ip}`, ...IP_LIMIT, scope: "ip" as const },
-  ];
-
-  // Check every limit before consuming any, so a rejected request does not
-  // burn quota from the limits that would have allowed it.
-  const pending: Array<{ key: string; counter: Counter }> = [];
-  for (const check of checks) {
-    const counter = peek(check.key, check.limit, check.windowMs, now);
-    if (!counter) {
-      const blocked = counters.get(check.key);
-      const retryAfterSeconds = blocked ? Math.ceil((blocked.resetAt - now) / 1000) : 60;
-      return { ok: false, scope: check.scope, retryAfterSeconds: Math.max(retryAfterSeconds, 1) };
-    }
-    pending.push({ key: check.key, counter });
+  // Check the IP limit before consuming global quota, and only count the
+  // request against the IP once the global quota has accepted it.
+  const key = `ip:${ip}`;
+  const counter = peek(key, IP_LIMIT.limit, IP_LIMIT.windowMs, now);
+  if (!counter) {
+    const blocked = counters.get(key);
+    const retryAfterSeconds = blocked ? Math.ceil((blocked.resetAt - now) / 1000) : 60;
+    return { ok: false, scope: "ip", retryAfterSeconds: Math.max(retryAfterSeconds, 1) };
   }
 
-  for (const { key, counter } of pending) {
-    counters.set(key, { count: counter.count + 1, resetAt: counter.resetAt });
-  }
+  const global = await consumeGlobalQuota();
+  if (!global.ok) return global;
 
+  counters.set(key, { count: counter.count + 1, resetAt: counter.resetAt });
   return { ok: true };
+}
+
+export type LimitUsage = { used: number; limit: number; resetsAt: Date };
+
+export type AdvisorUsage = {
+  daily: LimitUsage;
+  window: LimitUsage & { windowMinutes: number };
+  perIp: { limit: number; windowMinutes: number };
+};
+
+/**
+ * Current use of the global advisor limits, for the admin panel. Bucket keys
+ * mirror the ones built by consume_advisor_quota in the database.
+ */
+export async function getAdvisorUsage(): Promise<AdvisorUsage> {
+  const now = Date.now();
+  const dayStart = new Date(now);
+  dayStart.setUTCHours(0, 0, 0, 0);
+  const windowMs = GLOBAL_WINDOW_LIMIT.windowSeconds * 1000;
+  const windowStart = Math.floor(now / windowMs) * windowMs;
+
+  const dayKey = `day:${dayStart.toISOString().slice(0, 10)}`;
+  const windowKey = `window:${windowStart / 1000}`;
+
+  const { data, error } = await createAdminClient()
+    .from("advisor_usage")
+    .select("bucket, used")
+    .in("bucket", [dayKey, windowKey]);
+
+  if (error) throw new Error(`Could not load advisor usage: ${error.message}`);
+
+  const usedIn = (key: string) => data.find((row) => row.bucket === key)?.used ?? 0;
+
+  return {
+    daily: {
+      used: usedIn(dayKey),
+      limit: GLOBAL_DAILY_LIMIT,
+      resetsAt: new Date(dayStart.getTime() + 24 * 60 * MINUTE),
+    },
+    window: {
+      used: usedIn(windowKey),
+      limit: GLOBAL_WINDOW_LIMIT.limit,
+      resetsAt: new Date(windowStart + windowMs),
+      windowMinutes: GLOBAL_WINDOW_LIMIT.windowSeconds / 60,
+    },
+    perIp: { limit: IP_LIMIT.limit, windowMinutes: IP_LIMIT.windowMs / MINUTE },
+  };
 }
 
 /** Throttles admin login attempts so the password cannot be brute forced. */

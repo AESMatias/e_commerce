@@ -41,7 +41,7 @@ function plainTextResponse(body: string, status: number, headers?: HeadersInit):
 }
 
 export async function POST(request: Request) {
-  const rateLimit = checkAdvisorRateLimit(getClientIp(request));
+  const rateLimit = await checkAdvisorRateLimit(getClientIp(request));
   if (!rateLimit.ok) {
     const message =
       rateLimit.scope === "ip"
@@ -68,7 +68,7 @@ export async function POST(request: Request) {
 
   const messages = parsed.data.messages as unknown as UIMessage[];
   const lastMessage = messages[messages.length - 1];
-  if (lastMessage.role === "user" && messageTextLength(lastMessage) > MAX_MESSAGE_CHARS) {
+  if (lastMessage?.role === "user" && messageTextLength(lastMessage) > MAX_MESSAGE_CHARS) {
     return plainTextResponse(`Please keep your message under ${MAX_MESSAGE_CHARS} characters.`, 413);
   }
 

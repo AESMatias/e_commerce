@@ -135,10 +135,8 @@ stripe listen --forward-to localhost:3000/api/stripe/webhook
 
 ## Styling conventions
 
-**Global CSS is imported only in `src/app/layout.tsx`.** ESLint blocks plain `.css`
-   imports anywhere else.
+**Global CSS is imported only in `src/app/layout.tsx`.** ESLint blocks plain `.css` imports anywhere else.
 **All global rules live in cascade layers** (`reset`, `tokens`, `base`). CSS Modules are unlayered, so they always win over globals, independent of stylesheet load order.
-
 **Design tokens are CSS variables on `:root`.** Radix renders Dialogs, Selects and Popovers in a portal attached to `<body>`; tokens on `:root` still reach that content.
 4. **One component, one module.** `Button.tsx` imports `Button.module.css`. Class names are camelCase so they read as `styles.className`.
 5. **Style Radix state with data attributes** on your own classes, for example `.content[data-state="open"]`, `.item[data-highlighted]`, `.button[data-disabled]`.

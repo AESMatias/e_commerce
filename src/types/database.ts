@@ -130,6 +130,12 @@ type StripeEventsRow = {
   processed_at: string;
 };
 
+type AdvisorUsageRow = {
+  bucket: string;
+  used: number;
+  expires_at: string;
+};
+
 /** Columns with a database default become optional on insert. */
 type WithDefaults<Row, DefaultKeys extends keyof Row> = Omit<Row, DefaultKeys> & Partial<Pick<Row, DefaultKeys>>;
 
@@ -250,6 +256,7 @@ export type Database = {
         ]
       >;
       stripe_events: TableDef<StripeEventsRow, WithDefaults<StripeEventsRow, "processed_at">>;
+      advisor_usage: TableDef<AdvisorUsageRow, WithDefaults<AdvisorUsageRow, "used">>;
     };
     Views: { [_ in never]: never };
     Functions: {
@@ -264,6 +271,10 @@ export type Database = {
       expire_checkout_session: {
         Args: { p_session_id: string };
         Returns: string;
+      };
+      consume_advisor_quota: {
+        Args: { p_daily_limit: number; p_window_limit: number; p_window_seconds: number };
+        Returns: number;
       };
       create_booking_hold: {
         Args: {

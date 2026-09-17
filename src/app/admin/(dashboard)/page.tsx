@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { AdvisorUsagePanel } from "@/components/admin/AdvisorUsagePanel";
 import { BookingRow } from "@/components/admin/BookingRow";
 import { LogoutButton } from "@/components/admin/LogoutButton";
 import { Container } from "@/components/layout/Container";
 import { getAdminBookings } from "@/lib/admin/bookings";
+import { getAdvisorUsage } from "@/lib/rate-limit";
 import { getBusinessTimezone } from "@/lib/scheduling";
 import styles from "./page.module.css";
 
@@ -14,7 +16,11 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminPage() {
-  const [bookings, timezone] = await Promise.all([getAdminBookings(), getBusinessTimezone()]);
+  const [bookings, timezone, advisorUsage] = await Promise.all([
+    getAdminBookings(),
+    getBusinessTimezone(),
+    getAdvisorUsage(),
+  ]);
 
   const confirmed = bookings.filter((booking) => booking.status === "confirmed");
   const awaiting = bookings.filter((booking) => booking.status === "pending_payment");
@@ -29,6 +35,8 @@ export default async function AdminPage() {
         </div>
         <LogoutButton />
       </header>
+
+      <AdvisorUsagePanel usage={advisorUsage} timezone={timezone} now={new Date()} />
 
       <dl className={styles.stats}>
         <div className={styles.stat}>
