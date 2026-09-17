@@ -6,7 +6,6 @@ import { HeroTitle } from "@/components/visuals/HeroTitle";
 import { ScrollToTop } from "@/components/visuals/ScrollToTop";
 import { ServiceCard } from "@/components/services/ServiceCard";
 import { Button } from "@/components/ui/Button";
-import { siteConfig } from "@/config/site";
 import { getCatalog } from "@/lib/catalog";
 import text from "@/styles/text.module.css";
 import styles from "./page.module.css";
@@ -43,7 +42,6 @@ export default async function HomePage() {
 
       <section className={styles.hero}>
         <Container className={styles.heroInner}>
-          <p className={text.eyebrow}>Productized development services by {siteConfig.author}</p>
           <HeroTitle
             text="Software packages with a fixed scope and a clear price"
             accentFrom={7}
@@ -64,7 +62,7 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      <section id="advisor" className={styles.sectionAlt}>
+      <section id="advisor" className={`${styles.sectionAlt} ${styles.advisorSection}`}>
         <Container className={styles.advisorLayout}>
           <header className={styles.sectionHeader}>
             <p className={text.eyebrow}>Step one</p>

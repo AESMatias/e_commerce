@@ -126,11 +126,14 @@
   transition: opacity 320ms var(--ease-out);
 }
 
+/* Icon, name and tagline are centred; the price row and button keep their
+   own alignment. */
 .icon {
   display: grid;
   place-items: center;
   width: 2.5rem;
   height: 2.5rem;
+  margin-inline: auto;
   margin-bottom: var(--space-1);
   border-radius: var(--radius-md);
   background-color: var(--color-accent-soft);
@@ -139,11 +142,13 @@
 
 .name {
   font-size: var(--text-xl);
+  text-align: center;
 }
 
 .tagline {
   color: var(--color-text-muted);
   font-size: var(--text-sm);
+  text-align: center;
 }
 
 .meta {
@@ -173,6 +178,69 @@
 .packageCount {
   color: var(--color-text-subtle);
   font-size: var(--text-sm);
+}
+
+/*
+ * Phones: a third of the screen per card, so only what decides the click
+ * stays — icon, name and starting price. The tagline and package count
+ * return from the dialog.
+ */
+@media (width < 44rem) {
+  .card {
+    gap: var(--space-1);
+    min-width: 0;
+    padding: var(--space-3) var(--space-2);
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+
+  /* No hover on touch screens; the lift would stick after a tap. */
+  .card:hover {
+    border-radius: var(--radius-md);
+    scale: none;
+  }
+
+  .icon {
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 0;
+  }
+
+  .icon svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .name {
+    font-size: 0.8125rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .tagline,
+  .packageCount {
+    display: none;
+  }
+
+  .meta {
+    justify-content: center;
+    padding-top: var(--space-2);
+  }
+
+  .price {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: var(--text-lg);
+    line-height: 1.1;
+  }
+
+  .priceLabel {
+    margin-right: 0;
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
 }
 
 :global(html[data-theme="dark"]) .card {

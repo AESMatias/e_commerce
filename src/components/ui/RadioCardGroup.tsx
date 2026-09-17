@@ -14,12 +14,13 @@ export function RadioCardGroup({
 
 export function RadioCard({
   className,
+  indicatorClassName,
   children,
   ...props
-}: ComponentPropsWithRef<typeof RadioGroupPrimitive.Item>) {
+}: ComponentPropsWithRef<typeof RadioGroupPrimitive.Item> & { indicatorClassName?: string }) {
   return (
     <RadioGroupPrimitive.Item className={cx(styles.card, className)} {...props}>
-      <span className={styles.indicatorRing} aria-hidden="true">
+      <span className={cx(styles.indicatorRing, indicatorClassName)} aria-hidden="true">
         <RadioGroupPrimitive.Indicator className={styles.indicatorDot} />
       </span>
       {children}

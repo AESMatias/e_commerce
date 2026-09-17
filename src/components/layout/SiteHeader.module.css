@@ -64,16 +64,19 @@
   inset: auto calc(5% * var(--bar-p)) 0;
   z-index: 1;
   height: 2.5px;
+
+  /* Each beam is brightest near its outer end, so at rest the light sits in
+     the corners rather than a fifth of the way in. */
   background-image:
-    linear-gradient(90deg, transparent 0%, #fff 50%, transparent 100%),
-    linear-gradient(90deg, transparent 0%, #fff 50%, transparent 100%);
+    linear-gradient(90deg, transparent 0%, #fff 6%, transparent 100%),
+    linear-gradient(90deg, transparent 0%, #fff 94%, transparent 100%);
   background-repeat: no-repeat;
   background-position:
     calc(50% * var(--bar-p)) 0,
     calc(100% - 50% * var(--bar-p)) 0;
   background-size:
-    44% 100%,
-    44% 100%;
+    26% 100%,
+    26% 100%;
 
   /* Faint at the edges, strongest once they arrive in the middle. */
   opacity: calc(0.2 + 0.8 * var(--bar-p));
@@ -215,6 +218,17 @@
 .header .cta {
   background-color: color-mix(in srgb, #fff calc(var(--bar-p) * 100%), var(--color-accent));
   color: color-mix(in srgb, var(--blue) calc(var(--bar-p) * 100%), var(--color-accent-contrast));
+}
+
+/* Phones: the backing stays solid and full width while scrolling, so content
+   passing underneath never shows through the bar's inset sides or its fade. */
+@media (width < 44rem) {
+  .header::before {
+    inset: 0;
+    background-color: var(--color-bg);
+    opacity: 1;
+    mask-image: none;
+  }
 }
 
 :global(html[data-theme="dark"]) .header {

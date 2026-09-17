@@ -37,6 +37,40 @@ export default async function BookPage({ params }: BookPageProps) {
   const { service, servicePackage } = found;
   const slots = await getAvailableSlots();
 
+  const selection = (
+    <aside className={styles.summary}>
+      <p className={styles.summaryEyebrow}>Your selection</p>
+      <h2 className={styles.summaryTitle}>
+        {service.name}
+        <span className={styles.summaryTier}>{servicePackage.name}</span>
+      </h2>
+      <p className={styles.summaryText}>{servicePackage.summary}</p>
+
+      <dl className={styles.summaryFacts}>
+        <div className={styles.summaryFact}>
+          <dt className={styles.summaryLabel}>Project price</dt>
+          <dd className={styles.summaryValue}>
+            {formatPrice(servicePackage.priceCents, servicePackage.currency)}
+          </dd>
+        </div>
+        <div className={styles.summaryFact}>
+          <dt className={styles.summaryLabel}>Due now (deposit)</dt>
+          <dd className={styles.summaryValue}>
+            {formatPrice(servicePackage.depositCents, servicePackage.currency)}
+          </dd>
+        </div>
+        <div className={styles.summaryFact}>
+          <dt className={styles.summaryLabel}>Timeline</dt>
+          <dd className={styles.summaryValue}>{servicePackage.timeline}</dd>
+        </div>
+      </dl>
+
+      <p className={styles.summaryNote}>
+        Final scope and price are confirmed on the call before any further work starts.
+      </p>
+    </aside>
+  );
+
   return (
     <Container className={styles.page}>
       <header className={styles.header}>
@@ -50,42 +84,18 @@ export default async function BookPage({ params }: BookPageProps) {
       </header>
 
       <div className={styles.layout}>
-        <BookingScheduler packageSlug={servicePackage.slug} slots={slots} />
+        {/* Narrow screens show the selection and the demo notice inside the
+            form; wide screens keep them in the sticky side column. */}
+        <BookingScheduler
+          packageSlug={servicePackage.slug}
+          slots={slots}
+          summary={selection}
+          notice={<DemoNotice />}
+        />
 
         <div className={styles.aside}>
           <DemoNotice />
-
-          <aside className={styles.summary}>
-            <p className={styles.summaryEyebrow}>Your selection</p>
-            <h2 className={styles.summaryTitle}>
-              {service.name}
-              <span className={styles.summaryTier}>{servicePackage.name}</span>
-            </h2>
-            <p className={styles.summaryText}>{servicePackage.summary}</p>
-
-            <dl className={styles.summaryFacts}>
-              <div className={styles.summaryFact}>
-                <dt className={styles.summaryLabel}>Project price</dt>
-                <dd className={styles.summaryValue}>
-                  {formatPrice(servicePackage.priceCents, servicePackage.currency)}
-                </dd>
-              </div>
-              <div className={styles.summaryFact}>
-                <dt className={styles.summaryLabel}>Due now (deposit)</dt>
-                <dd className={styles.summaryValue}>
-                  {formatPrice(servicePackage.depositCents, servicePackage.currency)}
-                </dd>
-              </div>
-              <div className={styles.summaryFact}>
-                <dt className={styles.summaryLabel}>Timeline</dt>
-                <dd className={styles.summaryValue}>{servicePackage.timeline}</dd>
-              </div>
-            </dl>
-
-            <p className={styles.summaryNote}>
-              Final scope and price are confirmed on the call before any further work starts.
-            </p>
-          </aside>
+          {selection}
         </div>
       </div>
     </Container>

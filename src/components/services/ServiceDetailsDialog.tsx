@@ -36,7 +36,9 @@ export function ServiceDetailsDialog({ service }: { service: Service }) {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="secondary" className={styles.trigger}>
-          Compare packages
+          <span>
+            Compare<span className={styles.triggerExtra}> packages</span>
+          </span>
         </Button>
       </DialogTrigger>
 
@@ -51,12 +53,34 @@ export function ServiceDetailsDialog({ service }: { service: Service }) {
           <DialogDescription>{service.description}</DialogDescription>
         </DialogHeader>
 
-        <RadioCardGroup aria-label="Choose a package" value={selected.slug} onValueChange={setSelectedSlug}>
+        <RadioCardGroup
+          aria-label="Choose a package"
+          value={selected.slug}
+          onValueChange={setSelectedSlug}
+          className={styles.tiers}
+        >
           {service.packages.map((pkg) => (
-            <RadioCard key={pkg.slug} value={pkg.slug}>
+            <RadioCard
+              key={pkg.slug}
+              value={pkg.slug}
+              className={styles.tier}
+              indicatorClassName={styles.tierIndicator}
+            >
               <span className={styles.badge}>{pkg.isPopular ? "Recommended" : " "}</span>
               <span className={styles.tierName}>{pkg.name}</span>
               <span className={styles.tierPrice}>{formatPrice(pkg.priceCents, pkg.currency)}</span>
+              {/* Phones fold the facts below into the cards, so the three
+                  packages compare side by side. Hidden on wider layouts. */}
+              <span className={styles.tierFacts}>
+                <span className={styles.tierFact}>
+                  <span className={styles.tierFactLabel}>Deposit</span>
+                  {formatPrice(pkg.depositCents, pkg.currency)}
+                </span>
+                <span className={styles.tierFact}>
+                  <span className={styles.tierFactLabel}>Timeline</span>
+                  {pkg.timeline}
+                </span>
+              </span>
             </RadioCard>
           ))}
         </RadioCardGroup>

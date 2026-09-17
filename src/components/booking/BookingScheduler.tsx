@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState, useMemo, useState, useSyncExternalStore } from "react";
+import { useActionState, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import { DayPicker } from "react-day-picker";
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { RadioCard, RadioCardGroup } from "@/components/ui/RadioCardGroup";
 import { createBookingAction, type BookingFormState } from "@/lib/booking/actions";
@@ -38,9 +39,15 @@ function parseDayKey(key: string): Date {
 export function BookingScheduler({
   packageSlug,
   slots,
+  summary,
+  notice,
 }: {
   packageSlug: string;
   slots: AvailableSlot[];
+  /** Shown above the details step on screens without the side column. */
+  summary?: ReactNode;
+  /** Shown above the submit button on screens without the side column. */
+  notice?: ReactNode;
 }) {
   const [state, formAction, isPending] = useActionState(createBookingAction, INITIAL_STATE);
   const [mode, setMode] = useState<BookingMode>("unscheduled");
@@ -93,7 +100,12 @@ export function BookingScheduler({
           }}
           className={styles.modes}
         >
-          <RadioCard value="scheduled" disabled={!hasSlots} className={styles.mode}>
+          <RadioCard
+            value="scheduled"
+            disabled={!hasSlots}
+            className={styles.mode}
+            indicatorClassName={styles.modeIndicator}
+          >
             <span className={styles.modeTitle}>Pick a time now</span>
             <span className={styles.modeText}>
               {hasSlots
@@ -102,7 +114,7 @@ export function BookingScheduler({
             </span>
           </RadioCard>
 
-          <RadioCard value="unscheduled" className={styles.mode}>
+          <RadioCard value="unscheduled" className={styles.mode} indicatorClassName={styles.modeIndicator}>
             <span className={styles.modeTitle}>I will get in touch</span>
             <span className={styles.modeText}>
               Skip the calendar. Book the package now and we agree on a time afterwards, by email
@@ -179,7 +191,12 @@ export function BookingScheduler({
                   className={styles.times}
                 >
                   {daySlots.map((slot) => (
-                    <RadioCard key={slot.startsAt} value={slot.startsAt} className={styles.time}>
+                    <RadioCard
+                      key={slot.startsAt}
+                      value={slot.startsAt}
+                      className={styles.time}
+                      indicatorClassName={styles.timeIndicator}
+                    >
                       <span className={styles.timeValue}>{formatSlotTime(slot.startsAt, timezone)}</span>
                       <span className={styles.timeMeta}>
                         {formatDurationMinutes(slot.startsAt, slot.endsAt)}
@@ -194,6 +211,8 @@ export function BookingScheduler({
           </section>
         </>
       )}
+
+      {summary && <div className={styles.inline}>{summary}</div>}
 
       <section className={styles.step}>
         <h2 className={styles.stepTitle}>
@@ -254,6 +273,8 @@ export function BookingScheduler({
         </div>
       </section>
 
+      {notice && <div className={styles.inline}>{notice}</div>}
+
       {state.fieldErrors?.startsAt && <p className={styles.formError}>{state.fieldErrors.startsAt}</p>}
       {state.message && <p className={styles.formError}>{state.message}</p>}
 
@@ -265,6 +286,11 @@ export function BookingScheduler({
           {isScheduling
             ? "Your slot is held for 35 minutes while you pay the deposit."
             : "No time is booked yet: we arrange it together after checkout."}
+        </p>
+        <p className={styles.consent}>
+          By continuing you accept the <Link href="/terms">Terms of Service</Link>, including the{" "}
+          <Link href="/terms#refunds">deposit and refund policy</Link>, and the{" "}
+          <Link href="/privacy">Privacy Policy</Link>.
         </p>
       </div>
     </form>

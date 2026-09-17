@@ -1,7 +1,11 @@
+/* Consumers set --radio-columns and --radio-gap instead of overriding the
+   properties:
+   two single-class rules from different modules tie, and whichever
+   stylesheet loads last would win. */
 .group {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
-  gap: var(--space-3);
+  grid-template-columns: var(--radio-columns, repeat(auto-fit, minmax(min(100%, 10rem), 1fr)));
+  gap: var(--radio-gap, var(--space-3));
 }
 
 .card {

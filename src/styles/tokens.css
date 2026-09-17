@@ -42,17 +42,17 @@
     --shadow-lg: 0 24px 64px -16px rgb(16 24 40 / 22%), 0 0 0 1px rgb(16 24 40 / 4%);
 
     /* Typography — font variables come from next/font in layout.tsx */
-    --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
-    --font-display: var(--font-space-grotesk), var(--font-sans);
+    --font-sans: var(--font-instrument-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-display: var(--font-sans);
     --font-mono: ui-monospace, "SF Mono", menlo, monospace;
-    --text-xs: 0.75rem;
-    --text-sm: 0.875rem;
-    --text-base: 1rem;
-    --text-lg: 1.125rem;
-    --text-xl: 1.25rem;
-    --text-2xl: 1.5rem;
-    --text-3xl: clamp(1.75rem, 1.4rem + 1.5vw, 2.25rem);
-    --text-4xl: clamp(2.25rem, 1.6rem + 3vw, 3.5rem);
+    --text-xs: 0.72rem;
+    --text-sm: 0.84rem;
+    --text-base: 0.96rem;
+    --text-lg: 1.08rem;
+    --text-xl: 1.2rem;
+    --text-2xl: 1.44rem;
+    --text-3xl: clamp(1.7rem, 1.35rem + 1.45vw, 2.15rem);
+    --text-4xl: clamp(2.15rem, 1.55rem + 2.9vw, 3.35rem);
     --weight-regular: 400;
     --weight-medium: 500;
     --weight-semibold: 600;
@@ -129,5 +129,12 @@
     /* Shadows */
     --shadow-md: 0 8px 24px -8px rgb(0 0 0 / 50%);
     --shadow-lg: 0 24px 64px -12px rgb(0 0 0 / 60%), 0 0 0 1px rgb(255 255 255 / 3%);
+  }
+
+  /* Phones get a slimmer header so it does not eat the first screen. */
+  @media (width < 44rem) {
+    :root {
+      --header-height: 4.5rem;
+    }
   }
 }

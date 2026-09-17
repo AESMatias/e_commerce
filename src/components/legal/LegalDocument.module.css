@@ -1,0 +1,118 @@
+.page {
+  padding-block: var(--space-12) var(--space-20);
+}
+
+.article {
+  max-width: 44rem;
+  margin-inline: auto;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-10);
+  padding-bottom: var(--space-8);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.back {
+  color: var(--color-text-subtle);
+  font-size: var(--text-sm);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.back:hover {
+  color: var(--color-text);
+}
+
+.title {
+  font-size: var(--text-3xl);
+}
+
+.updated {
+  color: var(--color-text-subtle);
+  font-size: var(--text-sm);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  color: var(--color-text-muted);
+}
+
+/* Long-form content: the pages write plain elements, styled from here. */
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.body h2 {
+  margin-top: var(--space-6);
+  color: var(--color-text);
+  font-size: var(--text-xl);
+  line-height: 1.3;
+  scroll-margin-top: calc(var(--header-height-scrolled) + var(--space-4));
+}
+
+.body h3 {
+  margin-top: var(--space-2);
+  color: var(--color-text);
+  font-size: var(--text-base);
+}
+
+.body ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-left: var(--space-5);
+  list-style: disc;
+}
+
+.body strong {
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+}
+
+.body a {
+  color: var(--color-accent-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* A highlighted block for terms the visitor must not miss. */
+.body aside {
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  background-color: var(--color-accent-soft);
+  color: var(--color-text);
+}
+
+@media (width < 44rem) {
+  .page {
+    padding-block: var(--space-6) var(--space-12);
+  }
+
+  .header {
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-6);
+  }
+
+  .title {
+    font-size: var(--text-2xl);
+  }
+
+  .body {
+    font-size: var(--text-sm);
+  }
+
+  .body h2 {
+    margin-top: var(--space-4);
+    font-size: var(--text-lg);
+  }
+}

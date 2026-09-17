@@ -16,3 +16,18 @@
   color: var(--color-text-muted);
   font-weight: var(--weight-medium);
 }
+
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.legalLink {
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.legalLink:hover {
+  color: var(--color-text);
+}

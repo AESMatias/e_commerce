@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { SocialLinks } from "@/components/layout/SocialLinks";
 import { siteConfig } from "@/config/site";
@@ -16,6 +17,14 @@ export function SiteFooter() {
           Built by <span className={styles.author}>{siteConfig.author}</span> · Earth imagery:
           NASA
         </p>
+        <nav aria-label="Legal" className={styles.legal}>
+          <Link href="/privacy" className={styles.legalLink}>
+            Privacy
+          </Link>
+          <Link href="/terms" className={styles.legalLink}>
+            Terms
+          </Link>
+        </nav>
         <SocialLinks handle={siteConfig.author} />
       </Container>
     </footer>
