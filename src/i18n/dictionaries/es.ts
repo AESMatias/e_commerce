@@ -27,6 +27,7 @@ export const es: Dictionary = {
   social: {
     github: "en GitHub",
     x: "en X",
+    facebook: "en Facebook",
     copyDiscord: "Copiar usuario de Discord",
     copied: "Copiado",
   },

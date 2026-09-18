@@ -13,6 +13,9 @@ const X_PATH =
 const DISCORD_PATH =
   "M13.55 2.93A13.2 13.2 0 0 0 10.3 2c-.14.25-.3.59-.42.86a12.3 12.3 0 0 0-3.66 0A9.5 9.5 0 0 0 5.8 2c-1.13.19-2.22.53-3.24.93C.5 6.05-.07 9.09.21 12.09A13.3 13.3 0 0 0 4.24 14c.33-.44.62-.91.87-1.4-.48-.18-.93-.4-1.36-.66.11-.08.22-.17.33-.26a9.5 9.5 0 0 0 8.08 0l.33.26c-.43.26-.89.48-1.37.66.25.49.54.96.87 1.4a13.2 13.2 0 0 0 4.03-1.91c.33-3.48-.57-6.49-2.47-9.16ZM5.35 10.26c-.79 0-1.44-.72-1.44-1.6 0-.89.63-1.61 1.44-1.61.8 0 1.45.72 1.44 1.6 0 .89-.64 1.61-1.44 1.61Zm5.3 0c-.79 0-1.44-.72-1.44-1.6 0-.89.63-1.61 1.44-1.61.8 0 1.45.72 1.44 1.6 0 .89-.64 1.61-1.44 1.61Z";
 
+const FACEBOOK_PATH =
+  "M9.6 8.9H8.2V16H5.25V8.9H4V6.4h1.25V4.8C5.25 3.65 5.8 2 8.25 2L10.45 2.01v2.43H8.85c-.26 0-.65.13-.65.68v1.28h2.3L10.2 8.9Z";
+
 function Icon({ path }: { path: string }) {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
@@ -54,12 +57,12 @@ export function SocialLinks({ handle, labels }: { handle: string; labels: Dictio
       <li>
         <a
           className={styles.link}
-          href={`https://x.com/${handle}`}
+          href="https://www.facebook.com/profile.php?id=61594707801072"
           target="_blank"
           rel="noreferrer noopener"
-          aria-label={`${handle} ${labels.x}`}
+          aria-label={labels.facebook}
         >
-          <Icon path={X_PATH} />
+          <Icon path={FACEBOOK_PATH} />
         </a>
       </li>
       <li>

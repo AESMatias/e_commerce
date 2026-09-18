@@ -32,6 +32,7 @@ export const en = {
   social: {
     github: "on GitHub",
     x: "on X",
+    facebook: "on Facebook",
     copyDiscord: "Copy Discord username",
     copied: "Copied",
   },
