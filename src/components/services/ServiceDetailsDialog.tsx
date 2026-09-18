@@ -26,12 +26,6 @@ export function ServiceDetailsDialog({ service }: { service: Service }) {
 
   if (!selected) return null;
 
-  const facts = [
-    { label: "Project price", value: formatPrice(selected.priceCents, selected.currency) },
-    { label: "Kickoff deposit", value: formatPrice(selected.depositCents, selected.currency) },
-    { label: "Timeline", value: selected.timeline },
-  ];
-
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -69,8 +63,8 @@ export function ServiceDetailsDialog({ service }: { service: Service }) {
               <span className={styles.badge}>{pkg.isPopular ? "Recommended" : " "}</span>
               <span className={styles.tierName}>{pkg.name}</span>
               <span className={styles.tierPrice}>{formatPrice(pkg.priceCents, pkg.currency)}</span>
-              {/* Phones fold the facts below into the cards, so the three
-                  packages compare side by side. Hidden on wider layouts. */}
+              {/* Each card carries its own deposit and timeline, so the three
+                  packages compare side by side. */}
               <span className={styles.tierFacts}>
                 <span className={styles.tierFact}>
                   <span className={styles.tierFactLabel}>Deposit</span>
@@ -86,15 +80,6 @@ export function ServiceDetailsDialog({ service }: { service: Service }) {
         </RadioCardGroup>
 
         <p className={styles.summary}>{selected.summary}</p>
-
-        <dl className={styles.facts}>
-          {facts.map((fact) => (
-            <div key={fact.label} className={styles.fact}>
-              <dt className={styles.factLabel}>{fact.label}</dt>
-              <dd className={styles.factValue}>{fact.value}</dd>
-            </div>
-          ))}
-        </dl>
 
         <section className={styles.section}>
           <h3 className={styles.subheading}>Included in {selected.name}</h3>

@@ -29,7 +29,15 @@
   background-color: var(--color-bg-translucent);
   backdrop-filter: blur(12px);
   opacity: calc(1 - var(--bar-p));
-  mask-image: linear-gradient(to bottom, #000 58%, transparent 100%);
+
+  /* The fade covers the bottom half, eased so the edge never shows. */
+  mask-image: linear-gradient(
+    to bottom,
+    #000 50%,
+    rgb(0 0 0 / 70%) 65%,
+    rgb(0 0 0 / 30%) 82%,
+    transparent 100%
+  );
 }
 
 /* Scrolled: a deep blue band with a white sheen drifting across it — the
@@ -68,18 +76,37 @@
   /* Each beam is brightest near its outer end, so at rest the light sits in
      the corners rather than a fifth of the way in. */
   background-image:
-    linear-gradient(90deg, transparent 0%, #fff 6%, transparent 100%),
-    linear-gradient(90deg, transparent 0%, #fff 94%, transparent 100%);
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(255 255 255 / 55%) 3%,
+      #fff 8%,
+      rgb(255 255 255 / 70%) 25%,
+      rgb(255 255 255 / 35%) 50%,
+      rgb(255 255 255 / 12%) 75%,
+      transparent 100%
+    ),
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(255 255 255 / 12%) 25%,
+      rgb(255 255 255 / 35%) 50%,
+      rgb(255 255 255 / 70%) 75%,
+      #fff 92%,
+      rgb(255 255 255 / 55%) 97%,
+      transparent 100%
+    );
   background-repeat: no-repeat;
   background-position:
     calc(50% * var(--bar-p)) 0,
     calc(100% - 50% * var(--bar-p)) 0;
   background-size:
-    26% 100%,
-    26% 100%;
+    52% 100%,
+    52% 100%;
 
-  /* Faint at the edges, strongest once they arrive in the middle. */
-  opacity: calc(0.2 + 0.8 * var(--bar-p));
+  /* Invisible at rest, so the light theme's bar stays clean; the beams only
+     appear as the page scrolls and they travel inwards. */
+  opacity: var(--bar-p);
   pointer-events: none;
   filter: drop-shadow(0 0 6px rgb(191 219 254 / 70%));
 }
@@ -150,11 +177,6 @@
   margin-left: auto;
 }
 
-/* Hidden until the widths below bring them back. */
-.cta {
-  display: none;
-}
-
 .navLink {
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-sm);
@@ -169,19 +191,20 @@
 }
 
 .actions {
-  display: none;
+  display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
   margin-left: auto;
 }
 
-/* Below 1200px the navigation and the call to action drop away; below
-   640px only the wordmark and the author credit are left. */
-@media (width >= 40rem) {
-  .actions {
-    display: flex;
-  }
+/* The same separator as the one before the author credit. */
+.divider {
+  display: none;
+  width: 1px;
+  height: 1.5rem;
+  background-color: color-mix(in srgb, rgb(255 255 255 / 28%) calc(var(--bar-p) * 100%), var(--color-border-strong));
 }
+
 
 /* Below the full navigation the brand sits in the middle of the bar, with
    the theme button pinned to the bar's own right edge. */
@@ -199,35 +222,49 @@
   }
 }
 
+/* Phones: no room to centre the brand between two edges, so it moves left
+   and the theme button follows it in the row, pushed to the right. */
+@media (width < 40rem) {
+  .inner {
+    justify-content: flex-start;
+    gap: var(--space-3);
+  }
+
+  .actions {
+    position: static;
+    margin-left: auto;
+    translate: none;
+  }
+
+  /* A slightly smaller theme button, to match the slimmer bar. */
+  .actions .themeToggle {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .actions .themeToggle svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (width < 22rem) {
+  .inner {
+    gap: var(--space-2);
+  }
+}
+
 @media (width >= 80rem) {
   .nav {
     display: flex;
   }
 
-  .cta {
-    display: inline-flex;
+  .divider {
+    display: block;
   }
 
   .actions {
-    margin-left: 0;
-  }
-}
-
-/* On the blue bar the call to action inverts, so it still reads as the
-   primary action. */
-.header .cta {
-  background-color: color-mix(in srgb, #fff calc(var(--bar-p) * 100%), var(--color-accent));
-  color: color-mix(in srgb, var(--blue) calc(var(--bar-p) * 100%), var(--color-accent-contrast));
-}
-
-/* Phones: the backing stays solid and full width while scrolling, so content
-   passing underneath never shows through the bar's inset sides or its fade. */
-@media (width < 44rem) {
-  .header::before {
-    inset: 0;
-    background-color: var(--color-bg);
-    opacity: 1;
-    mask-image: none;
+    margin-left: var(--space-2);
   }
 }
 

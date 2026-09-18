@@ -1,0 +1,320 @@
+/*
+ * The hero's stage. Two values drive everything:
+ *   --p      scroll, from 0 at the top of the page to 1 once the hero is gone
+ *   --intro  the load animation, from 1 to 0 over its first seconds
+ * The planet spins up and grows from small on load, then keeps turning and
+ * shrinks away with the scroll, while the satellites drift back out of view.
+ * The light theme shows the day side, the dark theme the night side with
+ * its city lights.
+ */
+@property --intro {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.stage {
+  --p: 0;
+
+  /* Where the planet sits, shared by the globe and the load flash. */
+  --globe-top: 59%;
+  --globe-size: max(92cqw, 35.2rem);
+  --night: 0;
+  --sats: clamp(0, calc(1 - var(--p) / 0.6), 1);
+
+  /* The stage is always night sky, so its text is light in both themes. */
+  --color-text: #fff;
+  --color-text-muted: rgb(226 232 240 / 85%);
+  --color-accent-text: #93c5fd;
+  --color-border-strong: rgb(255 255 255 / 30%);
+  --color-surface-raised: rgb(255 255 255 / 8%);
+
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  container-type: inline-size;
+  min-height: 100svh;
+  background:
+    radial-gradient(120% 70% at 50% 100%, #0b2a6b 0%, transparent 60%),
+    #020617;
+  color: var(--color-text);
+
+  /* The top melts into the page under the header, so the header keeps its
+     light backing and the space begins just below it. */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 calc(var(--header-height) + 4rem)
+  );
+}
+
+:global(html[data-theme="dark"]) .stage {
+  --night: 1;
+}
+
+/* Daytime sky for the light theme: a lighter, bluer space, whose top fades
+   into the page over a slightly longer stretch. */
+:global(html[data-theme="light"]) .stage {
+  /* Eased, so the sky fades in without a visible edge. */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgb(0 0 0 / 8%) calc(var(--header-height) - 0.5rem),
+    rgb(0 0 0 / 30%) calc(var(--header-height) + 1rem),
+    rgb(0 0 0 / 62%) calc(var(--header-height) + 2.5rem),
+    rgb(0 0 0 / 88%) calc(var(--header-height) + 4rem),
+    #000 calc(var(--header-height) + 5rem)
+  );
+  background:
+    radial-gradient(120% 70% at 50% 100%, #2a5bc7 0%, transparent 62%),
+    radial-gradient(90% 60% at 50% 0%, #1b3a7a 0%, transparent 70%),
+    #0c1f4d;
+}
+
+/* A still starfield: a few layers of tiny dots at different spacings. */
+.stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, #fff 50%, transparent),
+    radial-gradient(1px 1px at 90px 80px, rgb(255 255 255 / 80%) 50%, transparent),
+    radial-gradient(1.5px 1.5px at 150px 20px, #fff 50%, transparent),
+    radial-gradient(1px 1px at 60px 140px, rgb(255 255 255 / 60%) 50%, transparent),
+    radial-gradient(1.5px 1.5px at 180px 120px, rgb(191 219 254 / 90%) 50%, transparent);
+  background-size: 200px 170px;
+  opacity: 0.7;
+}
+
+/*
+ * The planet: a large circle showing one hemisphere of an equirectangular
+ * map. The map is twice as wide as it is tall, so at 200% width the circle
+ * shows half of it; sliding it sideways turns the globe, and repeat-x makes
+ * the turn seamless.
+ */
+.globe {
+  position: absolute;
+  top: var(--globe-top);
+  left: 50%;
+  width: var(--globe-size);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  translate: -50% 0;
+  transform-origin: 50% 0%;
+
+  /* 0.82 at rest after load, shrinking as the hero scrolls away, and from
+     much smaller while the load animation runs. */
+  scale: calc(0.82 - var(--p) * 0.35 - var(--intro) * 0.635);
+  box-shadow:
+    0 0 80px 18px rgb(59 130 246 / 45%),
+    0 0 0 2px rgb(147 197 253 / 55%);
+  animation: globe-intro 2.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+@keyframes globe-intro {
+  from {
+    --intro: 1;
+  }
+
+  to {
+    --intro: 0;
+  }
+}
+
+.day,
+.night {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat-x;
+  background-size: 200% 100%;
+
+  /* Turned by the scroll, plus half a turn that unwinds on load. */
+  background-position: calc(var(--p) * -96% + var(--intro) * 100%) 38%;
+}
+
+.day {
+  background-image: url("/earth-light.jpg");
+}
+
+/* The night side: the day map darkens, then the city lights come up. */
+.dusk {
+  position: absolute;
+  inset: 0;
+  background-color: #020617;
+  opacity: calc(var(--night) * 0.82);
+  transition: opacity 600ms var(--ease-out);
+}
+
+.night {
+  background-image: url("/earth-dark.jpg");
+  mix-blend-mode: screen;
+  opacity: var(--night);
+  transition: opacity 600ms var(--ease-out);
+}
+
+/* Makes the flat map read as a sphere: a lit limb and a darker edge. */
+.shade {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 0%, rgb(191 219 254 / 35%) 0%, transparent 18%),
+    radial-gradient(circle at 50% 50%, transparent 55%, rgb(2 6 23 / 70%) 72%);
+  box-shadow: inset 0 18px 40px rgb(147 197 253 / 45%);
+}
+
+/* Satellites wait in the margins either side of the text and drift back out
+   past the edges as the page scrolls. */
+.satellites {
+  position: absolute;
+  inset: 0;
+  opacity: var(--sats);
+  pointer-events: none;
+}
+
+.satelliteA,
+.satelliteB {
+  position: absolute;
+  filter: drop-shadow(0 0 6px rgb(147 197 253 / 60%));
+}
+
+.satelliteA {
+  top: 56%;
+  left: 0;
+  width: clamp(3rem, 6vw, 4.5rem);
+  translate: calc(-100% + var(--sats) * 14cqw) calc(var(--sats) * -60%);
+  rotate: calc(-20deg + var(--sats) * 10deg);
+}
+
+.satelliteB {
+  top: 24%;
+  right: 0;
+  width: clamp(2.25rem, 4.5vw, 3.25rem);
+  translate: calc(100% - var(--sats) * 12cqw) calc(var(--sats) * 50%);
+  rotate: calc(24deg - var(--sats) * 10deg);
+}
+
+.beacon {
+  animation: beacon 1.4s steps(2, jump-none) infinite;
+}
+
+@keyframes beacon {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.15;
+  }
+}
+
+/* The load flash: a white core, then a blue ring carrying it outwards from
+   the planet. Light adds to light on the night sky, so both blend as screen. */
+
+/* A large square centred inside the planet, about a third of the way down
+   its disc (at rest it is 0.82 of its full size, hinged at its top), so the
+   flash grows from within the Earth and rises through its horizon. */
+.bloomCore,
+.bloomRing {
+  position: absolute;
+  top: calc(var(--globe-top) + var(--globe-size) * 0.82 * 0.32);
+  left: 50%;
+  width: max(220cqw, 260svh);
+  aspect-ratio: 1;
+  opacity: 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  translate: -50% -50%;
+}
+
+.bloomCore {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgb(255 255 255 / 95%) 0%,
+    rgb(255 255 255 / 55%) 22%,
+    transparent 55%
+  );
+  animation: bloom-core 1.5s var(--ease-out) both;
+}
+
+.bloomRing {
+  background: radial-gradient(
+    circle at 50% 50%,
+    transparent 0%,
+    #3b82f6 38%,
+    #67e8f9 52%,
+    transparent 72%
+  );
+  animation: bloom-ring 5.5s cubic-bezier(0.19, 1, 0.22, 1) 0.25s both;
+}
+
+@keyframes bloom-core {
+  0% {
+    opacity: 0;
+    scale: 0.05;
+  }
+
+  12% {
+    opacity: 1;
+    scale: 0.35;
+  }
+
+  100% {
+    opacity: 0;
+    scale: 1.4;
+  }
+}
+
+@keyframes bloom-ring {
+  0% {
+    opacity: 0;
+    scale: 0.1;
+  }
+
+  14% {
+    opacity: 0.55;
+  }
+
+  100% {
+    opacity: 0;
+    scale: 1.6;
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding: calc(var(--header-height) + clamp(3rem, 9svh, 6rem) + 5svh) var(--container-gutter) 0;
+}
+
+@media (width < 44rem) {
+  .stage {
+    --globe-top: 67%;
+  }
+
+  .content {
+    padding-inline: var(--space-4);
+  }
+
+  /* The text fills the width on phones: the satellites keep to the corners
+     beside the horizon. */
+  .satelliteA {
+    top: 70%;
+    translate: calc(-100% + var(--sats) * 22cqw) calc(var(--sats) * -40%);
+  }
+
+  .satelliteB {
+    top: 60%;
+    translate: calc(100% - var(--sats) * 20cqw) 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe,
+  .beacon,
+  .bloomCore,
+  .bloomRing {
+    animation: none;
+  }
+}

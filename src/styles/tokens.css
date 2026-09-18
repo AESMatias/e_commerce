@@ -14,19 +14,19 @@
     color-scheme: light;
 
     /* Colors — surfaces */
-    --color-bg: #f7f8fb;
-    --color-bg-translucent: rgb(247 248 251 / 85%);
+    --color-bg: #eceff5;
+    --color-bg-translucent: rgb(236 239 245 / 88%);
     --color-surface: #fff;
-    --color-surface-raised: #f1f3f8;
-    --color-surface-soft: #e9eefb;
-    --color-border: #e3e7f0;
-    --color-border-strong: #c8cfde;
+    --color-surface-raised: #f3f5f9;
+    --color-surface-soft: #e3eaf8;
+    --color-border: #d6dce8;
+    --color-border-strong: #b3bdd0;
     --color-overlay: rgb(16 20 30 / 45%);
 
     /* Colors — text */
-    --color-text: #11151f;
-    --color-text-muted: #545e75;
-    --color-text-subtle: #78819a;
+    --color-text: #0d1220;
+    --color-text-muted: #465069;
+    --color-text-subtle: #677089;
 
     /* Colors — brand & feedback */
     --color-accent: #2f6bff;
@@ -38,8 +38,11 @@
     --color-focus-ring: #2f6bff;
 
     /* Shadows */
-    --shadow-md: 0 8px 24px -10px rgb(16 24 40 / 18%);
-    --shadow-lg: 0 24px 64px -16px rgb(16 24 40 / 22%), 0 0 0 1px rgb(16 24 40 / 4%);
+    --shadow-md: 0 8px 24px -10px rgb(16 24 40 / 22%);
+    --shadow-lg: 0 24px 64px -16px rgb(16 24 40 / 26%), 0 0 0 1px rgb(16 24 40 / 6%);
+
+    /* Lift without the 1px outline, for elements that draw their own edge. */
+    --shadow-lift: 0 24px 64px -16px rgb(16 24 40 / 26%);
 
     /* Typography — font variables come from next/font in layout.tsx */
     --font-sans: var(--font-instrument-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -129,12 +132,13 @@
     /* Shadows */
     --shadow-md: 0 8px 24px -8px rgb(0 0 0 / 50%);
     --shadow-lg: 0 24px 64px -12px rgb(0 0 0 / 60%), 0 0 0 1px rgb(255 255 255 / 3%);
+    --shadow-lift: 0 24px 64px -12px rgb(0 0 0 / 60%);
   }
 
   /* Phones get a slimmer header so it does not eat the first screen. */
   @media (width < 44rem) {
     :root {
-      --header-height: 4.5rem;
+      --header-height: 5.2rem;
     }
   }
 }

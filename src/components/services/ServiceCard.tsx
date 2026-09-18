@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { formatPrice } from "@/lib/format";
 import type { Service } from "@/types/catalog";
+import { CountUpPrice } from "./CountUpPrice";
 import { ServiceDetailsDialog } from "./ServiceDetailsDialog";
 import { ServiceIcon } from "./ServiceIcon";
 import styles from "./ServiceCard.module.css";
@@ -46,7 +46,7 @@ export function ServiceCard({ service }: { service: Service }) {
       <div className={styles.meta}>
         <p className={styles.price}>
           <span className={styles.priceLabel}>From</span>
-          {formatPrice(service.startingPriceCents, service.currency)}
+          <CountUpPrice cents={service.startingPriceCents} currency={service.currency} />
         </p>
         <p className={styles.packageCount}>{service.packages.length} packages</p>
       </div>

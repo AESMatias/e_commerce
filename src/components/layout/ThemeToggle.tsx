@@ -2,18 +2,20 @@
 
 import styles from "./ThemeToggle.module.css";
 
-export const THEME_STORAGE_KEY = "devstudio-theme";
+// Renamed when light became the default, so choices saved under the old
+// dark-by-default key do not keep returning visitors on dark.
+export const THEME_STORAGE_KEY = "wholeheartedly-theme";
 
 /**
- * Sets data-theme on <html> before the page paints. Dark is the default, so
- * only a visitor who picked light gets light. Inlined in the root layout.
+ * Sets data-theme on <html> before the page paints. Light is the default, so
+ * only a visitor who picked dark gets dark. Inlined in the root layout.
  */
 export const themeInitScript = `
 try {
   var stored = localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});
-  document.documentElement.dataset.theme = stored === "light" ? "light" : "dark";
+  document.documentElement.dataset.theme = stored === "dark" ? "dark" : "light";
 } catch (error) {
-  document.documentElement.dataset.theme = "dark";
+  document.documentElement.dataset.theme = "light";
 }
 `;
 

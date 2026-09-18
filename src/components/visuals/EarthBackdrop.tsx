@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react";
 import styles from "./EarthBackdrop.module.css";
 
 /**
- * Fixed Earth backdrop (NASA imagery) that drifts as the page scrolls.
+ * Fixed Earth backdrop (NASA imagery) that drifts and turns on its axis as
+ * the page scrolls.
  *
  * The parallax is written to a CSS custom property from a rAF-throttled
  * scroll listener rather than a scroll-driven animation, so it behaves the

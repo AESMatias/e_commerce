@@ -2,6 +2,8 @@ import { AdvisorChat } from "@/components/advisor/AdvisorChat";
 import { Container } from "@/components/layout/Container";
 import { HashLink } from "@/components/layout/HashLink";
 import { EarthBackdrop } from "@/components/visuals/EarthBackdrop";
+import { EarthHero } from "@/components/visuals/EarthHero";
+import { FloatingObject } from "@/components/visuals/FloatingObject";
 import { HeroTitle } from "@/components/visuals/HeroTitle";
 import { ScrollToTop } from "@/components/visuals/ScrollToTop";
 import { ServiceCard } from "@/components/services/ServiceCard";
@@ -41,7 +43,8 @@ export default async function HomePage() {
       <EarthBackdrop />
 
       <section className={styles.hero}>
-        <Container className={styles.heroInner}>
+        <EarthHero>
+            <div className={styles.heroInner}>
           <HeroTitle
             text="Software packages with a fixed scope and a clear price"
             accentFrom={7}
@@ -52,25 +55,28 @@ export default async function HomePage() {
             spot with a deposit, all in one place.
           </p>
           <div className={styles.actions}>
-            <Button asChild size="lg">
+            <Button asChild size="lg" className={styles.glowButton}>
               <HashLink href="/#advisor">Talk to the AI advisor</HashLink>
             </Button>
-            <Button asChild size="lg" variant="secondary">
+            <Button asChild size="lg" variant="secondary" className={styles.goldButton}>
               <HashLink href="/#services">Browse packages</HashLink>
             </Button>
           </div>
-        </Container>
+            </div>
+        </EarthHero>
       </section>
 
       <section id="advisor" className={`${styles.sectionAlt} ${styles.advisorSection}`}>
         <Container className={styles.advisorLayout}>
-          <header className={styles.sectionHeader}>
-            <p className={text.eyebrow}>Step one</p>
-            <h2 className={text.heading}>Not sure which package you need?</h2>
-            <p className={text.lead}>
-              Describe your business problem and the AI advisor recommends one package from the
-              catalog, with its price, timeline and what is included. No account needed.
-            </p>
+          <header className={styles.artHeader}>
+            <FloatingObject name="robot" className={styles.artObject} />
+            <div className={styles.artIntro}>
+              <h2 className={text.heading}>Not sure which package you need?</h2>
+              <p className={text.lead}>
+                Describe your business problem and the AI advisor recommends one package from the
+                catalog, with its price, timeline and what is included. No account needed.
+              </p>
+            </div>
           </header>
           <AdvisorChat />
         </Container>
@@ -78,13 +84,15 @@ export default async function HomePage() {
 
       <section id="services" className={styles.section}>
         <Container>
-          <header className={styles.sectionHeader}>
-            <p className={text.eyebrow}>Service packages</p>
-            <h2 className={text.heading}>Pick the package that fits your business</h2>
-            <p className={text.lead}>
-              Every service comes in three tiers with a defined scope, timeline and price. Compare
-              them to see exactly what is included.
-            </p>
+          <header className={styles.artHeader}>
+            <FloatingObject name="parcel" className={styles.artObject} />
+            <div className={styles.artIntro}>
+              <h2 className={text.heading}>Pick the package that fits your business</h2>
+              <p className={text.lead}>
+                Every service comes in three tiers with a defined scope, timeline and price.
+                Compare them to see exactly what is included.
+              </p>
+            </div>
           </header>
 
           <ul role="list" className={styles.grid}>
@@ -100,7 +108,6 @@ export default async function HomePage() {
       <section id="how-it-works" className={styles.sectionAlt}>
         <Container>
           <header className={styles.sectionHeader}>
-            <p className={text.eyebrow}>How it works</p>
             <h2 className={text.heading}>From idea to kickoff in four steps</h2>
           </header>
 
@@ -114,6 +121,7 @@ export default async function HomePage() {
           </ol>
         </Container>
       </section>
+
     </>
   );
 }

@@ -16,6 +16,13 @@
     line-height: var(--leading-normal);
   }
 
+  /* Nothing in the page may widen it sideways. Clipped here rather than on
+     body, whose overflow the browser hands to the viewport as "hidden",
+     which can still be scrolled. */
+  main {
+    overflow-x: clip;
+  }
+
   h1,
   h2,
   h3,

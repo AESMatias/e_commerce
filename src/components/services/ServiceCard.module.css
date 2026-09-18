@@ -21,7 +21,7 @@
   transition:
     border-color var(--duration-base) var(--ease-out),
     border-radius 420ms var(--ease-out),
-    scale 420ms var(--ease-out),
+    translate 420ms var(--ease-out),
     box-shadow 420ms var(--ease-out);
 }
 
@@ -33,7 +33,7 @@
 .card::before {
   position: absolute;
   inset: -1px;
-  padding: 1.5px;
+  padding: 2px;
   border-radius: inherit;
   background-image:
     radial-gradient(circle at 0% 0%, var(--retreat-core) 0%, var(--retreat-edge) 38%, transparent 72%),
@@ -88,7 +88,7 @@
 .card::after {
   position: absolute;
   inset: -1px;
-  padding: 1.5px;
+  padding: 2px;
   border-radius: inherit;
   background-image:
     radial-gradient(circle at 0% 0%, #60a5fa 0%, #3b82f6 34%, transparent 72%),
@@ -116,8 +116,14 @@
   z-index: 1;
   border-color: transparent;
   border-radius: 2px;
-  scale: 1.035;
-  box-shadow: var(--shadow-lg);
+
+  /* Lifts instead of scaling: a scaled card lands on fractional pixels and
+     the thin blue ring rounds to a different width on each side. */
+  translate: 0 -4px;
+
+  /* No outline in this shadow: it drew a grey line just outside the blue
+     ring, doubling the edge while the corners squared off. */
+  box-shadow: var(--shadow-lift);
 }
 
 .card:hover::after {
@@ -197,7 +203,7 @@
   /* No hover on touch screens; the lift would stick after a tap. */
   .card:hover {
     border-radius: var(--radius-md);
-    scale: none;
+    translate: none;
   }
 
   .icon {

@@ -3,7 +3,6 @@ import { Container } from "@/components/layout/Container";
 import { GitHubLink } from "@/components/layout/GitHubLink";
 import { HashLink } from "@/components/layout/HashLink";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
-import { Button } from "@/components/ui/Button";
 import { siteConfig } from "@/config/site";
 import styles from "./SiteHeader.module.css";
 
@@ -40,10 +39,8 @@ export function SiteHeader() {
         </nav>
 
         <div className={styles.actions}>
-          <ThemeToggle />
-          <Button asChild size="sm" className={styles.cta}>
-            <HashLink href="/#services">Get started</HashLink>
-          </Button>
+          <span className={styles.divider} aria-hidden="true" />
+          <ThemeToggle className={styles.themeToggle} />
         </div>
       </Container>
     </header>

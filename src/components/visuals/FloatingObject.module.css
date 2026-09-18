@@ -1,0 +1,185 @@
+/*
+ * A decorative object placed in the content flow, next to a section title.
+ * The component writes on scroll:
+ *   --p   the section's travel through the viewport, -1 to 1
+ *   --ap  the same, without its sign
+ * The motion stays small, so the object turns and sways without leaving its
+ * spot or covering the text around it.
+ */
+.object {
+  --p: 0;
+  --ap: 0;
+
+  position: relative;
+  flex-shrink: 0;
+  width: clamp(4.5rem, 9vw, 7.5rem);
+  aspect-ratio: 1;
+}
+
+.mover,
+.glow {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 14px 18px rgb(15 47 158 / 26%));
+  animation: float 5s ease-in-out infinite;
+  transition: scale 320ms var(--ease-out);
+}
+
+/* Grows a little on hover; transforms do not move the layout around it. */
+.object:hover .art {
+  scale: 1.12;
+}
+
+/* The idle bob, on its own element so it adds to the scroll motion. */
+@keyframes float {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: -2deg;
+  }
+
+  50% {
+    translate: 0 -6px;
+    rotate: 2deg;
+  }
+}
+
+.glow {
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(59 130 246 / 30%), transparent);
+  filter: blur(8px);
+  scale: 1.25;
+
+  /* Trails the object at half the distance. */
+  transform: translate3d(0, calc(var(--p) * 7px), 0);
+}
+
+/* Robot: turns to look across the page as it passes. */
+.object[data-name="robot"] .mover {
+  transform: perspective(600px)
+    translate3d(0, calc(var(--p) * 14px), 0)
+    rotateY(calc(var(--p) * 35deg))
+    rotateZ(calc(var(--p) * -6deg))
+    scale(calc(1 - var(--ap) * 0.08));
+}
+
+/* Parcel: tips and spins a little, as if just set down. */
+.object[data-name="parcel"] .mover {
+  transform: perspective(600px)
+    translate3d(0, calc(var(--p) * 16px), 0)
+    rotateX(calc(var(--p) * 25deg))
+    rotateZ(calc(var(--p) * -22deg))
+    scale(calc(1 - var(--ap) * 0.08));
+}
+
+.object[data-name="parcel"] .art {
+  animation-duration: 6.5s;
+}
+
+/* Parts that react to hover. fill-box makes each one turn about itself. */
+.eyes,
+.bulb,
+.halo,
+.lid,
+.extraSparkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    transform 320ms var(--ease-out),
+    opacity 320ms var(--ease-out),
+    fill 320ms var(--ease-out);
+}
+
+/* Robot: a happy squint and a lit antenna. */
+.object:hover .eyes {
+  transform: scaleY(0.3);
+}
+
+.halo {
+  opacity: 0;
+  transform: scale(0.4);
+}
+
+.object:hover .halo {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.object:hover .bulb {
+  fill: #fbbf24;
+  transform: scale(1.35);
+}
+
+/*
+ * Robot while the AI advisor is answering: the antenna blinks on and off.
+ * The chat marks its root with data-busy for the whole answer, and :has()
+ * lets the section react to it with no JavaScript. It blinks twice per beat
+ * of the chat's send button (1.1s against 2.2s, the same easing), and both
+ * start when the flag appears, so they stay in step. The eyes stay open.
+ */
+:global(section:has([data-busy="true"])) .object[data-name="robot"] .bulb {
+  animation: bulb-pulse 1.1s var(--ease-out) infinite;
+}
+
+:global(section:has([data-busy="true"])) .object[data-name="robot"] .halo {
+  animation: halo-pulse 1.1s var(--ease-out) infinite;
+}
+
+@keyframes bulb-pulse {
+  0%,
+  100% {
+    fill: #3b82f6;
+    transform: scale(1);
+  }
+
+  22% {
+    fill: #fbbf24;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes halo-pulse {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  22% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Parcel: the lid lifts and tips back on its left corner. */
+.lid {
+  transform-origin: 0% 50%;
+}
+
+.object:hover .lid {
+  transform: translate(-4px, -34px) rotate(-16deg);
+}
+
+.extraSparkle {
+  opacity: 0;
+  transform: scale(0.2);
+}
+
+.object:hover .extraSparkle {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .art {
+    animation: none;
+  }
+}

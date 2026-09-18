@@ -1,15 +1,75 @@
+/*
+ * The footer wears the header bar's gradient, so the page is framed by the
+ * same blue band top and bottom: bright at the edges, deep in the middle,
+ * with a soft light rising from below and a lit top edge. It joins the page
+ * with rounded top corners. It is dark in both themes, so it sets its own
+ * light text colours for everything inside, social links included.
+ */
 .footer {
-  padding-block: var(--space-8);
-  border-top: 1px solid var(--color-border);
-  color: var(--color-text-subtle);
+  --color-text: #fff;
+  --color-text-muted: rgb(255 255 255 / 90%);
+  --color-text-subtle: rgb(255 255 255 / 75%);
+  --color-border: rgb(255 255 255 / 25%);
+  --color-surface: rgb(15 23 42 / 92%);
+  --color-accent: #93c5fd;
+  --color-accent-text: #bfdbfe;
+
+  /* The header bar's blues (see SiteHeader.module.css). */
+  --bar-end: #3f74cf;
+  --bar-mid: #2a55a5;
+  --bar-core: #1c3f83;
+
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  /* Pulled up over the last section by its own corner radius, so the space
+     beside the rounded corners shows that section, not the page behind. */
+  margin-top: calc(var(--radius-lg) * -1);
+  padding-block: var(--space-10);
+  border-top: 1px solid rgb(255 255 255 / 30%);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background:
+    radial-gradient(60% 140% at 50% 130%, rgb(103 232 249 / 22%) 0%, transparent 70%),
+    radial-gradient(45% 120% at 50% -30%, rgb(255 255 255 / 12%) 0%, transparent 70%),
+    linear-gradient(
+      90deg,
+      var(--bar-end) 0%,
+      var(--bar-mid) 10%,
+      var(--bar-core) 24%,
+      var(--bar-core) 76%,
+      var(--bar-mid) 90%,
+      var(--bar-end) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 18%),
+    0 -16px 40px -24px rgb(6 21 58 / 45%);
+  color: var(--color-text-muted);
   font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+:global(html[data-theme="dark"]) .footer {
+  --bar-end: #21509f;
+  --bar-mid: #143172;
+  --bar-core: #0d2151;
+
+  border-top-color: rgb(147 197 253 / 25%);
 }
 
 .inner {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
+}
+
+.credits {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: center;
 }
 
 .author {
@@ -30,4 +90,17 @@
 
 .legalLink:hover {
   color: var(--color-text);
+}
+
+/* Phones: everything stacks and centres. */
+@media (width < 44rem) {
+  .inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .legal {
+    justify-content: center;
+  }
 }

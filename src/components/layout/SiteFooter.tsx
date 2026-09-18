@@ -13,9 +13,11 @@ export function SiteFooter() {
         <p>
           © {year} {siteConfig.name}. All rights reserved.
         </p>
-        <p>
-          Built by <span className={styles.author}>{siteConfig.author}</span> · Earth imagery:
-          NASA
+        <p className={styles.credits}>
+          <span>
+            Built by <span className={styles.author}>{siteConfig.author}</span>
+          </span>
+          <span>Earth imagery: NASA</span>
         </p>
         <nav aria-label="Legal" className={styles.legal}>
           <Link href="/privacy" className={styles.legalLink}>
