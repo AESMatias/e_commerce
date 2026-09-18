@@ -327,6 +327,34 @@
   }
 }
 
+@media (width < 25rem) {
+  .header::before,
+  .header::after {
+    inset-inline: 0;
+  }
+
+  .header .inner {
+    padding-inline: var(--container-gutter);
+  }
+
+  .actions {
+    right: calc(var(--container-gutter) + 2% * var(--bar-p));
+  }
+
+  .actions .themeToggle {
+    flex-basis: 1.8rem;
+    width: 1.8rem;
+    min-width: 1.8rem;
+    height: 1.8rem;
+    min-height: 1.8rem;
+  }
+
+  .logoMark {
+    width: 1.4625rem;
+    height: 1.4625rem;
+  }
+}
+
 @media (width >= 80rem) {
   .inner {
     display: grid;
@@ -356,6 +384,21 @@
     grid-column: 5;
     justify-self: end;
     margin-left: 0;
+  }
+}
+
+@media (width >= 25rem) {
+  .header::before,
+  .header::after {
+    inset-inline: calc(2.5% * var(--bar-p));
+  }
+
+  .header .inner {
+    padding-inline: calc(var(--container-gutter) + 2.5% * var(--bar-p));
+  }
+
+  .actions {
+    right: calc(var(--container-gutter) + 2.5% * var(--bar-p));
   }
 }
 

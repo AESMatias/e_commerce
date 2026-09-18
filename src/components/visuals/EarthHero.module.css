@@ -110,7 +110,6 @@
     0 0 80px 18px rgb(59 130 246 / 45%),
     0 0 0 2px rgb(147 197 253 / 55%);
   animation: globe-intro 2.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
-  transition: scale 120ms linear;
 }
 
 @keyframes globe-intro {
@@ -132,7 +131,6 @@
 
   /* Turned by the scroll, plus half a turn that unwinds on load. */
   background-position: calc(var(--p) * -96% + var(--intro) * 100%) 38%;
-  transition: background-position 120ms linear;
 }
 
 /* Makes the flat map read as a sphere: a lit limb and a darker edge. */
@@ -159,9 +157,6 @@
 .satelliteB {
   position: absolute;
   filter: drop-shadow(0 0 6px rgb(147 197 253 / 60%));
-  transition:
-    translate 120ms linear,
-    rotate 120ms linear;
 }
 
 .satelliteA {

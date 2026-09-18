@@ -25,10 +25,6 @@
   inset: -12% -5% -18%;
   translate: 0 calc(var(--parallax) * -6vh);
   scale: calc(1 + var(--parallax) * 0.012);
-  transition:
-    translate 120ms linear,
-    scale 120ms linear,
-    --parallax 120ms linear;
   will-change: translate;
 }
 
@@ -41,11 +37,8 @@
   background-position: calc(50% + var(--parallax) * 18vw) 42%;
   background-repeat: repeat-x;
   background-size: cover;
-  filter: blur(3px) saturate(115%);
+  filter: saturate(115%);
   opacity: 0.55;
-  transition:
-    background-position 120ms linear,
-    opacity var(--duration-base) var(--ease-out);
 }
 
 
