@@ -1,6 +1,7 @@
 .header {
   /* How far each property has travelled, driven by the scroll position. */
   --bar-p: var(--bar-progress, 0);
+  --logo-opacity: 1;
   --blue-deep: #06153a;
   --blue: #0f3bb5;
   --brand-mark: 2rem;
@@ -14,6 +15,13 @@
   position: sticky;
   top: 0;
   z-index: var(--z-header);
+  overflow-anchor: none;
+}
+
+@property --bar-p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
 }
 
 /* The bar's backing is a pseudo-element so it can fade out downwards. A flat
@@ -23,6 +31,10 @@
   position: absolute;
   inset: 0 calc(5% * var(--bar-p));
   content: "";
+  transition:
+    inset 120ms linear,
+    opacity 120ms linear,
+    border-radius 120ms linear;
 }
 
 .header::before {
@@ -109,6 +121,10 @@
   opacity: var(--bar-p);
   pointer-events: none;
   filter: drop-shadow(0 0 6px rgb(191 219 254 / 70%));
+  transition:
+    inset 120ms linear,
+    background-position 120ms linear,
+    opacity 120ms linear;
 }
 
 .inner {
@@ -120,11 +136,13 @@
   height: calc(
     var(--header-height) - (var(--header-height) - var(--header-height-scrolled)) * var(--bar-p)
   );
+  transition: height 120ms linear;
 }
 
 /* The row pulls in by the same amount the bar does, so nothing sits outside it. */
 .header .inner {
   padding-inline: calc(var(--container-gutter) + 5% * var(--bar-p));
+  transition: padding-inline 120ms linear;
 }
 
 .brand {
@@ -139,6 +157,10 @@
   font-size: var(--text-lg);
   font-weight: var(--weight-bold);
   letter-spacing: -0.02em;
+  transition:
+    padding 120ms linear,
+    color 120ms linear,
+    scale 120ms linear;
 }
 
 .logoMark {
@@ -150,7 +172,7 @@
   width: var(--brand-mark);
   height: var(--brand-mark);
   translate: 0 -50%;
-  rotate: calc(var(--bar-p) * 540deg);
+  opacity: var(--logo-opacity);
   border-radius: var(--radius-sm);
   background-color: color-mix(in srgb, #fff calc(var(--bar-p) * 100%), var(--color-accent));
   color: color-mix(in srgb, var(--blue) calc(var(--bar-p) * 100%), var(--color-accent-contrast));
@@ -169,6 +191,7 @@
 .byline {
   display: inline-flex;
   scale: calc(1 - 0.08 * var(--bar-p));
+  transition: scale 120ms linear;
 }
 
 .nav {
@@ -219,6 +242,7 @@
     right: calc(var(--container-gutter) + 5% * var(--bar-p));
     margin-left: 0;
     translate: 0 -50%;
+    transition: right 120ms linear;
   }
 }
 

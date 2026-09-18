@@ -10,11 +10,15 @@ import styles from "./HeroTitle.module.css";
 export function HeroTitle({
   text,
   accentFrom,
+  accentClassName,
+  mobileBreakAfter,
   className,
 }: {
   text: string;
   /** Index of the first word that should be highlighted. */
   accentFrom: number;
+  accentClassName?: string;
+  mobileBreakAfter?: number;
   className?: string;
 }) {
   const words = text.split(" ");
@@ -23,7 +27,16 @@ export function HeroTitle({
     <h1 className={cx(styles.title, className)}>
       {words.map((word, index) => (
         <Fragment key={`${word}-${index}`}>
-          <span className={cx(styles.word, index >= accentFrom && styles.accent)}>{word}</span>
+          <span
+            className={cx(
+              styles.word,
+              index >= accentFrom && styles.accent,
+              index >= accentFrom && accentClassName,
+            )}
+          >
+            {word}
+          </span>
+          {index === mobileBreakAfter ? <br className={styles.mobileBreak} /> : null}
           {index < words.length - 1 ? " " : null}
         </Fragment>
       ))}

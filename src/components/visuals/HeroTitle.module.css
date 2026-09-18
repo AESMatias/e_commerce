@@ -66,6 +66,20 @@
   color: var(--color-accent-text);
 }
 
+.mobileBreak {
+  display: none;
+}
+
+@media (width < 44rem) {
+  .mobileBreak {
+    display: block;
+  }
+}
+
+:global(.goldAccent) {
+  color: #fbbf24;
+}
+
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .word {
     background-image: linear-gradient(
@@ -83,6 +97,11 @@
     animation:
       word-in 0.7s var(--ease-out) calc(0.06s + var(--i) * 0.08s) both,
       sweep var(--sweep-cycle) linear calc(var(--sweep-start) + var(--i) * var(--word-step)) infinite;
+  }
+
+  :global(.goldAccent) {
+    background-image: none;
+    -webkit-text-fill-color: currentcolor;
   }
 }
 

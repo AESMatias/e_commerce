@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import styles from "./EarthBackdrop.module.css";
 
+const SCROLL_STEP_PX = 16;
+
 /**
  * Fixed Earth backdrop (NASA imagery) that drifts and turns on its axis as
  * the page scrolls.
@@ -21,10 +23,15 @@ export function EarthBackdrop() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let frame = 0;
+    let lastStep = -1;
 
     const update = () => {
       frame = 0;
-      const progress = window.scrollY / Math.max(window.innerHeight, 1);
+      const step = Math.round(window.scrollY / SCROLL_STEP_PX);
+      if (step === lastStep) return;
+      lastStep = step;
+      const quantizedScrollY = step * SCROLL_STEP_PX;
+      const progress = quantizedScrollY / Math.max(window.innerHeight, 1);
       layer.style.setProperty("--parallax", `${Math.min(progress, 6).toFixed(3)}`);
     };
 
@@ -34,11 +41,15 @@ export function EarthBackdrop() {
 
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    const onResize = () => {
+      lastStep = -1;
+      onScroll();
+    };
+    window.addEventListener("resize", onResize, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("resize", onResize);
       if (frame !== 0) window.cancelAnimationFrame(frame);
     };
   }, []);
@@ -47,7 +58,6 @@ export function EarthBackdrop() {
     <div className={styles.backdrop} aria-hidden="true">
       <div className={styles.layer} ref={layerRef}>
         <div className={styles.earthLight} />
-        <div className={styles.earthDark} />
       </div>
       <div className={styles.veil} />
       {/* The load bloom: a white core opens at the centre, then a blue ring

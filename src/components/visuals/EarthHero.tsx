@@ -5,6 +5,7 @@ import { cx } from "@/lib/cx";
 import styles from "./EarthHero.module.css";
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+const SCROLL_STEP_PX = 16;
 
 /**
  * The hero's stage: a window onto space with the Earth's horizon rising from
@@ -24,10 +25,15 @@ export function EarthHero({ children, className }: { children: ReactNode; classN
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let frame = 0;
+    let lastStep = -1;
 
     const update = () => {
       frame = 0;
-      const p = clamp(window.scrollY / Math.max(stage.offsetHeight, 1), 0, 1);
+      const step = Math.round(window.scrollY / SCROLL_STEP_PX);
+      if (step === lastStep) return;
+      lastStep = step;
+      const quantizedScrollY = step * SCROLL_STEP_PX;
+      const p = clamp(quantizedScrollY / Math.max(stage.offsetHeight, 1), 0, 1);
       stage.style.setProperty("--p", p.toFixed(4));
     };
 
@@ -37,11 +43,15 @@ export function EarthHero({ children, className }: { children: ReactNode; classN
 
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    const onResize = () => {
+      lastStep = -1;
+      onScroll();
+    };
+    window.addEventListener("resize", onResize, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("resize", onResize);
       if (frame !== 0) window.cancelAnimationFrame(frame);
     };
   }, []);
@@ -52,8 +62,6 @@ export function EarthHero({ children, className }: { children: ReactNode; classN
 
       <div className={styles.globe} aria-hidden="true">
         <div className={styles.day} />
-        <div className={styles.dusk} />
-        <div className={styles.night} />
         <div className={styles.shade} />
       </div>
 

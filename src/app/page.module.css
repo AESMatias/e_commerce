@@ -38,6 +38,10 @@
   max-width: 48rem;
 }
 
+.goldAccent {
+  color: #fbbf24;
+}
+
 .highlight {
   color: var(--color-accent-text);
 }
@@ -49,6 +53,31 @@
   gap: var(--space-3);
   margin-top: 0.4rem;
   perspective: 700px;
+}
+
+@media (width < 44rem) {
+  .heroTitle {
+    max-width: none;
+    font-size: clamp(1.25rem, 6.4vw, 1.7rem);
+    line-height: 1.12;
+  }
+
+  .heroInner > p {
+    font-size: var(--text-sm);
+  }
+
+  .actions {
+    width: 100%;
+    flex-wrap: nowrap;
+    gap: var(--space-2);
+  }
+
+  .actions > * {
+    min-width: 0;
+    flex: 1 1 0;
+    padding-inline: var(--space-2);
+    font-size: clamp(0.88rem, 3.7vw, var(--text-base));
+  }
 }
 
 /* The advisor button keeps the brand blue, lifted a little with a lighter

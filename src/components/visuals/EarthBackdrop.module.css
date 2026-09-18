@@ -12,6 +12,12 @@
   pointer-events: none;
 }
 
+@property --parallax {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
 .layer {
   --parallax: 0;
 
@@ -19,41 +25,29 @@
   inset: -12% -5% -18%;
   translate: 0 calc(var(--parallax) * -6vh);
   scale: calc(1 + var(--parallax) * 0.012);
-  transition: translate 120ms linear;
+  transition:
+    translate 120ms linear,
+    scale 120ms linear,
+    --parallax 120ms linear;
   will-change: translate;
 }
 
 /* The map is equirectangular, so it wraps seamlessly left to right: sliding
    it sideways with the scroll turns the Earth on its axis. */
-.earthLight,
-.earthDark {
+.earthLight {
   position: absolute;
   inset: 0;
+  background-image: url("/earth-light.webp");
   background-position: calc(50% + var(--parallax) * 18vw) 42%;
   background-repeat: repeat-x;
   background-size: cover;
   filter: blur(3px) saturate(115%);
   opacity: 0.55;
-  transition: opacity var(--duration-base) var(--ease-out);
+  transition:
+    background-position 120ms linear,
+    opacity var(--duration-base) var(--ease-out);
 }
 
-.earthLight {
-  background-image: url("/earth-light.jpg");
-}
-
-.earthDark {
-  background-image: url("/earth-dark.jpg");
-  opacity: 0;
-}
-
-:global(html[data-theme="dark"]) .earthLight {
-  opacity: 0;
-}
-
-:global(html[data-theme="dark"]) .earthDark {
-  opacity: 0.62;
-  filter: blur(3px) saturate(130%) brightness(90%);
-}
 
 /* Keeps the centre calm enough to read and fades the photo into the page. */
 .veil {

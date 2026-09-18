@@ -19,7 +19,6 @@
   /* Where the planet sits, shared by the globe and the load flash. */
   --globe-top: 59%;
   --globe-size: max(92cqw, 35.2rem);
-  --night: 0;
   --sats: clamp(0, calc(1 - var(--p) / 0.6), 1);
 
   /* The stage is always night sky, so its text is light in both themes. */
@@ -48,8 +47,10 @@
   );
 }
 
-:global(html[data-theme="dark"]) .stage {
-  --night: 1;
+@property --p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
 }
 
 /* Daytime sky for the light theme: a lighter, bluer space, whose top fades
@@ -109,6 +110,7 @@
     0 0 80px 18px rgb(59 130 246 / 45%),
     0 0 0 2px rgb(147 197 253 / 55%);
   animation: globe-intro 2.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+  transition: scale 120ms linear;
 }
 
 @keyframes globe-intro {
@@ -121,35 +123,16 @@
   }
 }
 
-.day,
-.night {
+.day {
   position: absolute;
   inset: 0;
+  background-image: url("/earth-light.webp");
   background-repeat: repeat-x;
   background-size: 200% 100%;
 
   /* Turned by the scroll, plus half a turn that unwinds on load. */
   background-position: calc(var(--p) * -96% + var(--intro) * 100%) 38%;
-}
-
-.day {
-  background-image: url("/earth-light.jpg");
-}
-
-/* The night side: the day map darkens, then the city lights come up. */
-.dusk {
-  position: absolute;
-  inset: 0;
-  background-color: #020617;
-  opacity: calc(var(--night) * 0.82);
-  transition: opacity 600ms var(--ease-out);
-}
-
-.night {
-  background-image: url("/earth-dark.jpg");
-  mix-blend-mode: screen;
-  opacity: var(--night);
-  transition: opacity 600ms var(--ease-out);
+  transition: background-position 120ms linear;
 }
 
 /* Makes the flat map read as a sphere: a lit limb and a darker edge. */
@@ -176,6 +159,9 @@
 .satelliteB {
   position: absolute;
   filter: drop-shadow(0 0 6px rgb(147 197 253 / 60%));
+  transition:
+    translate 120ms linear,
+    rotate 120ms linear;
 }
 
 .satelliteA {

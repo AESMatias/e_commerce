@@ -36,7 +36,7 @@ export function ServiceDetailsDialog({ service }: { service: Service }) {
         </Button>
       </DialogTrigger>
 
-      <DialogContent size="lg">
+      <DialogContent size="lg" className={styles.dialogContent}>
         <DialogHeader>
           <DialogTitle className={styles.title}>
             <span className={styles.titleIcon}>
@@ -68,11 +68,13 @@ export function ServiceDetailsDialog({ service }: { service: Service }) {
               <span className={styles.tierFacts}>
                 <span className={styles.tierFact}>
                   <span className={styles.tierFactLabel}>Deposit</span>
-                  {formatPrice(pkg.depositCents, pkg.currency)}
+                  <span className={styles.tierFactValue}>
+                    {formatPrice(pkg.depositCents, pkg.currency)}
+                  </span>
                 </span>
                 <span className={styles.tierFact}>
                   <span className={styles.tierFactLabel}>Timeline</span>
-                  {pkg.timeline}
+                  <span className={styles.tierFactValue}>{pkg.timeline}</span>
                 </span>
               </span>
             </RadioCard>

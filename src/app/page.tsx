@@ -48,6 +48,8 @@ export default async function HomePage() {
           <HeroTitle
             text="Software packages with a fixed scope and a clear price"
             accentFrom={7}
+            accentClassName={styles.goldAccent}
+            mobileBreakAfter={4}
             className={styles.heroTitle}
           />
           <p className={text.lead}>
