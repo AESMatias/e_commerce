@@ -48,11 +48,5 @@ export function CountUpPrice({ cents, currency }: { cents: number; currency: str
     };
   }, [cents, currency]);
 
-  return (
-    <span aria-label={final}>
-      <span ref={ref} aria-hidden="true">
-        {final}
-      </span>
-    </span>
-  );
+  return <span ref={ref}>{final}</span>;
 }
