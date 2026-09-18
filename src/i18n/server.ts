@@ -12,7 +12,7 @@ export async function getLocale(): Promise<Locale> {
   const acceptedLanguages = (await headers()).get("accept-language") ?? "";
   const browserLocale = acceptedLanguages
     .split(",")
-    .map((language) => language.trim().split(";", 1)[0].toLowerCase())
+    .map((language) => (language.trim().split(";", 1)[0] ?? "").toLowerCase())
     .find((language) => language === "es" || language.startsWith("es-"));
 
   return browserLocale ? "es" : defaultLocale;

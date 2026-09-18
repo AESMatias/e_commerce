@@ -57,6 +57,17 @@ export function SocialLinks({ handle, labels }: { handle: string; labels: Dictio
       <li>
         <a
           className={styles.link}
+          href={`https://x.com/${handle}`}
+          target="_blank"
+          rel="noreferrer noopener"
+          aria-label={`${handle} ${labels.x}`}
+        >
+          <Icon path={X_PATH} />
+        </a>
+      </li>
+      <li>
+        <a
+          className={styles.link}
           href="https://www.facebook.com/profile.php?id=61594707801072"
           target="_blank"
           rel="noreferrer noopener"
