@@ -95,6 +95,7 @@
     --bar-progress: 0;
     --header-height: 6.25rem;
     --header-height-scrolled: calc(var(--header-height) * 0.6);
+    --header-space: clamp(3.5rem, calc(var(--header-height) - 2.5rem), 3.75rem);
 
     /* Stacking */
     --z-header: 10;

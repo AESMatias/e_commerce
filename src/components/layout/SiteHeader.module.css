@@ -1,7 +1,6 @@
 .header {
   /* How far each property has travelled, driven by the scroll position. */
   --bar-p: var(--bar-progress, 0);
-  --logo-opacity: 1;
   --blue-deep: #06153a;
   --blue: #0f3bb5;
   --brand-mark: 2rem;
@@ -15,7 +14,9 @@
   position: sticky;
   top: 0;
   z-index: var(--z-header);
+  height: var(--header-space);
   overflow-anchor: none;
+  overflow: hidden;
 }
 
 @property --bar-p {
@@ -134,7 +135,7 @@
   align-items: center;
   gap: var(--space-6);
   height: calc(
-    var(--header-height) - (var(--header-height) - var(--header-height-scrolled)) * var(--bar-p)
+    var(--header-space) - (var(--header-space) - var(--header-height-scrolled)) * var(--bar-p)
   );
   transition: height 120ms linear;
 }
@@ -169,15 +170,19 @@
   left: calc((100% - var(--brand-mark)) * var(--bar-p));
   display: grid;
   place-items: center;
-  width: var(--brand-mark);
-  height: var(--brand-mark);
+  width: 1.875rem;
+  height: 1.875rem;
   translate: 0 -50%;
-  opacity: var(--logo-opacity);
+  rotate: calc(var(--bar-p) * 540deg);
+  scale: calc(0.5 + 0.5 * abs(2 * var(--bar-p) - 1));
   border-radius: var(--radius-sm);
   background-color: color-mix(in srgb, #fff calc(var(--bar-p) * 100%), var(--color-accent));
   color: color-mix(in srgb, var(--blue) calc(var(--bar-p) * 100%), var(--color-accent-contrast));
   font-family: var(--font-mono);
   font-size: var(--text-xs);
+  transition:
+    rotate 120ms linear,
+    scale 120ms linear;
 }
 
 .brandName {
@@ -217,7 +222,13 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  min-width: 0;
   margin-left: auto;
+}
+
+.themeToggle {
+  flex: 0 0 auto;
+  box-sizing: border-box;
 }
 
 /* The same separator as the one before the author credit. */
@@ -233,7 +244,19 @@
    the theme button pinned to the bar's own right edge. */
 @media (width < 80rem) {
   .inner {
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr auto auto 1fr;
+    justify-content: initial;
+  }
+
+  .brand {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  .byline {
+    grid-column: 3;
+    min-width: 0;
   }
 
   .actions {
@@ -250,20 +273,34 @@
    and the theme button follows it in the row, pushed to the right. */
 @media (width < 40rem) {
   .inner {
-    justify-content: flex-start;
-    gap: var(--space-3);
+    grid-template-columns: 1fr auto auto 1fr;
+    gap: var(--space-2);
+  }
+
+  .brand {
+    font-size: var(--text-base);
+  }
+
+  .logoMark {
+    width: 1.625rem;
+    height: 1.625rem;
   }
 
   .actions {
-    position: static;
-    margin-left: auto;
-    translate: none;
+    position: absolute;
+    top: 50%;
+    right: calc(var(--container-gutter) + 5% * var(--bar-p));
+    margin-left: 0;
+    translate: 0 -50%;
   }
 
   /* A slightly smaller theme button, to match the slimmer bar. */
   .actions .themeToggle {
-    width: 2rem;
-    height: 2rem;
+    flex-basis: 2.15rem;
+    width: 2.15rem;
+    min-width: 2.15rem;
+    height: 2.15rem;
+    min-height: 2.15rem;
   }
 
   .actions .themeToggle svg {
@@ -278,9 +315,37 @@
   }
 }
 
+@media (width < 30rem) {
+  .brand {
+    font-size: var(--text-sm);
+  }
+
+  .brandName {
+    max-width: 10.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 @media (width >= 80rem) {
+  .inner {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto 1fr;
+    justify-content: initial;
+  }
+
+  .brand {
+    grid-column: 2;
+  }
+
+  .byline {
+    grid-column: 3;
+  }
+
   .nav {
     display: flex;
+    grid-column: 4;
+    margin-left: 0;
   }
 
   .divider {
@@ -288,7 +353,9 @@
   }
 
   .actions {
-    margin-left: var(--space-2);
+    grid-column: 5;
+    justify-self: end;
+    margin-left: 0;
   }
 }
 

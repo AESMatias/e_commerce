@@ -13,7 +13,6 @@ const TRAVEL_SCREENS = 0.32;
 const TRAVEL_MIN = 160;
 const TRAVEL_MAX = 320;
 const SCROLL_STEP_PX = 8;
-const LOGO_OPACITY_STEPS = 10;
 
 /**
  * Publishes how far the page has scrolled as --bar-progress (0 to 1) on
@@ -25,7 +24,6 @@ export function ScrollState() {
     const root = document.documentElement;
     let frame = 0;
     let lastStep = -1;
-    let lastOpacityStep = -1;
     let travel = 1;
 
     const calculateTravel = () => {
@@ -50,13 +48,6 @@ export function ScrollState() {
         root.style.setProperty("--bar-progress", progress.toFixed(4));
       }
 
-      const opacityProgress = Math.abs(2 * progress - 1);
-      const opacityStep = Math.round(opacityProgress * LOGO_OPACITY_STEPS);
-      if (opacityStep !== lastOpacityStep) {
-        lastOpacityStep = opacityStep;
-        const logoOpacity = opacityStep / LOGO_OPACITY_STEPS;
-        root.style.setProperty("--logo-opacity", logoOpacity.toFixed(1));
-      }
     };
 
     const onScroll = () => {
@@ -69,7 +60,6 @@ export function ScrollState() {
     const onResize = () => {
       calculateTravel();
       lastStep = -1;
-      lastOpacityStep = -1;
       onScroll();
     };
     window.addEventListener("resize", onResize, { passive: true });
@@ -79,7 +69,6 @@ export function ScrollState() {
       window.removeEventListener("resize", onResize);
       if (frame !== 0) window.cancelAnimationFrame(frame);
       root.style.removeProperty("--bar-progress");
-      root.style.removeProperty("--logo-opacity");
     };
   }, []);
 
