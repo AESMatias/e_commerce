@@ -1,3 +1,6 @@
+import { interpolate, intlLocale, type Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/dictionaries";
+import { getDictionary } from "@/i18n/server";
 import type { AdvisorUsage, LimitUsage } from "@/lib/rate-limit";
 import styles from "./AdvisorUsagePanel.module.css";
 
@@ -15,9 +18,18 @@ function formatCountdown(from: Date, to: Date): string {
   return minutes === 0 ? `${hours} h` : `${hours} h ${minutes} min`;
 }
 
-function UsageMeter({ label, usage, timezone, now }: { label: string; usage: LimitUsage; timezone: string; now: Date }) {
+type UsageMeterProps = {
+  label: string;
+  usage: LimitUsage;
+  timezone: string;
+  now: Date;
+  locale: Locale;
+  t: Dictionary["admin"];
+};
+
+function UsageMeter({ label, usage, timezone, now, locale, t }: UsageMeterProps) {
   const exhausted = usage.used >= usage.limit;
-  const resetTime = usage.resetsAt.toLocaleTimeString("en-US", {
+  const resetTime = usage.resetsAt.toLocaleTimeString(intlLocale(locale), {
     timeZone: timezone,
     hour: "2-digit",
     minute: "2-digit",
@@ -39,33 +51,38 @@ function UsageMeter({ label, usage, timezone, now }: { label: string; usage: Lim
         />
       </dd>
       <dd className={styles.meta}>
-        {exhausted ? "Limit reached · " : ""}
-        Resets in {formatCountdown(now, usage.resetsAt)} ({resetTime})
+        {exhausted ? t.limitReached : ""}
+        {interpolate(t.resetsIn, { countdown: formatCountdown(now, usage.resetsAt), time: resetTime })}
       </dd>
     </div>
   );
 }
 
-export function AdvisorUsagePanel({ usage, timezone, now }: AdvisorUsagePanelProps) {
+export async function AdvisorUsagePanel({ usage, timezone, now }: AdvisorUsagePanelProps) {
+  const { locale, t: dictionary } = await getDictionary();
+  const t = dictionary.admin;
+
   return (
     <section className={styles.panel} aria-labelledby="advisor-usage-title">
       <h2 id="advisor-usage-title" className={styles.title}>
-        AI advisor limits
+        {t.usageTitle}
       </h2>
       <dl className={styles.grid}>
-        <UsageMeter label="Today (all visitors)" usage={usage.daily} timezone={timezone} now={now} />
+        <UsageMeter label={t.usageToday} usage={usage.daily} timezone={timezone} now={now} locale={locale} t={t} />
         <UsageMeter
-          label={`Last ${usage.window.windowMinutes} min (all visitors)`}
+          label={interpolate(t.usageWindow, { minutes: usage.window.windowMinutes })}
           usage={usage.window}
           timezone={timezone}
           now={now}
+          locale={locale}
+          t={t}
         />
         <div className={styles.card}>
-          <dt className={styles.label}>Per visitor</dt>
+          <dt className={styles.label}>{t.usagePerVisitor}</dt>
           <dd className={styles.value}>
             {usage.perIp.limit} <span className={styles.limit}>/ {usage.perIp.windowMinutes} min</span>
           </dd>
-          <dd className={styles.meta}>Counted per server instance, so usage is not shown here.</dd>
+          <dd className={styles.meta}>{t.usagePerVisitorNote}</dd>
         </div>
       </dl>
     </section>

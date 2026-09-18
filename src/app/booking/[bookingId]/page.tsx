@@ -4,6 +4,9 @@ import type { Metadata } from "next";
 import { PaymentStatusRefresher } from "@/components/booking/PaymentStatusRefresher";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
+import { packageTranslation, serviceTranslation } from "@/i18n/catalog";
+import { interpolate } from "@/i18n/config";
+import { getDictionary } from "@/i18n/server";
 import { verifyAndConfirmBooking } from "@/lib/booking/confirm";
 import { formatPrice, formatSlotRange, formatSlotTime } from "@/lib/format";
 import { getBusinessTimezone } from "@/lib/scheduling";
@@ -12,10 +15,10 @@ import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Your booking",
-  robots: { index: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getDictionary();
+  return { title: t.booking.metaTitle, robots: { index: false } };
+}
 
 function isHoldExpired(status: string, expiresAt: string): boolean {
   return status === "expired" || Date.parse(expiresAt) <= Date.now();
@@ -29,6 +32,7 @@ type BookingPageProps = {
 export default async function BookingPage({ params, searchParams }: BookingPageProps) {
   const { bookingId } = await params;
   const { paid } = await searchParams;
+  const { locale, t } = await getDictionary();
   const supabase = createAdminClient();
 
   // Stripe sends the visitor back here right after paying, usually before its
@@ -47,7 +51,7 @@ export default async function BookingPage({ params, searchParams }: BookingPageP
 
   const [{ data: customer }, { data: servicePackage }, { data: payment }] = await Promise.all([
     supabase.from("customers").select("email").eq("id", booking.customer_id).maybeSingle(),
-    supabase.from("service_packages").select("name, service_id").eq("id", booking.package_id).maybeSingle(),
+    supabase.from("service_packages").select("slug, name, service_id").eq("id", booking.package_id).maybeSingle(),
     supabase
       .from("payments")
       .select("status, stripe_checkout_url")
@@ -58,8 +62,13 @@ export default async function BookingPage({ params, searchParams }: BookingPageP
   ]);
 
   const { data: service } = servicePackage
-    ? await supabase.from("services").select("name").eq("id", servicePackage.service_id).maybeSingle()
+    ? await supabase.from("services").select("slug, name").eq("id", servicePackage.service_id).maybeSingle()
     : { data: null };
+
+  const serviceName = service ? (serviceTranslation(service.slug, locale)?.name ?? service.name) : "";
+  const packageName = servicePackage
+    ? (packageTranslation(servicePackage.slug, locale)?.name ?? servicePackage.name)
+    : "";
 
   const timezone = await getBusinessTimezone();
   const isScheduled = Boolean(booking.starts_at && booking.ends_at);
@@ -69,27 +78,29 @@ export default async function BookingPage({ params, searchParams }: BookingPageP
   // booking may still look pending for a second or two.
   const isAwaitingWebhook = !isConfirmed && !isReleased && paid === "1";
 
+  const copy = t.booking;
+
   const heading = isConfirmed
     ? isScheduled
-      ? "Your kickoff call is booked"
-      : "Your package is booked"
+      ? copy.headingConfirmedScheduled
+      : copy.headingConfirmedUnscheduled
     : isReleased
       ? isScheduled
-        ? "This time is no longer held"
-        : "This booking was released"
+        ? copy.headingReleasedScheduled
+        : copy.headingReleasedUnscheduled
       : isAwaitingWebhook
-        ? "Confirming your payment…"
+        ? copy.headingAwaiting
         : isScheduled
-          ? "Your time is held"
-          : "Your booking is held";
+          ? copy.headingHeldScheduled
+          : copy.headingHeldUnscheduled;
 
   const eyebrow = isConfirmed
-    ? "Confirmed"
+    ? copy.eyebrowConfirmed
     : isReleased
-      ? "Hold expired"
+      ? copy.eyebrowReleased
       : isAwaitingWebhook
-        ? "Almost done"
-        : "Awaiting payment";
+        ? copy.eyebrowAwaiting
+        : copy.eyebrowPending;
 
   return (
     <Container className={styles.page}>
@@ -99,25 +110,25 @@ export default async function BookingPage({ params, searchParams }: BookingPageP
 
         <dl className={styles.facts}>
           <div className={styles.fact}>
-            <dt className={styles.label}>Kickoff call</dt>
+            <dt className={styles.label}>{copy.kickoffCall}</dt>
             <dd className={styles.value}>
               {isScheduled
-                ? formatSlotRange(booking.starts_at ?? "", booking.ends_at ?? "", timezone)
-                : "To be arranged"}
+                ? formatSlotRange(booking.starts_at ?? "", booking.ends_at ?? "", timezone, locale)
+                : copy.toBeArranged}
             </dd>
           </div>
           <div className={styles.fact}>
-            <dt className={styles.label}>Package</dt>
+            <dt className={styles.label}>{copy.package}</dt>
             <dd className={styles.value}>
-              {service?.name} {servicePackage?.name}
+              {serviceName} {packageName}
             </dd>
           </div>
           <div className={styles.fact}>
-            <dt className={styles.label}>{isConfirmed ? "Deposit paid" : "Deposit due"}</dt>
-            <dd className={styles.value}>{formatPrice(booking.deposit_cents, booking.currency)}</dd>
+            <dt className={styles.label}>{isConfirmed ? copy.depositPaid : copy.depositDue}</dt>
+            <dd className={styles.value}>{formatPrice(booking.deposit_cents, booking.currency, locale)}</dd>
           </div>
           <div className={styles.fact}>
-            <dt className={styles.label}>Booked by</dt>
+            <dt className={styles.label}>{copy.bookedBy}</dt>
             <dd className={styles.value}>{customer?.email}</dd>
           </div>
         </dl>
@@ -125,37 +136,27 @@ export default async function BookingPage({ params, searchParams }: BookingPageP
         {isConfirmed && (
           <>
             <p className={styles.note}>
-              {isScheduled
-                ? "The time above is now reserved for you — nobody else can take it. This was a Stripe test payment, so nothing was charged."
-                : "Your package is booked without a time. Contact us whenever you are ready and we will agree on one. This was a Stripe test payment, so nothing was charged."}
+              {isScheduled ? copy.confirmedScheduledNote : copy.confirmedUnscheduledNote}
             </p>
-            <p className={styles.note}>
-              Keep this page: it is the record of your booking. No confirmation email is sent.
-            </p>
+            <p className={styles.note}>{copy.keepPage}</p>
             <Button asChild className={styles.homeButton}>
-              <Link href="/">Back to home</Link>
+              <Link href="/">{copy.backHome}</Link>
             </Button>
           </>
         )}
 
         {isReleased && (
           <>
-            <p className={styles.note}>
-              The deposit was not paid in time, so this booking was released and the time is
-              available to others again. You can start over whenever you are ready.
-            </p>
+            <p className={styles.note}>{copy.releasedNote}</p>
             <Button asChild>
-              <Link href="/#services">Choose another time</Link>
+              <Link href="/#services">{copy.chooseAnother}</Link>
             </Button>
           </>
         )}
 
         {isAwaitingWebhook && (
           <>
-            <p className={styles.note}>
-              Stripe has your payment and we are confirming the booking. This page updates on its
-              own in a few seconds and tells you whether the time was secured.
-            </p>
+            <p className={styles.note}>{copy.awaitingNote}</p>
             <PaymentStatusRefresher />
           </>
         )}
@@ -163,17 +164,17 @@ export default async function BookingPage({ params, searchParams }: BookingPageP
         {!isConfirmed && !isReleased && !isAwaitingWebhook && (
           <>
             <p className={styles.note}>
-              {isScheduled ? "This time is held" : "This booking is held"} until{" "}
-              {formatSlotTime(booking.expires_at, timezone)}. Pay the deposit before then to
-              confirm it.
+              {interpolate(isScheduled ? copy.heldScheduledUntil : copy.heldUnscheduledUntil, {
+                time: formatSlotTime(booking.expires_at, timezone, locale),
+              })}
             </p>
             {payment?.stripe_checkout_url ? (
               <Button asChild>
-                <a href={payment.stripe_checkout_url}>Pay deposit</a>
+                <a href={payment.stripe_checkout_url}>{copy.payDeposit}</a>
               </Button>
             ) : (
               <Button asChild>
-                <Link href="/#services">Start again</Link>
+                <Link href="/#services">{copy.startAgain}</Link>
               </Button>
             )}
           </>

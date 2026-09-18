@@ -3,6 +3,9 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { interpolate } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/dictionaries";
+import { getDictionary } from "@/i18n/server";
 import { getPackageBySlug } from "@/lib/catalog";
 import { createDepositCheckout } from "@/lib/stripe/checkout";
 import { isStripeConfigured } from "@/lib/stripe/client";
@@ -19,21 +22,26 @@ export type BookingFormState = {
 // Same shape the database enforces on customers.email.
 const EMAIL_PATTERN = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
-const bookingSchema = z
-  .object({
-    packageSlug: z.string().min(1),
-    mode: z.enum(["scheduled", "unscheduled"]),
-    startsAt: z.string(),
-    fullName: z.string().min(2, "Enter your name.").max(120, "That name is too long."),
-    email: z.string().regex(EMAIL_PATTERN, "Enter a valid email address.").max(160),
-    company: z.string().max(120, "That company name is too long."),
-    projectNotes: z.string().max(2000, "Please keep the notes under 2000 characters."),
-  })
-  // A scheduled booking needs a valid time; an unscheduled one must not have one.
-  .refine((value) => value.mode === "unscheduled" || !Number.isNaN(Date.parse(value.startsAt)), {
-    path: ["startsAt"],
-    message: "Pick a time for your call.",
-  });
+/** Built per request so the validation messages match the visitor's language. */
+function bookingSchema(errors: Dictionary["bookingErrors"]) {
+  return (
+    z
+      .object({
+        packageSlug: z.string().min(1),
+        mode: z.enum(["scheduled", "unscheduled"]),
+        startsAt: z.string(),
+        fullName: z.string().min(2, errors.nameRequired).max(120, errors.nameTooLong),
+        email: z.string().regex(EMAIL_PATTERN, errors.emailInvalid).max(160),
+        company: z.string().max(120, errors.companyTooLong),
+        projectNotes: z.string().max(2000, errors.notesTooLong),
+      })
+      // A scheduled booking needs a valid time; an unscheduled one must not have one.
+      .refine((value) => value.mode === "unscheduled" || !Number.isNaN(Date.parse(value.startsAt)), {
+        path: ["startsAt"],
+        message: errors.pickTime,
+      })
+  );
+}
 
 const FIELD_NAMES: FieldName[] = ["fullName", "email", "company", "projectNotes", "startsAt"];
 
@@ -55,7 +63,10 @@ export async function createBookingAction(
   _previousState: BookingFormState,
   formData: FormData,
 ): Promise<BookingFormState> {
-  const parsed = bookingSchema.safeParse({
+  const { locale, t } = await getDictionary();
+  const errors = t.bookingErrors;
+
+  const parsed = bookingSchema(errors).safeParse({
     packageSlug: readTrimmed(formData, "packageSlug"),
     mode: readTrimmed(formData, "mode") || "scheduled",
     startsAt: readTrimmed(formData, "startsAt"),
@@ -79,12 +90,12 @@ export async function createBookingAction(
   const input = parsed.data;
 
   if (!isStripeConfigured()) {
-    return { status: "error", message: "Payments are not available right now. Please try again later." };
+    return { status: "error", message: errors.paymentsUnavailable };
   }
 
-  const found = await getPackageBySlug(input.packageSlug);
+  const found = await getPackageBySlug(input.packageSlug, locale);
   if (!found) {
-    return { status: "error", message: "This package is no longer available." };
+    return { status: "error", message: errors.packageUnavailable };
   }
 
   const supabase = createAdminClient();
@@ -103,29 +114,31 @@ export async function createBookingAction(
 
   if (error) {
     if (error.code === "DS409") {
-      return { status: "error", message: "That time was just taken. Please choose another one." };
+      return { status: "error", message: errors.timeTaken };
     }
     if (error.code === "DS404") {
-      return { status: "error", message: "This package is no longer available." };
+      return { status: "error", message: errors.packageUnavailable };
     }
-    return { status: "error", message: "We could not reserve your call. Please try again." };
+    return { status: "error", message: errors.reserveFailed };
   }
 
   // 2. Create the Stripe Checkout session for the deposit.
+  const packageName = `${found.service.name} ${found.servicePackage.name}`;
   let checkoutUrl: string;
   try {
     checkoutUrl = await createDepositCheckout({
       booking,
       customerEmail: input.email,
-      productName: `${found.service.name} ${found.servicePackage.name} — kickoff deposit`,
-      productDescription: `Deposit to confirm your kickoff call. Credited toward the ${found.service.name} ${found.servicePackage.name} package.`,
+      productName: interpolate(t.checkout.productName, { name: packageName }),
+      productDescription: interpolate(t.checkout.productDescription, { name: packageName }),
+      locale,
       origin: await requestOrigin(),
     });
   } catch (checkoutError) {
     console.error("Failed to start checkout", checkoutError);
     // Release the slot straight away instead of waiting for the hold to lapse.
     await supabase.from("bookings").update({ status: "cancelled" }).eq("id", booking.id);
-    return { status: "error", message: "We could not start the payment. Please try again." };
+    return { status: "error", message: errors.checkoutFailed };
   }
 
   // 3. Hand the visitor over to Stripe's hosted checkout page.

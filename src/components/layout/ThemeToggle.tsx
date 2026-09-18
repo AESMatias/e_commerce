@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/i18n/I18nProvider";
 import styles from "./ThemeToggle.module.css";
 
 // Renamed when light became the default, so choices saved under the old
@@ -20,6 +21,8 @@ try {
 `;
 
 export function ThemeToggle({ className }: { className?: string }) {
+  const { t } = useI18n();
+
   function toggleTheme() {
     const root = document.documentElement;
     const next = root.dataset.theme === "dark" ? "light" : "dark";
@@ -37,8 +40,8 @@ export function ThemeToggle({ className }: { className?: string }) {
       type="button"
       className={[styles.toggle, className].filter(Boolean).join(" ")}
       onClick={toggleTheme}
-      aria-label="Switch between light and dark theme"
-      title="Switch theme"
+      aria-label={t.header.themeToggle}
+      title={t.header.themeToggleTitle}
     >
       {/* Both icons are rendered; CSS shows the one matching the active theme,
           which keeps the button identical on the server and after hydration. */}

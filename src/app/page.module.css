@@ -90,10 +90,12 @@
     0 8px 26px -6px rgb(47 107 255 / 70%);
   transition:
     filter var(--duration-fast) var(--ease-out),
-    box-shadow var(--duration-fast) var(--ease-out);
+    box-shadow var(--duration-fast) var(--ease-out),
+    border-radius var(--duration-shape) var(--ease-out);
 }
 
 .glowButton:is(a, button):hover {
+  border-radius: var(--radius-leaf);
   filter: brightness(1.08);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 40%),
@@ -113,10 +115,12 @@
     0 8px 24px -8px rgb(251 191 36 / 55%);
   transition:
     filter var(--duration-fast) var(--ease-out),
-    box-shadow var(--duration-fast) var(--ease-out);
+    box-shadow var(--duration-fast) var(--ease-out),
+    border-radius var(--duration-shape) var(--ease-out);
 }
 
 .goldButton:is(a, button):hover {
+  border-radius: var(--radius-leaf);
   filter: brightness(1.06);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 60%),

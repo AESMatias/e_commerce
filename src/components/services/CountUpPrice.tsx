@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useI18n } from "@/i18n/I18nProvider";
 import { formatPrice } from "@/lib/format";
 
 const DURATION_MS = 1100;
@@ -13,7 +14,8 @@ const DURATION_MS = 1100;
  */
 export function CountUpPrice({ cents, currency }: { cents: number; currency: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const final = formatPrice(cents, currency);
+  const { locale } = useI18n();
+  const final = formatPrice(cents, currency, locale);
 
   useEffect(() => {
     const element = ref.current;
@@ -21,7 +23,7 @@ export function CountUpPrice({ cents, currency }: { cents: number; currency: str
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let frame = 0;
-    element.textContent = formatPrice(0, currency);
+    element.textContent = formatPrice(0, currency, locale);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -32,7 +34,7 @@ export function CountUpPrice({ cents, currency }: { cents: number; currency: str
         const tick = (now: number) => {
           const t = Math.min((now - start) / DURATION_MS, 1);
           const eased = 1 - (1 - t) ** 3;
-          element.textContent = formatPrice(Math.round((cents * eased) / 100) * 100, currency);
+          element.textContent = formatPrice(Math.round((cents * eased) / 100) * 100, currency, locale);
           if (t < 1) frame = window.requestAnimationFrame(tick);
         };
         frame = window.requestAnimationFrame(tick);
@@ -44,9 +46,9 @@ export function CountUpPrice({ cents, currency }: { cents: number; currency: str
     return () => {
       observer.disconnect();
       window.cancelAnimationFrame(frame);
-      element.textContent = formatPrice(cents, currency);
+      element.textContent = formatPrice(cents, currency, locale);
     };
-  }, [cents, currency]);
+  }, [cents, currency, locale]);
 
   return <span ref={ref}>{final}</span>;
 }

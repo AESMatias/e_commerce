@@ -294,6 +294,17 @@
   gap: var(--space-4);
 }
 
+/* The element selector outranks Button's own rules whatever the stylesheet order. */
+.pay:is(button) {
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-radius var(--duration-shape) var(--ease-out);
+}
+
+.pay:is(button):hover {
+  border-radius: var(--radius-leaf);
+}
+
 .hint {
   color: var(--color-text-subtle);
   font-size: var(--text-sm);

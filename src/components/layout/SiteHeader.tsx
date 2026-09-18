@@ -4,9 +4,12 @@ import { GitHubLink } from "@/components/layout/GitHubLink";
 import { HashLink } from "@/components/layout/HashLink";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { siteConfig } from "@/config/site";
+import { getDictionary } from "@/i18n/server";
 import styles from "./SiteHeader.module.css";
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const { t } = await getDictionary();
+
   return (
     <header className={styles.header}>
       {/* Two beams of light that leave the middle of the bar as the page
@@ -23,18 +26,18 @@ export function SiteHeader() {
         </Link>
 
         <span className={styles.byline}>
-          <GitHubLink username={siteConfig.author} />
+          <GitHubLink username={siteConfig.author} byLabel={t.header.by} />
         </span>
 
-        <nav aria-label="Main" className={styles.nav}>
+        <nav aria-label={t.header.mainNav} className={styles.nav}>
           <HashLink href="/#advisor" className={styles.navLink}>
-            AI advisor
+            {t.header.advisor}
           </HashLink>
           <HashLink href="/#services" className={styles.navLink}>
-            Packages
+            {t.header.packages}
           </HashLink>
           <HashLink href="/#how-it-works" className={styles.navLink}>
-            How it works
+            {t.header.howItWorks}
           </HashLink>
         </nav>
 

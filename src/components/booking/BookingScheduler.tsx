@@ -2,9 +2,12 @@
 
 import { useActionState, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import { DayPicker } from "react-day-picker";
+import { es as dayPickerEs } from "react-day-picker/locale";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { RadioCard, RadioCardGroup } from "@/components/ui/RadioCardGroup";
+import { interpolate } from "@/i18n/config";
+import { useI18n } from "@/i18n/I18nProvider";
 import { createBookingAction, type BookingFormState } from "@/lib/booking/actions";
 import { formatDurationMinutes, formatSlotDate, formatSlotTime } from "@/lib/format";
 import type { AvailableSlot } from "@/lib/scheduling";
@@ -49,6 +52,7 @@ export function BookingScheduler({
   /** Shown above the submit button on screens without the side column. */
   notice?: ReactNode;
 }) {
+  const { locale, t } = useI18n();
   const [state, formAction, isPending] = useActionState(createBookingAction, INITIAL_STATE);
   const [mode, setMode] = useState<BookingMode>("unscheduled");
   const [selectedDayKey, setSelectedDayKey] = useState<string | undefined>(undefined);
@@ -88,11 +92,11 @@ export function BookingScheduler({
 
       <section className={styles.step}>
         <h2 className={styles.stepTitle}>
-          <span className={styles.stepNumber}>1</span> How do you want to start?
+          <span className={styles.stepNumber}>1</span> {t.scheduler.howToStart}
         </h2>
 
         <RadioCardGroup
-          aria-label="How to arrange the kickoff call"
+          aria-label={t.scheduler.howToStartLabel}
           value={mode}
           onValueChange={(value) => {
             setMode(value as BookingMode);
@@ -106,20 +110,15 @@ export function BookingScheduler({
             className={styles.mode}
             indicatorClassName={styles.modeIndicator}
           >
-            <span className={styles.modeTitle}>Pick a time now</span>
+            <span className={styles.modeTitle}>{t.scheduler.pickTimeNow}</span>
             <span className={styles.modeText}>
-              {hasSlots
-                ? "Choose a free slot in the calendar and it is yours once the deposit is paid."
-                : "No times are available right now."}
+              {hasSlots ? t.scheduler.pickTimeNowText : t.scheduler.noTimes}
             </span>
           </RadioCard>
 
           <RadioCard value="unscheduled" className={styles.mode} indicatorClassName={styles.modeIndicator}>
-            <span className={styles.modeTitle}>I will get in touch</span>
-            <span className={styles.modeText}>
-              Skip the calendar. Book the package now and we agree on a time afterwards, by email
-              or WhatsApp.
-            </span>
+            <span className={styles.modeTitle}>{t.scheduler.getInTouch}</span>
+            <span className={styles.modeText}>{t.scheduler.getInTouchText}</span>
           </RadioCard>
         </RadioCardGroup>
       </section>
@@ -128,13 +127,14 @@ export function BookingScheduler({
         <>
           <section className={styles.step}>
             <h2 className={styles.stepTitle}>
-              <span className={styles.stepNumber}>2</span> Pick a date
+              <span className={styles.stepNumber}>2</span> {t.scheduler.pickDate}
             </h2>
 
             {isMounted ? (
               <DayPicker
                 mode="single"
                 required
+                locale={locale === "es" ? dayPickerEs : undefined}
                 selected={activeDayKey ? parseDayKey(activeDayKey) : undefined}
                 onSelect={(day) => {
                   if (!day) return;
@@ -175,17 +175,19 @@ export function BookingScheduler({
 
           <section className={styles.step}>
             <h2 className={styles.stepTitle}>
-              <span className={styles.stepNumber}>3</span> Pick a time
+              <span className={styles.stepNumber}>3</span> {t.scheduler.pickTime}
             </h2>
 
             {isMounted && activeDayKey ? (
               <>
                 <p className={styles.dayLabel}>
-                  {formatSlotDate(daySlots[0]?.startsAt ?? new Date().toISOString(), timezone)}
-                  <span className={styles.timezone}>Times shown in {timezone}</span>
+                  {formatSlotDate(daySlots[0]?.startsAt ?? new Date().toISOString(), timezone, locale)}
+                  <span className={styles.timezone}>
+                    {interpolate(t.scheduler.timesShownIn, { timezone: timezone ?? "" })}
+                  </span>
                 </p>
                 <RadioCardGroup
-                  aria-label="Available times"
+                  aria-label={t.scheduler.availableTimes}
                   value={selectedSlot}
                   onValueChange={setSelectedSlot}
                   className={styles.times}
@@ -197,7 +199,7 @@ export function BookingScheduler({
                       className={styles.time}
                       indicatorClassName={styles.timeIndicator}
                     >
-                      <span className={styles.timeValue}>{formatSlotTime(slot.startsAt, timezone)}</span>
+                      <span className={styles.timeValue}>{formatSlotTime(slot.startsAt, timezone, locale)}</span>
                       <span className={styles.timeMeta}>
                         {formatDurationMinutes(slot.startsAt, slot.endsAt)}
                       </span>
@@ -206,7 +208,7 @@ export function BookingScheduler({
                 </RadioCardGroup>
               </>
             ) : (
-              <p className={styles.hint}>Loading available times…</p>
+              <p className={styles.hint}>{t.scheduler.loadingTimes}</p>
             )}
           </section>
         </>
@@ -216,13 +218,13 @@ export function BookingScheduler({
 
       <section className={styles.step}>
         <h2 className={styles.stepTitle}>
-          <span className={styles.stepNumber}>{isScheduling ? "4" : "2"}</span> Your details
+          <span className={styles.stepNumber}>{isScheduling ? "4" : "2"}</span> {t.scheduler.yourDetails}
         </h2>
 
         <div className={styles.fields}>
           <div className={styles.field}>
             <label className={styles.label} htmlFor="fullName">
-              Full name
+              {t.scheduler.fullName}
             </label>
             <input className={styles.input} id="fullName" name="fullName" required maxLength={120} />
             {state.fieldErrors?.fullName && (
@@ -232,7 +234,7 @@ export function BookingScheduler({
 
           <div className={styles.field}>
             <label className={styles.label} htmlFor="email">
-              Email
+              {t.scheduler.email}
             </label>
             <input
               className={styles.input}
@@ -247,7 +249,7 @@ export function BookingScheduler({
 
           <div className={styles.field}>
             <label className={styles.label} htmlFor="company">
-              Company <span className={styles.optional}>(optional)</span>
+              {t.scheduler.company} <span className={styles.optional}>{t.common.optional}</span>
             </label>
             <input className={styles.input} id="company" name="company" maxLength={120} />
             {state.fieldErrors?.company && (
@@ -257,7 +259,7 @@ export function BookingScheduler({
 
           <div className={styles.fieldWide}>
             <label className={styles.label} htmlFor="projectNotes">
-              What do you want to build? <span className={styles.optional}>(optional)</span>
+              {t.scheduler.projectNotes} <span className={styles.optional}>{t.common.optional}</span>
             </label>
             <textarea
               className={styles.textarea}
@@ -279,18 +281,20 @@ export function BookingScheduler({
       {state.message && <p className={styles.formError}>{state.message}</p>}
 
       <div className={styles.submit}>
-        <Button type="submit" size="lg" disabled={isPending || !canSubmit}>
-          {isPending ? "Reserving…" : isScheduling ? "Reserve this time" : "Continue to payment"}
+        <Button type="submit" size="lg" className={styles.pay} disabled={isPending || !canSubmit}>
+          {isPending ? t.scheduler.reserving : isScheduling ? t.scheduler.reserveTime : t.scheduler.continueToPayment}
         </Button>
         <p className={styles.hint}>
-          {isScheduling
-            ? "Your slot is held for 35 minutes while you pay the deposit."
-            : "No time is booked yet: we arrange it together after checkout."}
+          {isScheduling ? t.scheduler.holdHint : t.scheduler.noHoldHint}
         </p>
         <p className={styles.consent}>
-          By continuing you accept the <Link href="/terms">Terms of Service</Link>, including the{" "}
-          <Link href="/terms#refunds">deposit and refund policy</Link>, and the{" "}
-          <Link href="/privacy">Privacy Policy</Link>.
+          {t.scheduler.consentBefore}
+          <Link href="/terms">{t.scheduler.consentTerms}</Link>
+          {t.scheduler.consentMiddle}
+          <Link href="/terms#refunds">{t.scheduler.consentRefunds}</Link>
+          {t.scheduler.consentAnd}
+          <Link href="/privacy">{t.scheduler.consentPrivacy}</Link>
+          {t.scheduler.consentAfter}
         </p>
       </div>
     </form>

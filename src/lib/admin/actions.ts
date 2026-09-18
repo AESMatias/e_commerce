@@ -11,25 +11,29 @@ import {
   isValidPassword,
   sessionCookieOptions,
 } from "@/lib/admin/session";
+import { interpolate } from "@/i18n/config";
+import { getDictionary } from "@/i18n/server";
 import { checkLoginRateLimit, getClientIp } from "@/lib/rate-limit";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export type LoginState = { error?: string };
 
 export async function loginAction(_previous: LoginState, formData: FormData): Promise<LoginState> {
+  const { t } = await getDictionary();
+
   if (!isAdminConfigured()) {
-    return { error: "Admin access is not configured on this deployment." };
+    return { error: t.admin.notConfigured };
   }
 
   const headerList = await headers();
   const rateLimit = checkLoginRateLimit(getClientIp(new Request("http://local", { headers: headerList })));
   if (!rateLimit.ok) {
-    return { error: `Too many attempts. Try again in ${rateLimit.retryAfterSeconds} seconds.` };
+    return { error: interpolate(t.admin.tooManyAttempts, { seconds: rateLimit.retryAfterSeconds }) };
   }
 
   const password = formData.get("password");
   if (typeof password !== "string" || !isValidPassword(password)) {
-    return { error: "Wrong password." };
+    return { error: t.admin.wrongPassword };
   }
 
   const store = await cookies();

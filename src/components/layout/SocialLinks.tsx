@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { Dictionary } from "@/i18n/dictionaries";
 import styles from "./SocialLinks.module.css";
 
 const GITHUB_PATH =
@@ -24,7 +25,7 @@ function Icon({ path }: { path: string }) {
  * The three accounts, all under the same handle. Discord has no public profile
  * URL for a username, so that one copies the handle instead of linking out.
  */
-export function SocialLinks({ handle }: { handle: string }) {
+export function SocialLinks({ handle, labels }: { handle: string; labels: Dictionary["social"] }) {
   const [copied, setCopied] = useState(false);
 
   async function copyDiscord() {
@@ -45,7 +46,7 @@ export function SocialLinks({ handle }: { handle: string }) {
           href={`https://github.com/${handle}`}
           target="_blank"
           rel="noreferrer noopener"
-          aria-label={`${handle} on GitHub`}
+          aria-label={`${handle} ${labels.github}`}
         >
           <Icon path={GITHUB_PATH} />
         </a>
@@ -56,7 +57,7 @@ export function SocialLinks({ handle }: { handle: string }) {
           href={`https://x.com/${handle}`}
           target="_blank"
           rel="noreferrer noopener"
-          aria-label={`${handle} on X`}
+          aria-label={`${handle} ${labels.x}`}
         >
           <Icon path={X_PATH} />
         </a>
@@ -66,10 +67,10 @@ export function SocialLinks({ handle }: { handle: string }) {
           type="button"
           className={styles.link}
           onClick={copyDiscord}
-          aria-label={`Copy Discord username ${handle}`}
+          aria-label={`${labels.copyDiscord} ${handle}`}
         >
           <Icon path={DISCORD_PATH} />
-          <span className={styles.tooltip}>{copied ? "Copied" : handle}</span>
+          <span className={styles.tooltip}>{copied ? labels.copied : handle}</span>
         </button>
       </li>
     </ul>

@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useI18n } from "@/i18n/I18nProvider";
 import { cx } from "@/lib/cx";
 import styles from "./DemoNotice.module.css";
 
 const TEST_CARD = "4242 4242 4242 4242";
 
 export function DemoNotice({ className }: { className?: string }) {
+  const { t } = useI18n();
   const [copied, setCopied] = useState(false);
 
   async function copyCard() {
@@ -21,22 +23,22 @@ export function DemoNotice({ className }: { className?: string }) {
 
   return (
     <aside className={cx(styles.notice, className)}>
-      <p className={styles.badge}>Demo environment</p>
+      <p className={styles.badge}>{t.demo.badge}</p>
 
       <p className={styles.text}>
-        Checkout runs in Stripe test mode, so <strong className={styles.strong}>no money is
-        charged</strong>. Pay with the test card below to see the full flow — your kickoff call is
-        then booked for real.
+        {t.demo.textBefore}
+        <strong className={styles.strong}>{t.demo.textStrong}</strong>
+        {t.demo.textAfter}
       </p>
 
       <div className={styles.card}>
         <span className={styles.cardNumber}>{TEST_CARD}</span>
         <button type="button" className={styles.copy} onClick={copyCard}>
-          {copied ? "Copied" : "Copy"}
+          {copied ? t.common.copied : t.common.copy}
         </button>
       </div>
 
-      <p className={styles.hint}>Any future expiry date, any CVC, any postal code.</p>
+      <p className={styles.hint}>{t.demo.hint}</p>
     </aside>
   );
 }

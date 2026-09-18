@@ -14,12 +14,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/Dialog";
 import { RadioCard, RadioCardGroup } from "@/components/ui/RadioCardGroup";
+import { interpolate } from "@/i18n/config";
+import { useI18n } from "@/i18n/I18nProvider";
 import { formatPrice } from "@/lib/format";
 import { ServiceIcon } from "./ServiceIcon";
 import type { Service } from "@/types/catalog";
 import styles from "./ServiceDetailsDialog.module.css";
 
 export function ServiceDetailsDialog({ service }: { service: Service }) {
+  const { locale, t } = useI18n();
   const defaultPackage = service.packages.find((pkg) => pkg.isPopular) ?? service.packages[0];
   const [selectedSlug, setSelectedSlug] = useState(defaultPackage?.slug);
   const selected = service.packages.find((pkg) => pkg.slug === selectedSlug) ?? defaultPackage;
@@ -31,7 +34,7 @@ export function ServiceDetailsDialog({ service }: { service: Service }) {
       <DialogTrigger asChild>
         <Button variant="secondary" className={styles.trigger}>
           <span>
-            Compare<span className={styles.triggerExtra}> packages</span>
+            {t.services.compare}<span className={styles.triggerExtra}>{t.services.comparePackages}</span>
           </span>
         </Button>
       </DialogTrigger>
@@ -48,7 +51,7 @@ export function ServiceDetailsDialog({ service }: { service: Service }) {
         </DialogHeader>
 
         <RadioCardGroup
-          aria-label="Choose a package"
+          aria-label={t.services.choosePackage}
           value={selected.slug}
           onValueChange={setSelectedSlug}
           className={styles.tiers}
@@ -60,20 +63,20 @@ export function ServiceDetailsDialog({ service }: { service: Service }) {
               className={styles.tier}
               indicatorClassName={styles.tierIndicator}
             >
-              <span className={styles.badge}>{pkg.isPopular ? "Recommended" : " "}</span>
+              <span className={styles.badge}>{pkg.isPopular ? t.services.recommended : " "}</span>
               <span className={styles.tierName}>{pkg.name}</span>
-              <span className={styles.tierPrice}>{formatPrice(pkg.priceCents, pkg.currency)}</span>
+              <span className={styles.tierPrice}>{formatPrice(pkg.priceCents, pkg.currency, locale)}</span>
               {/* Each card carries its own deposit and timeline, so the three
                   packages compare side by side. */}
               <span className={styles.tierFacts}>
                 <span className={styles.tierFact}>
-                  <span className={styles.tierFactLabel}>Deposit</span>
+                  <span className={styles.tierFactLabel}>{t.services.deposit}</span>
                   <span className={styles.tierFactValue}>
-                    {formatPrice(pkg.depositCents, pkg.currency)}
+                    {formatPrice(pkg.depositCents, pkg.currency, locale)}
                   </span>
                 </span>
                 <span className={styles.tierFact}>
-                  <span className={styles.tierFactLabel}>Timeline</span>
+                  <span className={styles.tierFactLabel}>{t.services.timeline}</span>
                   <span className={styles.tierFactValue}>{pkg.timeline}</span>
                 </span>
               </span>
@@ -84,7 +87,7 @@ export function ServiceDetailsDialog({ service }: { service: Service }) {
         <p className={styles.summary}>{selected.summary}</p>
 
         <section className={styles.section}>
-          <h3 className={styles.subheading}>Included in {selected.name}</h3>
+          <h3 className={styles.subheading}>{interpolate(t.services.includedIn, { name: selected.name })}</h3>
           <ul role="list" className={styles.deliverables}>
             {selected.deliverables.map((item) => (
               <li key={item} className={styles.deliverable}>
@@ -98,16 +101,16 @@ export function ServiceDetailsDialog({ service }: { service: Service }) {
         </section>
 
         <p className={styles.idealFor}>
-          <span className={styles.idealForLabel}>Ideal for: </span>
+          <span className={styles.idealForLabel}>{t.services.idealFor}</span>
           {service.idealFor}
         </p>
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="ghost">Close</Button>
+            <Button variant="ghost">{t.common.close}</Button>
           </DialogClose>
           <Button asChild className={styles.continue}>
-            <Link href={`/book/${selected.slug}`}>Continue</Link>
+            <Link href={`/book/${selected.slug}`}>{t.services.continue}</Link>
           </Button>
         </DialogFooter>
       </DialogContent>

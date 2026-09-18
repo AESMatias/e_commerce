@@ -63,3 +63,14 @@
 .homeButton {
   align-self: center;
 }
+
+/* The element selector outranks Button's own rules whatever the stylesheet order. */
+.homeButton:is(a, button) {
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-radius var(--duration-shape) var(--ease-out);
+}
+
+.homeButton:is(a, button):hover {
+  border-radius: var(--radius-leaf);
+}

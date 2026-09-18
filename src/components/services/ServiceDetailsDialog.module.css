@@ -2,27 +2,32 @@
   position: relative;
   z-index: 0;
   width: 100%;
+  transition:
+    border-color 420ms var(--ease-out),
+    border-radius var(--duration-shape) var(--ease-out),
+    color 420ms var(--ease-out);
+}
+
+/* Button's secondary variant sets its own colour and border. The element
+   selector outranks those rules whatever the stylesheet order, which changes
+   once another page that uses Button has loaded its CSS after this one. */
+.trigger:is(a, button),
+.trigger:is(a, button):hover {
   border-color: color-mix(
     in srgb,
     transparent calc(var(--cta-glow, 0) * 100%),
     var(--color-border-strong)
   );
   color: var(--cta-fg, var(--color-text));
-  transition:
-    border-color 420ms var(--ease-out),
-    color 420ms var(--ease-out);
+}
+
+/* The shape changes only when the button itself is hovered, not the card. */
+.trigger:is(a, button):hover {
+  border-radius: var(--radius-leaf);
 }
 
 .dialogContent {
   gap: var(--space-4);
-}
-
-.trigger:hover {
-  border-color: color-mix(
-    in srgb,
-    transparent calc(var(--cta-glow, 0) * 100%),
-    var(--color-border-strong)
-  );
 }
 
 /* Sits above the button's own background but under its label, so the blue
@@ -176,6 +181,13 @@
    outranks Button's own border rule whatever the stylesheet order. */
 .continue:is(a, button) {
   border-width: 0;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-radius var(--duration-shape) var(--ease-out);
+}
+
+.continue:is(a, button):hover {
+  border-radius: var(--radius-leaf);
 }
 
 /* The pulse lives inside the button: a light that swells from the middle and

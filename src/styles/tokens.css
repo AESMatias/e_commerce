@@ -83,9 +83,17 @@
     --radius-lg: 16px;
     --radius-full: 999px;
 
+    /* Hover shape for call-to-action buttons: round top-left and bottom-right
+       corners, tight top-right and bottom-left. */
+    --radius-leaf: 14px 4px;
+    --radius-leaf-sm: 10px 3px;
+
     /* Motion */
     --duration-fast: 120ms;
     --duration-base: 200ms;
+
+    /* How long a button takes to morph into its hover shape. */
+    --duration-shape: 550ms;
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
 

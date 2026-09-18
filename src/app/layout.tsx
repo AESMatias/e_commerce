@@ -8,6 +8,8 @@ import { ScrollState } from "@/components/layout/ScrollState";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { themeInitScript } from "@/components/layout/ThemeToggle";
 import { siteConfig } from "@/config/site";
+import { I18nProvider } from "@/i18n/I18nProvider";
+import { getDictionary } from "@/i18n/server";
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -15,20 +17,26 @@ const instrumentSans = Instrument_Sans({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: siteConfig.name,
-    template: `%s · ${siteConfig.name}`,
-  },
-  description: siteConfig.description,
-  authors: [{ name: siteConfig.author }],
-  creator: siteConfig.author,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getDictionary();
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return {
+    title: {
+      default: siteConfig.name,
+      template: `%s · ${siteConfig.name}`,
+    },
+    description: t.meta.description,
+    authors: [{ name: siteConfig.author }],
+    creator: siteConfig.author,
+  };
+}
+
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const { locale, t } = await getDictionary();
+
   return (
     <html
-      lang="en"
+      lang={locale}
       className={instrumentSans.variable}
       suppressHydrationWarning
     >
@@ -36,10 +44,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body>
-        <ScrollState />
-        <SiteHeader />
-        <main>{children}</main>
-        <SiteFooter />
+        <I18nProvider locale={locale} t={t}>
+          <ScrollState />
+          <SiteHeader />
+          <main>{children}</main>
+          <SiteFooter />
+        </I18nProvider>
       </body>
     </html>
   );

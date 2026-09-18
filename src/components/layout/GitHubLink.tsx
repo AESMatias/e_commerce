@@ -5,7 +5,7 @@ import styles from "./GitHubLink.module.css";
  * spins once when pointed at, so the brand block has something alive in it
  * without pulling attention from the navigation.
  */
-export function GitHubLink({ username }: { username: string }) {
+export function GitHubLink({ username, byLabel }: { username: string; byLabel: string }) {
   return (
     <a
       className={styles.link}
@@ -19,7 +19,7 @@ export function GitHubLink({ username }: { username: string }) {
         </svg>
       </span>
       <span className={styles.label}>
-        by <span className={styles.name}>{username}</span>
+        {byLabel} <span className={styles.name}>{username}</span>
       </span>
     </a>
   );

@@ -1,6 +1,8 @@
 import { google } from "@ai-sdk/google";
 import { convertToModelMessages, stepCountIs, streamText, tool, type UIMessage } from "ai";
 import { z } from "zod";
+import { interpolate } from "@/i18n/config";
+import { getDictionary } from "@/i18n/server";
 import { buildAdvisorSystemPrompt } from "@/lib/advisor/prompt";
 import { saveRecommendation } from "@/lib/advisor/recommendations";
 import { getCatalog } from "@/lib/catalog";
@@ -41,45 +43,46 @@ function plainTextResponse(body: string, status: number, headers?: HeadersInit):
 }
 
 export async function POST(request: Request) {
+  // The chat runs on the same site, so the language cookie comes along.
+  const { locale, t } = await getDictionary();
+  const errors = t.advisor.errors;
+
   const rateLimit = await checkAdvisorRateLimit(getClientIp(request));
   if (!rateLimit.ok) {
-    const message =
-      rateLimit.scope === "ip"
-        ? "You have sent too many messages. Please wait a minute and try again."
-        : "The advisor is handling too many conversations right now. Please try again later.";
+    const message = rateLimit.scope === "ip" ? errors.tooManyFromIp : errors.tooManyGlobal;
     return plainTextResponse(message, 429, { "retry-after": String(rateLimit.retryAfterSeconds) });
   }
 
   if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-    return plainTextResponse("The AI advisor is not configured yet.", 503);
+    return plainTextResponse(errors.notConfigured, 503);
   }
 
   let body: unknown;
   try {
     body = await request.json();
   } catch {
-    return plainTextResponse("Invalid request body.", 400);
+    return plainTextResponse(errors.invalidBody, 400);
   }
 
   const parsed = requestSchema.safeParse(body);
   if (!parsed.success) {
-    return plainTextResponse("Invalid request body.", 400);
+    return plainTextResponse(errors.invalidBody, 400);
   }
 
   const messages = parsed.data.messages as unknown as UIMessage[];
   const lastMessage = messages[messages.length - 1];
   if (lastMessage?.role === "user" && messageTextLength(lastMessage) > MAX_MESSAGE_CHARS) {
-    return plainTextResponse(`Please keep your message under ${MAX_MESSAGE_CHARS} characters.`, 413);
+    return plainTextResponse(interpolate(errors.messageTooLong, { max: MAX_MESSAGE_CHARS }), 413);
   }
 
   if (textLength(messages) > MAX_INPUT_CHARS) {
-    return plainTextResponse("This conversation is too long. Please start a new one.", 413);
+    return plainTextResponse(errors.conversationTooLong, 413);
   }
 
-  const catalog = await getCatalog();
+  const catalog = await getCatalog(locale);
   const packageSlugs = catalog.flatMap((service) => service.packages.map((pkg) => pkg.slug));
   if (packageSlugs.length === 0) {
-    return plainTextResponse("The service catalog is unavailable right now.", 503);
+    return plainTextResponse(errors.catalogUnavailable, 503);
   }
 
   const recommendPackage = tool({
@@ -111,8 +114,8 @@ export async function POST(request: Request) {
         serviceName: service.name,
         packageName: servicePackage.name,
         summary: servicePackage.summary,
-        price: formatPrice(servicePackage.priceCents, servicePackage.currency),
-        deposit: formatPrice(servicePackage.depositCents, servicePackage.currency),
+        price: formatPrice(servicePackage.priceCents, servicePackage.currency, locale),
+        deposit: formatPrice(servicePackage.depositCents, servicePackage.currency, locale),
         timeline: servicePackage.timeline,
         deliverables: servicePackage.deliverables,
         reasoning,
@@ -123,7 +126,7 @@ export async function POST(request: Request) {
 
   const result = streamText({
     model: google(MODEL),
-    system: buildAdvisorSystemPrompt(catalog),
+    system: buildAdvisorSystemPrompt(catalog, locale),
     messages: convertToModelMessages(messages),
     tools: { recommendPackage },
     stopWhen: stepCountIs(3),
@@ -135,7 +138,7 @@ export async function POST(request: Request) {
   return result.toUIMessageStreamResponse({
     onError: (error) => {
       console.error("[advisor] model call failed", { model: MODEL, error });
-      return "The advisor could not answer right now. Please try again.";
+      return errors.modelFailed;
     },
   });
 }

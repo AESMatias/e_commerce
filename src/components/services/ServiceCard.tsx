@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { interpolate } from "@/i18n/config";
+import { useI18n } from "@/i18n/I18nProvider";
 import type { Service } from "@/types/catalog";
 import { CountUpPrice } from "./CountUpPrice";
 import { ServiceDetailsDialog } from "./ServiceDetailsDialog";
@@ -11,6 +13,7 @@ import styles from "./ServiceCard.module.css";
 const RETREAT_MS = 430;
 
 export function ServiceCard({ service }: { service: Service }) {
+  const { t } = useI18n();
   // CSS alone cannot tell "entering" from "leaving", and the two states are
   // meant to look different: blue along the sides on the way in, white
   // retreating into the corners on the way out. This flag marks the way out.
@@ -45,10 +48,12 @@ export function ServiceCard({ service }: { service: Service }) {
 
       <div className={styles.meta}>
         <p className={styles.price}>
-          <span className={styles.priceLabel}>From</span>
+          <span className={styles.priceLabel}>{t.services.from}</span>
           <CountUpPrice cents={service.startingPriceCents} currency={service.currency} />
         </p>
-        <p className={styles.packageCount}>{service.packages.length} packages</p>
+        <p className={styles.packageCount}>
+          {interpolate(t.services.packageCount, { count: service.packages.length })}
+        </p>
       </div>
 
       <ServiceDetailsDialog service={service} />

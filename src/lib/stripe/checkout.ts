@@ -1,4 +1,5 @@
 import "server-only";
+import type { Locale } from "@/i18n/config";
 import { getStripe } from "@/lib/stripe/client";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { Tables } from "@/types/database";
@@ -8,6 +9,8 @@ type CreateCheckoutInput = {
   customerEmail: string;
   productName: string;
   productDescription: string;
+  /** Stripe's hosted page is shown in the same language as the site. */
+  locale: Locale;
   origin: string;
 };
 
@@ -22,6 +25,7 @@ export async function createDepositCheckout(input: CreateCheckoutInput): Promise
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
+    locale: input.locale,
     customer_email: input.customerEmail,
     client_reference_id: booking.id,
     expires_at: Math.floor(Date.parse(booking.expires_at) / 1000),

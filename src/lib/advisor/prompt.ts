@@ -1,14 +1,19 @@
 import "server-only";
 import { siteConfig } from "@/config/site";
+import type { Locale } from "@/i18n/config";
 import { formatPrice } from "@/lib/format";
 import type { Service } from "@/types/catalog";
+
+/** The language the visitor picked in the footer, named for the model. */
+const LANGUAGE_NAMES: Record<Locale, string> = { en: "English", es: "Spanish" };
 
 /**
  * The model may only recommend packages that exist in the database, so the
  * whole catalog is rendered into the system prompt and the recommendation
- * tool only accepts these slugs.
+ * tool only accepts these slugs. The catalog arrives already in the visitor's
+ * language, so names and deliverables match the cards on the page.
  */
-export function buildAdvisorSystemPrompt(catalog: Service[]): string {
+export function buildAdvisorSystemPrompt(catalog: Service[], locale: Locale): string {
   const catalogText = catalog
     .map((service) => {
       const packages = service.packages
@@ -17,8 +22,8 @@ export function buildAdvisorSystemPrompt(catalog: Service[]): string {
             [
               `  - slug: ${pkg.slug}`,
               `    tier: ${pkg.name}`,
-              `    price: ${formatPrice(pkg.priceCents, pkg.currency)}`,
-              `    deposit: ${formatPrice(pkg.depositCents, pkg.currency)}`,
+              `    price: ${formatPrice(pkg.priceCents, pkg.currency, locale)}`,
+              `    deposit: ${formatPrice(pkg.depositCents, pkg.currency, locale)}`,
               `    timeline: ${pkg.timeline}`,
               `    summary: ${pkg.summary}`,
               `    includes: ${pkg.deliverables.join("; ")}`,
@@ -46,7 +51,8 @@ export function buildAdvisorSystemPrompt(catalog: Service[]): string {
     "- Never invent services, prices, timelines or deliverables. Only use what is in the catalog.",
     "- If the request is outside what the studio offers, say so honestly and suggest the closest option or none at all.",
     "- Do not promise outcomes, revenue or guarantees. Prices shown are starting points confirmed on the kickoff call.",
-    "- Reply in the language the visitor writes in.",
+    `- The visitor is browsing the site in ${LANGUAGE_NAMES[locale]}. Reply in ${LANGUAGE_NAMES[locale]}, unless they write to you in another language; then reply in theirs.`,
+    `- Write the recommendPackage reasoning in the same language as your replies.`,
     "",
     "Catalog:",
     catalogText,

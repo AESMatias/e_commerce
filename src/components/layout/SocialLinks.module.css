@@ -15,11 +15,13 @@
   color: var(--color-text-subtle);
   transition:
     border-color var(--duration-fast) var(--ease-out),
+    border-radius var(--duration-shape) var(--ease-out),
     color var(--duration-fast) var(--ease-out),
     translate var(--duration-fast) var(--ease-out);
 }
 
 .link:hover {
+  border-radius: var(--radius-leaf-sm);
   border-color: var(--color-accent);
   color: var(--color-accent-text);
   translate: 0 -2px;

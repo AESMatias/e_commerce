@@ -11,18 +11,14 @@ import {
   type KeyboardEvent,
 } from "react";
 import { Button } from "@/components/ui/Button";
+import { useI18n } from "@/i18n/I18nProvider";
 import { cx } from "@/lib/cx";
 import { isPackageRecommendation } from "@/types/advisor";
 import { PackageRecommendationCard } from "./PackageRecommendationCard";
 import styles from "./AdvisorChat.module.css";
 
-const SUGGESTIONS = [
-  "I run a bakery and want to start selling online.",
-  "We get 200 WhatsApp messages a day and cannot keep up.",
-  "I need competitor prices collected every week.",
-];
-
 export function AdvisorChat() {
+  const { t } = useI18n();
   const { messages, sendMessage, status, error } = useChat({
     transport: new DefaultChatTransport({ api: "/api/advisor" }),
   });
@@ -80,19 +76,16 @@ export function AdvisorChat() {
     >
       <div className={styles.header}>
         <span className={styles.status} aria-hidden="true" />
-        AI advisor
+        {t.advisor.title}
       </div>
 
-      <div className={styles.messages} ref={scrollRef} aria-live="polite" aria-label="Conversation">
+      <div className={styles.messages} ref={scrollRef} aria-live="polite" aria-label={t.advisor.conversation}>
         {messages.length === 0 && (
           <div className={styles.empty}>
-            <p className={styles.emptyTitle}>Describe your business problem</p>
-            <p className={styles.emptyText}>
-              Tell the advisor what you are trying to solve and it will recommend the package that
-              fits, with its price and timeline.
-            </p>
+            <p className={styles.emptyTitle}>{t.advisor.emptyTitle}</p>
+            <p className={styles.emptyText}>{t.advisor.emptyText}</p>
             <div className={styles.suggestions}>
-              {SUGGESTIONS.map((suggestion) => (
+              {t.advisor.suggestions.map((suggestion) => (
                 <Button
                   key={suggestion}
                   variant="secondary"
@@ -138,7 +131,7 @@ export function AdvisorChat() {
 
         {status === "submitted" && (
           <div className={cx(styles.message, styles.assistant)}>
-            <span className={styles.typing} aria-label="The advisor is typing">
+            <span className={styles.typing} aria-label={t.advisor.typing}>
               <span className={styles.dot} />
               <span className={styles.dot} />
               <span className={styles.dot} />
@@ -151,7 +144,7 @@ export function AdvisorChat() {
 
       <form className={styles.composer} onSubmit={handleSubmit}>
         <label className={styles.srOnly} htmlFor="advisor-input">
-          Your message
+          {t.advisor.inputLabel}
         </label>
         <textarea
           id="advisor-input"
@@ -159,7 +152,7 @@ export function AdvisorChat() {
           value={input}
           onChange={(event) => setInput(event.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="What are you trying to build or solve?"
+          placeholder={t.advisor.placeholder}
           rows={2}
           maxLength={500}
           disabled={isBusy}
@@ -169,7 +162,7 @@ export function AdvisorChat() {
           className={styles.send}
           disabled={isBusy || input.trim().length === 0}
         >
-          Send
+          {t.advisor.send}
         </Button>
       </form>
     </div>

@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useI18n } from "@/i18n/I18nProvider";
 import styles from "./PaymentStatusRefresher.module.css";
 
 const INTERVAL_MS = 3000;
@@ -14,6 +15,7 @@ const MAX_ATTEMPTS = 8;
  */
 export function PaymentStatusRefresher() {
   const router = useRouter();
+  const { t } = useI18n();
   const [gaveUp, setGaveUp] = useState(false);
 
   useEffect(() => {
@@ -34,15 +36,12 @@ export function PaymentStatusRefresher() {
 
   if (gaveUp) {
     return (
-      <p className={styles.timeout}>
-        This is taking longer than usual. Your payment is safe — reload this page in a minute to
-        see whether the time was secured.
-      </p>
+      <p className={styles.timeout}>{t.booking.refreshTimeout}</p>
     );
   }
 
   return (
-    <span className={styles.spinner} role="status" aria-label="Confirming your payment">
+    <span className={styles.spinner} role="status" aria-label={t.booking.confirming}>
       <span className={styles.dot} />
       <span className={styles.dot} />
       <span className={styles.dot} />
