@@ -28,9 +28,11 @@ export function HeroTitle({
       {words.map((word, index) => (
         <Fragment key={`${word}-${index}`}>
           <span
+            data-word-index={index}
             className={cx(
               styles.word,
               index >= accentFrom && styles.accent,
+              index >= accentFrom && accentClassName && styles.goldAccent,
               index >= accentFrom && accentClassName,
             )}
           >
