@@ -132,7 +132,7 @@ export default async function BookingPage({ params, searchParams }: BookingPageP
             <p className={styles.note}>
               Keep this page: it is the record of your booking. No confirmation email is sent.
             </p>
-            <Button asChild>
+            <Button asChild className={styles.homeButton}>
               <Link href="/">Back to home</Link>
             </Button>
           </>
