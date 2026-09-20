@@ -191,6 +191,45 @@
  * stays — icon, name and starting price. The tagline and package count
  * return from the dialog.
  */
+/*
+ * Between phone and desktop the card sat at its full size while the column
+ * it lives in is far narrower, so it grew tall and loose. This trims the
+ * padding and the type without hiding anything, which the phone layout does.
+ */
+@media (44rem <= width < 64rem) {
+  .card {
+    gap: var(--space-1);
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .icon {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .name {
+    font-size: var(--text-base);
+    line-height: 1.25;
+  }
+
+  .tagline {
+    font-size: var(--text-xs);
+  }
+
+  .price {
+    font-size: var(--text-lg);
+  }
+
+  .meta {
+    padding-top: var(--space-2);
+  }
+}
+
 @media (width < 44rem) {
   .card {
     gap: var(--space-1);

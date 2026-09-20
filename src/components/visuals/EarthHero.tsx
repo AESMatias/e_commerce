@@ -5,7 +5,7 @@ import { cx } from "@/lib/cx";
 import styles from "./EarthHero.module.css";
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
-const SCROLL_STEP_PX = 6.67;
+const SCROLL_STEP_PX = 4;
 
 /**
  * The hero's stage: a window onto space with the Earth's horizon rising from

@@ -42,13 +42,14 @@ export const es: Dictionary = {
     heroAccentFrom: 7,
     heroBreakAfter: 3,
     heroLead:
-      "Recibe una recomendación de nuestro asesor IA, agenda una llamada inicial y asegura tu lugar con un anticipo.",
+      "Recibe una recomendación de nuestro asesor IA, agenda una llamada y asegura tu lugar con un anticipo.",
     talkToAdvisor: "Habla con el asesor IA",
     browsePackages: "Ver paquetes",
     advisorTitle: "¿No sabes qué paquete necesitas?",
     advisorLead:
       "Describe el problema de tu negocio y el asesor IA te recomienda un paquete del catálogo, con su precio, plazo y lo que incluye. No necesitas crear una cuenta.",
     servicesTitle: "Elige el paquete que se ajusta a tu negocio",
+    servicesLead: "Tres niveles cada uno, con alcance, plazo y precio definidos.",
     stepsTitle: "Cómo empezamos, en tres pasos",
     steps: [
       {
@@ -57,7 +58,7 @@ export const es: Dictionary = {
           "Cuéntale tu problema de negocio a nuestro asesor con IA y recibe el paquete que mejor encaja, con su precio y plazo.",
       },
       {
-        title: "Agenda la llamada inicial",
+        title: "Agenda una llamada",
         description:
           "Elige una fecha y hora disponibles para una llamada uno a uno donde definimos los detalles juntos.",
       },
@@ -125,7 +126,7 @@ export const es: Dictionary = {
       price: "Precio",
       deposit: "Anticipo",
       timeline: "Plazo",
-      cta: "Agendar llamada inicial",
+      cta: "Agendar llamada",
     },
     errors: {
       tooManyFromIp: "Enviaste demasiados mensajes. Espera un minuto y vuelve a intentarlo.",
@@ -145,7 +146,7 @@ export const es: Dictionary = {
   },
   book: {
     notFoundTitle: "Paquete no encontrado",
-    metaTitle: "Agendar llamada inicial · {name}",
+    metaTitle: "Agendar llamada · {name}",
     back: "← Volver a los paquetes",
     title: "Agenda tu llamada",
     subtitle:
@@ -158,7 +159,7 @@ export const es: Dictionary = {
   },
   scheduler: {
     howToStart: "¿Cómo quieres empezar?",
-    howToStartLabel: "Cómo coordinar la llamada inicial",
+    howToStartLabel: "Cómo coordinar la llamada",
     pickTimeNow: "Elegir un horario ahora",
     pickTimeNowText: "Elige un horario libre en el calendario y será tuyo cuando pagues el anticipo.",
     noTimes: "No hay horarios disponibles en este momento.",
@@ -210,12 +211,12 @@ export const es: Dictionary = {
     textBefore: "El pago funciona en el modo de prueba de Stripe, así que ",
     textStrong: "no se cobra dinero",
     textAfter:
-      ". Paga con la tarjeta de prueba de abajo para ver el flujo completo; tu llamada inicial queda agendada de verdad.",
+      ". Paga con la tarjeta de prueba de abajo para ver el flujo completo; tu llamada queda agendada de verdad.",
     hint: "Cualquier fecha de vencimiento futura, cualquier CVC y cualquier código postal.",
   },
   booking: {
     metaTitle: "Tu reserva",
-    headingConfirmedScheduled: "Tu llamada inicial está agendada",
+    headingConfirmedScheduled: "Tu llamada está agendada",
     headingConfirmedUnscheduled: "Tu paquete está reservado",
     headingReleasedScheduled: "Este horario ya no está reservado",
     headingReleasedUnscheduled: "Esta reserva fue liberada",
@@ -226,7 +227,7 @@ export const es: Dictionary = {
     eyebrowReleased: "Reserva vencida",
     eyebrowAwaiting: "Casi listo",
     eyebrowPending: "Pago pendiente",
-    kickoffCall: "Llamada inicial",
+    kickoffCall: "Llamada",
     toBeArranged: "Por coordinar",
     package: "Paquete",
     depositPaid: "Anticipo pagado",

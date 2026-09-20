@@ -83,19 +83,41 @@
 
 /* The advisor button keeps the brand blue, lifted a little with a lighter
    top and a blue glow so it holds its own beside the gold one. */
+/* The wipe rides as a second background layer over the button's own
+   gradient; see ServiceDetailsDialog for how the layer is built. */
 .glowButton:is(a, button) {
-  background-image: linear-gradient(180deg, #4d82ff 0%, var(--color-accent) 100%);
+  --wipe-from: #1f4fc2;
+  --wipe-to: #6f9dff;
+  --wipe-fg: #fff;
+  --wipe-border: #6f9dff;
+
+  background-image:
+    linear-gradient(118deg, var(--wipe-from) 0 16%, var(--wipe-to) 50%, rgb(255 255 255 / 0) 50%),
+    linear-gradient(180deg, #4d82ff 0%, var(--color-accent) 100%);
+  background-repeat: no-repeat;
+
+  /* Without this the layers stop at the padding box, leaving the 1px border
+     strip unpainted along the top and right edges. */
+  background-origin: border-box;
+  background-size: 260% 100%, auto;
+  background-position: 100% 0, 0 0;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 35%),
     0 8px 26px -6px rgb(47 107 255 / 70%);
   transition:
     filter var(--duration-fast) var(--ease-out),
     box-shadow var(--duration-fast) var(--ease-out),
-    border-radius var(--duration-shape) var(--ease-out);
+    background-position 280ms var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    scale var(--duration-base) var(--ease-out),
+    color 160ms var(--ease-out);
 }
 
 .glowButton:is(a, button):hover {
-  border-radius: var(--radius-leaf);
+  scale: 1.04;
+  background-position: 0 0, 0 0;
+  border-color: var(--wipe-border);
+  color: var(--wipe-fg);
   filter: brightness(1.08);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 40%),
@@ -106,8 +128,22 @@
    and echoes the robot's lit antenna. The element selector outranks
    Button's own colours whatever the stylesheet order. */
 .goldButton:is(a, button) {
+  --wipe-from: #fcd77a;
+  --wipe-to: #fff6dd;
+  --wipe-fg: #3b2605;
+  --wipe-border: #fff0c4;
+
   border-color: rgb(254 243 199 / 60%);
-  background-image: linear-gradient(135deg, #fde68a 0%, #fbbf24 45%, #d97706 100%);
+  background-image:
+    linear-gradient(118deg, var(--wipe-from) 0 16%, var(--wipe-to) 50%, rgb(255 255 255 / 0) 50%),
+    linear-gradient(135deg, #fde68a 0%, #fbbf24 45%, #d97706 100%);
+  background-repeat: no-repeat;
+
+  /* Without this the layers stop at the padding box, leaving the 1px border
+     strip unpainted along the top and right edges. */
+  background-origin: border-box;
+  background-size: 260% 100%, auto;
+  background-position: 100% 0, 0 0;
   color: #3b2605;
   font-weight: var(--weight-semibold);
   box-shadow:
@@ -116,11 +152,17 @@
   transition:
     filter var(--duration-fast) var(--ease-out),
     box-shadow var(--duration-fast) var(--ease-out),
-    border-radius var(--duration-shape) var(--ease-out);
+    background-position 280ms var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    scale var(--duration-base) var(--ease-out),
+    color 160ms var(--ease-out);
 }
 
 .goldButton:is(a, button):hover {
-  border-radius: var(--radius-leaf);
+  scale: 1.04;
+  background-position: 0 0, 0 0;
+  border-color: var(--wipe-border);
+  color: var(--wipe-fg);
   filter: brightness(1.06);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 60%),
@@ -342,9 +384,13 @@
   }
 }
 
+/* Tablets keep three across, like the phone and the desktop layouts. Two
+   columns left the fifth package alone on its own row, with the four above
+   it stretched to nearly twice the width they need. */
 @media (44rem <= width < 64rem) {
   .grid {
-    --cols: 2;
+    --cols: 3;
+    --gap: var(--space-3);
   }
 }
 
@@ -361,13 +407,30 @@
    slanted edges kept clear of the text. */
 .stepsSection {
   min-height: 0;
-  padding-block: calc(var(--space-12) + var(--slant)) calc(var(--space-12) + var(--slant));
+
+  /* A touch taller than the content strictly needs: 3rem of padding a side
+     became 5rem, which lifts the whole block by roughly 15%. */
+  padding-block:
+    calc(var(--space-16) + var(--space-4) + var(--slant))
+    calc(var(--space-16) + var(--space-4) + var(--slant));
 }
 
+/*
+ * One column, then three. Auto-fit used to land on two columns between
+ * phone and tablet, which left the third step alone on its own row with the
+ * other two squeezed beside it. There is no good two-column shape for three
+ * steps, so that range keeps them stacked.
+ */
 .steps {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  grid-template-columns: 1fr;
   gap: var(--space-6) var(--space-8);
+}
+
+@media (width >= 52rem) {
+  .steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .step {
@@ -400,10 +463,18 @@
   padding-block: var(--space-12) var(--space-16);
 }
 
+/* Same reasoning as the steps: three projects have no two-column shape, so
+   below the desktop width they stack one under the other. */
 .projectGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  grid-template-columns: 1fr;
   gap: var(--space-4);
+}
+
+@media (width >= 64rem) {
+  .projectGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .projectItem {
@@ -413,3 +484,8 @@
 .projectItem > * {
   flex: 1;
 }
+
+
+
+
+

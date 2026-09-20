@@ -73,6 +73,7 @@ export default async function HomePage() {
             </Reveal>
             <Reveal from="left" className={styles.artIntro}>
               <h2 className={text.heading}>{t.home.servicesTitle}</h2>
+              <p className={text.lead}>{t.home.servicesLead}</p>
             </Reveal>
           </header>
 

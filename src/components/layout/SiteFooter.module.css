@@ -25,7 +25,10 @@
 
   /* Pulled up over the last section by its own corner radius, so the space
      beside the rounded corners shows that section, not the page behind. */
-  margin-top: calc(var(--radius-lg) * -1);
+  /* Still tucked under the page's last rounded corners, but sitting a little
+     lower than the tuck alone would put it, so the page has room to breathe
+     before the band starts. */
+  margin-top: calc(var(--space-2) - var(--radius-lg));
   padding-block: var(--space-10);
   border-top: 1px solid rgb(255 255 255 / 30%);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;

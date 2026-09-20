@@ -189,9 +189,9 @@
   text-wrap: pretty;
 }
 
-/* Phones: wide and short, so several projects fit on one screen instead of
-   one square filling it. */
-@media (width < 44rem) {
+/* Stacked (phone and tablet): wide and short, so several projects fit on one
+   screen instead of one square filling it. */
+@media (width < 64rem) {
   .card {
     aspect-ratio: auto;
     min-height: 13rem;

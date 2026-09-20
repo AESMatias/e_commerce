@@ -49,13 +49,14 @@ export const en = {
     /** Index of the word after which phones break the line. */
     heroBreakAfter: 4,
     heroLead:
-      "Get a package recommendation from our AI advisor, book a kickoff call and secure your spot with a deposit.",
+      "Get a package recommendation from our AI advisor, book a call and secure your spot with a deposit.",
     talkToAdvisor: "Talk to the AI advisor",
     browsePackages: "Browse packages",
     advisorTitle: "Not sure which package you need?",
     advisorLead:
       "Describe your business problem and the AI advisor recommends one package from the catalog, with its price, timeline and what is included. No account needed.",
     servicesTitle: "Pick the package that fits your business",
+    servicesLead: "Three tiers each, with a defined scope, timeline and price.",
     stepsTitle: "How we get started, in three steps",
     steps: [
       {
@@ -64,7 +65,7 @@ export const en = {
           "Tell our AI advisor about your business problem and get the package that fits best, with its price and timeline.",
       },
       {
-        title: "Book a kickoff call",
+        title: "Book a call",
         description:
           "Pick an available date and time for a one-on-one call where we scope the details together.",
       },
@@ -132,7 +133,7 @@ export const en = {
       price: "Price",
       deposit: "Deposit",
       timeline: "Timeline",
-      cta: "Book kickoff call",
+      cta: "Book a call",
     },
     errors: {
       tooManyFromIp: "You have sent too many messages. Please wait a minute and try again.",
@@ -152,7 +153,7 @@ export const en = {
   },
   book: {
     notFoundTitle: "Package not found",
-    metaTitle: "Book a kickoff call · {name}",
+    metaTitle: "Book a call · {name}",
     back: "← Back to packages",
     title: "Book your call",
     subtitle: "A 30-minute call to scope your project. Your slot is confirmed once the deposit is paid.",
@@ -164,7 +165,7 @@ export const en = {
   },
   scheduler: {
     howToStart: "How do you want to start?",
-    howToStartLabel: "How to arrange the kickoff call",
+    howToStartLabel: "How to arrange the call",
     pickTimeNow: "Pick a time now",
     pickTimeNowText: "Choose a free slot in the calendar and it is yours once the deposit is paid.",
     noTimes: "No times are available right now.",
@@ -215,12 +216,12 @@ export const en = {
     badge: "Demo environment",
     textBefore: "Checkout runs in Stripe test mode, so ",
     textStrong: "no money is charged",
-    textAfter: ". Pay with the test card below to see the full flow — your kickoff call is then booked for real.",
+    textAfter: ". Pay with the test card below to see the full flow — your call is then booked for real.",
     hint: "Any future expiry date, any CVC, any postal code.",
   },
   booking: {
     metaTitle: "Your booking",
-    headingConfirmedScheduled: "Your kickoff call is booked",
+    headingConfirmedScheduled: "Your call is booked",
     headingConfirmedUnscheduled: "Your package is booked",
     headingReleasedScheduled: "This time is no longer held",
     headingReleasedUnscheduled: "This booking was released",
@@ -231,7 +232,7 @@ export const en = {
     eyebrowReleased: "Hold expired",
     eyebrowAwaiting: "Almost done",
     eyebrowPending: "Awaiting payment",
-    kickoffCall: "Kickoff call",
+    kickoffCall: "Call",
     toBeArranged: "To be arranged",
     package: "Package",
     depositPaid: "Deposit paid",

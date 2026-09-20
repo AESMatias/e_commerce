@@ -107,7 +107,9 @@ export function ServiceDetailsDialog({ service }: { service: Service }) {
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="ghost">{t.common.close}</Button>
+            <Button variant="ghost" className={styles.close}>
+              {t.common.close}
+            </Button>
           </DialogClose>
           <Button asChild className={styles.continue}>
             <Link href={`/book/${selected.slug}`}>{t.services.continue}</Link>

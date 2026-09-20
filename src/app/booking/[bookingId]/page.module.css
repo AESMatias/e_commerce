@@ -68,9 +68,32 @@
 .homeButton:is(a, button) {
   transition:
     background-color var(--duration-fast) var(--ease-out),
-    border-radius var(--duration-shape) var(--ease-out);
+    background-position 280ms var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    scale var(--duration-base) var(--ease-out),
+    color 160ms var(--ease-out);
 }
 
-.homeButton:is(a, button):hover {
-  border-radius: var(--radius-leaf);
+
+/* The header links' hover, as a background layer: it paints under the label
+   without a wrapper and ends up covering the button edge to edge. */
+.homeButton:is(a, button) {
+  --wipe-from: #1f4fc2;
+  --wipe-to: #6f9dff;
+  --wipe-fg: #fff;
+  --wipe-border: #6f9dff;
+
+  background-image: linear-gradient(118deg, var(--wipe-from) 0 16%, var(--wipe-to) 50%, rgb(255 255 255 / 0) 50%);
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-size: 260% 100%;
+  background-position: 100% 0;
+}
+
+.homeButton:is(a, button):hover,
+.homeButton:is(a, button):focus-visible {
+  scale: 1.03;
+  background-position: 0 0;
+  border-color: var(--wipe-border);
+  color: var(--wipe-fg);
 }

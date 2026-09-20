@@ -205,17 +205,58 @@
   margin-left: auto;
 }
 
+/*
+ * Hovering draws a white plate in from the left, cut on a slant at both ends
+ * like a strip snipped with scissors, and the label turns black on top.
+ *
+ * The plate is a parallelogram whose leading edge travels from the trailing
+ * cut to the far side, animated through --nav-wipe. Growing the polygon this
+ * way is what keeps the slant: sliding a finished plate in leaves its
+ * trailing edge squared off against the link's boundary, and scaling one up
+ * from nothing flattens the angle until the very last frame. The starting
+ * value sits level with the trailing cut, so at rest the shape has no area.
+ */
+@property --nav-wipe {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 6px;
+}
+
 .navLink {
+  position: relative;
+  overflow: hidden;
   padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-sm);
   color: color-mix(in srgb, #fff calc(var(--bar-p) * 100%), var(--color-text-muted));
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
   white-space: nowrap;
+  isolation: isolate;
+  transition: color 160ms var(--ease-out);
 }
 
-.navLink:hover {
-  color: var(--color-text);
+.navLink::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: #fff;
+  clip-path: polygon(
+    var(--nav-wipe) 0,
+    6px 0,
+    0 100%,
+    calc(var(--nav-wipe) - 6px) 100%
+  );
+  content: "";
+  transition: --nav-wipe 240ms var(--ease-out);
+}
+
+.navLink:hover,
+.navLink:focus-visible {
+  color: #0d1220;
+}
+
+.navLink:hover::before,
+.navLink:focus-visible::before {
+  --nav-wipe: 100%;
 }
 
 .actions {
@@ -407,3 +448,4 @@
   --bar-mid: #143172;
   --bar-core: #0d2151;
 }
+

@@ -4,8 +4,8 @@
   width: 100%;
   transition:
     border-color 420ms var(--ease-out),
-    border-radius var(--duration-shape) var(--ease-out),
-    color 420ms var(--ease-out);
+    color 420ms var(--ease-out),
+    scale var(--duration-base) var(--ease-out);
 }
 
 /* Button's secondary variant sets its own colour and border. The element
@@ -21,9 +21,43 @@
   color: var(--cta-fg, var(--color-text));
 }
 
-/* The shape changes only when the button itself is hovered, not the card. */
-.trigger:is(a, button):hover {
-  border-radius: var(--radius-leaf);
+
+/*
+ * The header links' hover, as a background layer, painted on the blue plate
+ * rather than on the button: that plate is a pseudo-element stacked above
+ * the button's own background, so a layer on the button itself would sit
+ * underneath it and never show. See the note on .trigger::before.
+ *
+ * The layer is 2.6x the button's width — its left part is the plate, its
+ * right half nothing — and tilting the gradient line is what slants the
+ * leading edge. Sliding the layer is the wipe. It has to be that much wider
+ * than the button because the slanted hard stop is a diagonal: any narrower
+ * and one corner of the plate shows at rest.
+ */
+.trigger:is(a, button) {
+  --wipe-from: #1f4fc2;
+  --wipe-to: #6f9dff;
+  --wipe-border: #6f9dff;
+}
+
+.trigger:is(a, button):hover,
+.trigger:is(a, button):focus-visible {
+  scale: 1.02;
+}
+
+.trigger::before {
+  background-image:
+    linear-gradient(118deg, var(--wipe-from) 0 16%, var(--wipe-to) 50%, rgb(255 255 255 / 0) 50%),
+    linear-gradient(135deg, #0f2f9e 0%, #1d4ed8 48%, #3b82f6 100%);
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-size: 260% 100%, auto;
+  background-position: 100% 0, 0 0;
+}
+
+.trigger:hover::before,
+.trigger:focus-visible::before {
+  background-position: 0 0, 0 0;
 }
 
 .dialogContent {
@@ -40,10 +74,11 @@
   inset: -1px;
   z-index: -1;
   border-radius: inherit;
-  background-image: linear-gradient(135deg, #0f2f9e 0%, #1d4ed8 48%, #3b82f6 100%);
   content: "";
   opacity: var(--cta-glow, 0);
-  transition: opacity 420ms var(--ease-out);
+  transition:
+    opacity 420ms var(--ease-out),
+    background-position 300ms var(--ease-out);
 }
 
 /* Title row */
@@ -183,11 +218,42 @@
   border-width: 0;
   transition:
     background-color var(--duration-fast) var(--ease-out),
-    border-radius var(--duration-shape) var(--ease-out);
+    background-position 280ms var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    scale var(--duration-base) var(--ease-out),
+    color 160ms var(--ease-out);
 }
 
-.continue:is(a, button):hover {
-  border-radius: var(--radius-leaf);
+/*
+ * The header links' hover, as a background layer. A background paints under
+ * the label without any wrapper, and by the end it covers the button edge to
+ * edge — an overlay cut into a parallelogram would leave wedges of the old
+ * fill in two corners. The layer is 2.6x the button's width:
+ * its left half is the plate, its right half nothing, and tilting the
+ * gradient line is what slants the leading edge. Sliding it is the wipe.
+ * The layer has to be that much wider than the button because the slanted
+ * hard stop is a diagonal: at 2.1x, one corner of the plate still showed at
+ * rest and the opposite corner stayed uncovered at the end.
+ */
+.continue:is(a, button) {
+  --wipe-from: #1f4fc2;
+  --wipe-to: #6f9dff;
+  --wipe-fg: #fff;
+  --wipe-border: #6f9dff;
+
+  background-image: linear-gradient(118deg, var(--wipe-from) 0 16%, var(--wipe-to) 50%, rgb(255 255 255 / 0) 50%);
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-size: 260% 100%;
+  background-position: 100% 0;
+}
+
+.continue:is(a, button):hover,
+.continue:is(a, button):focus-visible {
+  scale: 1.03;
+  background-position: 0 0;
+  border-color: var(--wipe-border);
+  color: var(--wipe-fg);
 }
 
 /* The pulse lives inside the button: a light that swells from the middle and
@@ -345,13 +411,17 @@
   }
 }
 
+/*
+ * The tier cards are tightened from here up, not only on the widest screens.
+ * Between the phone layout and 75rem they were the only ones left at their
+ * roomy defaults, which made them far taller than the same three cards on a
+ * desktop.
+ */
 @media (width >= 44rem) {
   .tiers {
     --radio-columns: repeat(3, minmax(0, 1fr));
   }
-}
 
-@media (width >= 75rem) {
   .dialogContent {
     gap: var(--space-3);
   }
@@ -373,4 +443,42 @@
   .section {
     gap: var(--space-1);
   }
+}
+
+
+/*
+ * The header links' hover, as a background layer. A background paints under
+ * the label without any wrapper, and by the end it covers the button edge to
+ * edge — an overlay cut into a parallelogram would leave wedges of the old
+ * fill in two corners. The layer is 2.6x the button's width:
+ * its left half is the plate, its right half nothing, and tilting the
+ * gradient line is what slants the leading edge. Sliding it is the wipe.
+ * The layer has to be that much wider than the button because the slanted
+ * hard stop is a diagonal: at 2.1x, one corner of the plate still showed at
+ * rest and the opposite corner stayed uncovered at the end.
+ */
+.close:is(button) {
+  --wipe-from: var(--color-surface-soft);
+  --wipe-to: var(--color-surface-raised);
+  --wipe-fg: var(--color-text);
+  --wipe-border: var(--color-border-strong);
+
+  background-image: linear-gradient(118deg, var(--wipe-from) 0 16%, var(--wipe-to) 50%, rgb(255 255 255 / 0) 50%);
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  transition:
+    background-position 280ms var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    scale var(--duration-base) var(--ease-out),
+    color 160ms var(--ease-out);
+}
+
+.close:is(button):hover,
+.close:is(button):focus-visible {
+  scale: 1.03;
+  background-position: 0 0;
+  border-color: var(--wipe-border);
+  color: var(--wipe-fg);
 }

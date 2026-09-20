@@ -12,7 +12,7 @@ const START_AT = 64;
 const TRAVEL_SCREENS = 0.32;
 const TRAVEL_MIN = 160;
 const TRAVEL_MAX = 320;
-const SCROLL_STEP_PX = 8;
+const SCROLL_STEP_PX = 4;
 
 /**
  * Publishes how far the page has scrolled as --bar-progress (0 to 1) on
