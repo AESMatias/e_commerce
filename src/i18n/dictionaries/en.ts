@@ -56,25 +56,46 @@ export const en = {
     advisorLead:
       "Describe your business problem and the AI advisor recommends one package from the catalog, with its price, timeline and what is included. No account needed.",
     servicesTitle: "Pick the package that fits your business",
-    servicesLead:
-      "Every service comes in three tiers with a defined scope, timeline and price. Compare them to see exactly what is included.",
-    stepsTitle: "From idea to kickoff in four steps",
+    stepsTitle: "How we get started, in three steps",
     steps: [
       {
         title: "Describe your project",
-        description: "Tell our AI advisor about your business problem and get the package that fits best.",
+        description:
+          "Tell our AI advisor about your business problem and get the package that fits best, with its price and timeline.",
       },
       {
         title: "Book a kickoff call",
-        description: "Pick an available date and time for a one-on-one call to scope the details.",
+        description:
+          "Pick an available date and time for a one-on-one call where we scope the details together.",
       },
       {
-        title: "Secure your slot",
-        description: "Pay the kickoff deposit securely with Stripe to confirm your booking.",
+        title: "Confirm and we build",
+        description:
+          "Pay the deposit securely with Stripe and we deliver on a fixed scope, with updates at every milestone.",
+      },
+    ],
+    projectsTitle: "Latest projects",
+    projects: [
+      {
+        name: "Nordic Supply Co.",
+        summary:
+          "A furniture workshop moved from a catalogue PDF to a full storefront with stock, delivery slots and card payments.",
+        image: "https://picsum.photos/seed/nordic-storefront/900/900",
+        tech: ["next", "stripe", "shopify"] as const,
       },
       {
-        title: "Get it built",
-        description: "We deliver on a fixed scope and timeline, with updates at every milestone.",
+        name: "Client triage assistant",
+        summary:
+          "An assistant that reads incoming messages, answers the routine ones and hands the rest to a person with the context already summarised.",
+        image: "https://picsum.photos/seed/triage-assistant/900/900",
+        tech: ["python", "whatsapp", "openai"] as const,
+      },
+      {
+        name: "Retail price intelligence",
+        summary:
+          "A weekly scraper and dashboard tracking competitor pricing across eleven stores, with alerts when a line moves sharply.",
+        image: "https://picsum.photos/seed/price-intelligence/900/900",
+        tech: ["python", "postgres", "chart"] as const,
       },
     ],
   },
@@ -133,7 +154,7 @@ export const en = {
     notFoundTitle: "Package not found",
     metaTitle: "Book a kickoff call · {name}",
     back: "← Back to packages",
-    title: "Book your kickoff call",
+    title: "Book your call",
     subtitle: "A 30-minute call to scope your project. Your slot is confirmed once the deposit is paid.",
     selection: "Your selection",
     projectPrice: "Project price",

@@ -174,23 +174,62 @@
   padding-block: var(--space-10) var(--space-16);
 }
 
+/*
+ * The raised sections are slabs whose top and bottom edges are cut on a
+ * gentle slant, in two steps: a fainter plate behind, and the main
+ * translucent fill one step in from it. The slant is the whole drop across
+ * the page width, so it stays a tilt rather than a diagonal.
+ *
+ * Both plates are pseudo-elements rather than the section's own background,
+ * because only an element can be clipped to that shape. The section's real
+ * children are lifted above them below.
+ */
 .sectionAlt {
+  --slant: clamp(2rem, 4.4vw, 4.25rem);
+
   position: relative;
   display: flex;
   align-items: flex-start;
   min-height: 100svh;
-  padding-block: var(--space-10) var(--space-16);
-  border-block: 1px solid var(--color-border);
-
-  /* Translucent so the Earth keeps showing through as it drifts past. */
-  background-color: color-mix(in srgb, var(--color-surface) 72%, transparent);
-  backdrop-filter: blur(6px);
+  padding-block: calc(var(--space-10) + var(--slant) * 2) var(--space-16);
 }
 
-/* The last section ends straight onto the footer's rounded top, so a
-   straight line there would cut across its corners. */
-.sectionAlt:last-of-type {
-  border-bottom-width: 0;
+.sectionAlt::before,
+.sectionAlt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* Back plate: one step out, fainter, with a hint of the brand blue. */
+.sectionAlt::before {
+  background-color: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
+  opacity: 0.35;
+  clip-path: polygon(
+    0 var(--slant),
+    100% 0,
+    100% calc(100% - var(--slant)),
+    0 100%
+  );
+}
+
+/* Front plate: the translucent fill the section used to carry, so the Earth
+   still shows through and blurs behind it as it drifts past. */
+.sectionAlt::after {
+  background-color: color-mix(in srgb, var(--color-surface) 72%, transparent);
+  backdrop-filter: blur(6px);
+  clip-path: polygon(
+    0 calc(var(--slant) * 2),
+    100% var(--slant),
+    100% calc(100% - var(--slant) * 2),
+    0 calc(100% - var(--slant))
+  );
+}
+
+/* Content sits above both plates; the plates keep the default paint order. */
+.sectionAlt > * {
+  position: relative;
+  z-index: 1;
 }
 
 .sectionHeader {
@@ -199,6 +238,14 @@
   gap: var(--space-3);
   max-width: 40rem;
   margin-bottom: var(--space-8);
+}
+
+/* Centred on the page, with the intro centred under the title. */
+.centeredHeader {
+  align-items: center;
+  max-width: 46rem;
+  margin-inline: auto;
+  text-align: center;
 }
 
 /* A section title and intro with its object (robot, parcel) to the right,
@@ -218,6 +265,16 @@
   max-width: 40rem;
 }
 
+/* On the light theme the muted grey nearly disappears over the pale Earth
+   behind these sections, so their intros take a darker tone and a touch more
+   weight — still clearly below the heading, just legible. This is scoped to
+   the section intros: the hero's own intro sits on the night sky and is left
+   exactly as it was. */
+:global(html[data-theme="light"]) .artIntro p {
+  color: #33405c;
+  font-weight: 450;
+}
+
 .artObject {
   margin-inline: auto;
 }
@@ -230,7 +287,7 @@
 
 /* Lower than the other sections, without being fully centred. */
 .advisorSection {
-  padding-top: clamp(var(--space-10), 14svh, 9rem);
+  padding-top: calc(clamp(var(--space-10), 14svh, 9rem) + var(--slant));
 }
 
 .advisorLayout .artHeader {
@@ -298,25 +355,61 @@
 }
 
 /* Steps */
+
+/* Three short steps do not need a screen of their own, but they do need room
+   to read: this block takes the height it needs and no more, with the
+   slanted edges kept clear of the text. */
+.stepsSection {
+  min-height: 0;
+  padding-block: calc(var(--space-12) + var(--slant)) calc(var(--space-12) + var(--slant));
+}
+
 .steps {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
-  gap: var(--space-8);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--space-6) var(--space-8);
 }
 
 .step {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  padding-top: var(--space-5);
-  border-top: 2px solid var(--color-border-strong);
+  gap: var(--space-3);
 }
 
+/* The rule belongs between the step's name and its explanation, not above
+   the pair, so it reads as underlining the step rather than capping it. */
 .stepTitle {
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--color-border-strong);
   font-size: var(--text-lg);
 }
 
 .stepText {
   color: var(--color-text-muted);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
+  text-wrap: pretty;
+}
+
+/* Latest projects */
+
+/* The closing section: no slab, so the cards sit straight on the page and
+   the Earth keeps drifting behind them, and no slanted edge either, because
+   it ends onto the footer's rounded top. */
+.projectsSection {
+  min-height: 0;
+  padding-block: var(--space-12) var(--space-16);
+}
+
+.projectGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: var(--space-4);
+}
+
+.projectItem {
+  display: flex;
+}
+
+.projectItem > * {
+  flex: 1;
 }

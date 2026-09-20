@@ -4,27 +4,31 @@
   gap: var(--space-2);
 }
 
+/* No frame around the mark: on the footer's solid blue a box reads as a
+   sticker. The lift and the colour carry the hover instead. */
+/*
+ * No frame around the mark: on the footer's solid blue a box reads as a
+ * sticker. Hover tips the mark forward like a coin, the same move the
+ * GitHub credit in the header makes, and lights it white.
+ */
 .link {
   position: relative;
   display: grid;
   place-items: center;
   width: 2rem;
   height: 2rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
   color: var(--color-text-subtle);
+  transform: perspective(260px) rotateX(0deg) translate3d(0, 0, 0);
+  transform-origin: 50% 0;
   transition:
-    border-color var(--duration-fast) var(--ease-out),
-    border-radius var(--duration-shape) var(--ease-out),
     color var(--duration-fast) var(--ease-out),
-    translate var(--duration-fast) var(--ease-out);
+    transform 180ms var(--ease-out);
 }
 
-.link:hover {
-  border-radius: var(--radius-leaf-sm);
-  border-color: var(--color-accent);
-  color: var(--color-accent-text);
-  translate: 0 -2px;
+.link:hover,
+.link:focus-visible {
+  color: #fff;
+  transform: perspective(260px) rotateX(8deg) translate3d(0, 2px, 30px);
 }
 
 /* Anchored to the button's right edge: it belongs to the last link, which

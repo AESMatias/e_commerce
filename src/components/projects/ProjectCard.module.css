@@ -1,0 +1,211 @@
+/*
+ * A recent-work card, deliberately unlike the package cards: there the
+ * content sits on a plain surface and the border lights up; here the card is
+ * a framed photo with the text overlaid on it, squared off rather than
+ * rounded.
+ *
+ * At rest the photo is zoomed in and dimmed; on hover it pulls back to its
+ * natural size and brightens, so hovering reveals more of the picture.
+ */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  /* Close to square: the photo needs room above the text block. */
+  aspect-ratio: 1 / 1;
+  min-height: 20rem;
+  padding: var(--space-5);
+  border-radius: 4px;
+
+  /* The frame: the photo inside must never spill past these edges. */
+  overflow: hidden;
+  isolation: isolate;
+  background-color: #0b1020;
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    box-shadow 420ms var(--ease-out),
+    translate 420ms var(--ease-out);
+}
+
+.card:hover,
+.card:focus-within {
+  translate: 0 -4px;
+  box-shadow: var(--shadow-lift);
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--photo);
+  background-position: center;
+  background-size: cover;
+
+  /* Zoomed in and held back at rest, so there is somewhere to pull back to. */
+  scale: 1.16;
+  filter: brightness(0.72) saturate(0.92);
+  transition:
+    scale 620ms var(--ease-out),
+    filter 420ms var(--ease-out);
+  will-change: scale;
+}
+
+.card:hover .photo,
+.card:focus-within .photo {
+  scale: 1;
+  filter: brightness(1.04) saturate(1.05);
+}
+
+/* The gradient shade over the photo: dark at the foot where the text sits,
+   clearing towards the top. It lifts a little on hover along with the photo. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: linear-gradient(
+    to top,
+    rgb(2 4 10 / 96%) 0%,
+    rgb(2 4 10 / 94%) 38%,
+    rgb(2 4 10 / 72%) 50%,
+    rgb(2 4 10 / 26%) 78%,
+    rgb(2 4 10 / 4%) 100%
+  );
+  transition: opacity 420ms var(--ease-out);
+}
+
+.card:hover .scrim,
+.card:focus-within .scrim {
+  opacity: 0.94;
+}
+
+.body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  color: #f8fafc;
+}
+
+/* The technologies the project was built with, as marks rather than words;
+   each one names itself when the pointer rests on it. */
+.tech {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.techItem {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 4px;
+  background-color: rgb(255 255 255 / 10%);
+  backdrop-filter: blur(4px);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+.techItem:hover {
+  border-color: currentColor;
+  background-color: rgb(255 255 255 / 18%);
+}
+
+/* Each mark in its technology's own colour, so the row reads as logos. */
+.techItem[data-tech="next"] {
+  color: #f8fafc;
+}
+
+.techItem[data-tech="react"] {
+  color: #61dafb;
+}
+
+.techItem[data-tech="stripe"] {
+  color: #a5a0ff;
+}
+
+.techItem[data-tech="python"] {
+  color: #ffd43b;
+}
+
+.techItem[data-tech="postgres"] {
+  color: #7cb6e8;
+}
+
+.techItem[data-tech="whatsapp"] {
+  color: #25d366;
+}
+
+.techItem[data-tech="openai"] {
+  color: #4ade80;
+}
+
+.techItem[data-tech="shopify"] {
+  color: #a7d95e;
+}
+
+.techItem[data-tech="chart"] {
+  color: #93c5fd;
+}
+
+/* The name, tucked above its mark until the pointer arrives. */
+.techName {
+  position: absolute;
+  bottom: calc(100% + 0.35rem);
+  left: 50%;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  background-color: rgb(8 12 24 / 92%);
+  color: #f1f5f9;
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  translate: -50% 4px;
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    translate var(--duration-fast) var(--ease-out);
+}
+
+.techItem:hover .techName {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+.name {
+  font-size: var(--text-lg);
+  line-height: 1.2;
+}
+
+.summary {
+  color: rgb(248 250 252 / 88%);
+  font-size: var(--text-base);
+  text-wrap: pretty;
+}
+
+/* Phones: wide and short, so several projects fit on one screen instead of
+   one square filling it. */
+@media (width < 44rem) {
+  .card {
+    aspect-ratio: auto;
+    min-height: 13rem;
+    padding: var(--space-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo {
+    transition: none;
+  }
+
+  .card:hover .photo,
+  .card:focus-within .photo {
+    scale: 1.16;
+  }
+}

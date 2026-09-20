@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import styles from "./EarthBackdrop.module.css";
 
-const SCROLL_STEP_PX = 16;
+const SCROLL_STEP_PX = 13.33;
 
 /**
  * Fixed Earth backdrop (NASA imagery) that drifts and turns on its axis as

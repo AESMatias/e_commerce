@@ -5,7 +5,9 @@ import { EarthBackdrop } from "@/components/visuals/EarthBackdrop";
 import { EarthHero } from "@/components/visuals/EarthHero";
 import { FloatingObject } from "@/components/visuals/FloatingObject";
 import { HeroTitle } from "@/components/visuals/HeroTitle";
+import { Reveal } from "@/components/visuals/Reveal";
 import { ScrollToTop } from "@/components/visuals/ScrollToTop";
+import { ProjectCard } from "@/components/projects/ProjectCard";
 import { ServiceCard } from "@/components/services/ServiceCard";
 import { Button } from "@/components/ui/Button";
 import { getDictionary } from "@/i18n/server";
@@ -49,53 +51,91 @@ export default async function HomePage() {
       <section id="advisor" className={`${styles.sectionAlt} ${styles.advisorSection}`}>
         <Container className={styles.advisorLayout}>
           <header className={styles.artHeader}>
-            <FloatingObject name="robot" className={styles.artObject} />
-            <div className={styles.artIntro}>
+            <Reveal from="right" className={styles.artObject}>
+              <FloatingObject name="robot" />
+            </Reveal>
+            <Reveal from="left" className={styles.artIntro}>
               <h2 className={text.heading}>{t.home.advisorTitle}</h2>
               <p className={text.lead}>{t.home.advisorLead}</p>
-            </div>
+            </Reveal>
           </header>
-          <AdvisorChat />
+          <Reveal from="right">
+            <AdvisorChat />
+          </Reveal>
         </Container>
       </section>
 
       <section id="services" className={styles.section}>
         <Container>
           <header className={styles.artHeader}>
-            <FloatingObject name="parcel" className={styles.artObject} />
-            <div className={styles.artIntro}>
+            <Reveal from="right" className={styles.artObject}>
+              <FloatingObject name="parcel" />
+            </Reveal>
+            <Reveal from="left" className={styles.artIntro}>
               <h2 className={text.heading}>{t.home.servicesTitle}</h2>
-              <p className={text.lead}>{t.home.servicesLead}</p>
-            </div>
+            </Reveal>
           </header>
 
           <ul role="list" className={styles.grid}>
-            {services.map((service) => (
-              <li key={service.slug} className={styles.gridItem}>
+            {services.map((service, index) => (
+              <Reveal
+                key={service.slug}
+                as="li"
+                from="up3d"
+                delay={index * 90}
+                className={styles.gridItem}
+              >
                 <ServiceCard service={service} />
-              </li>
+              </Reveal>
             ))}
           </ul>
         </Container>
       </section>
 
-      <section id="how-it-works" className={styles.sectionAlt}>
+      <section id="how-it-works" className={`${styles.sectionAlt} ${styles.stepsSection}`}>
         <Container>
-          <header className={styles.sectionHeader}>
+          <Reveal from="left" as="header" className={`${styles.sectionHeader} ${styles.centeredHeader}`}>
             <h2 className={text.heading}>{t.home.stepsTitle}</h2>
-          </header>
+          </Reveal>
 
           <ol role="list" className={styles.steps}>
-            {t.home.steps.map((step) => (
-              <li key={step.title} className={styles.step}>
+            {t.home.steps.map((step, index) => (
+              <Reveal
+                key={step.title}
+                as="li"
+                from="right"
+                delay={index * 110}
+                className={styles.step}
+              >
                 <h3 className={styles.stepTitle}>{step.title}</h3>
                 <p className={styles.stepText}>{step.description}</p>
-              </li>
+              </Reveal>
             ))}
           </ol>
         </Container>
       </section>
 
+      <section id="projects" className={`${styles.section} ${styles.projectsSection}`}>
+        <Container>
+          <Reveal as="header" className={`${styles.sectionHeader} ${styles.centeredHeader}`}>
+            <h2 className={text.heading}>{t.home.projectsTitle}</h2>
+          </Reveal>
+
+          <ul role="list" className={styles.projectGrid}>
+            {t.home.projects.map((project, index) => (
+              <Reveal
+                key={project.name}
+                as="li"
+                from="up3d"
+                delay={index * 110}
+                className={styles.projectItem}
+              >
+                <ProjectCard project={project} />
+              </Reveal>
+            ))}
+          </ul>
+        </Container>
+      </section>
     </>
   );
 }

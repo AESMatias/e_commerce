@@ -18,6 +18,12 @@
   line-height: 1.15;
 }
 
+/*
+ * The mark behaves like a coin standing on the page: hover tips its bottom
+ * edge towards the viewer and brings it forward, so the lower half grows
+ * while the top stays put. The perspective must live on the element itself,
+ * because its parent is a plain inline row.
+ */
 .mark {
   position: relative;
   display: grid;
@@ -26,10 +32,11 @@
   height: 1.5rem;
   border-radius: var(--radius-full);
   color: color-mix(in srgb, #fff calc(var(--bar-p, 0) * 100%), var(--color-text-muted));
+  transform: perspective(240px) rotateX(0deg) translateZ(0);
+  transform-origin: 50% 0;
   transition:
     color var(--duration-base) var(--ease-out),
-    rotate var(--duration-base) var(--ease-out),
-    scale var(--duration-base) var(--ease-out);
+    transform 180ms var(--ease-out);
 }
 
 /* A ring of light that keeps circling the mark. */
@@ -68,14 +75,18 @@
   transition: color var(--duration-fast) var(--ease-out);
 }
 
-/* On the blue scrolled bar everything switches to white. */
+/* Tipped forward and pulled towards the viewer, not spun. */
 .link:hover .mark {
-  rotate: 18deg;
-  scale: 1.28;
+  transform: perspective(240px) rotateX(8deg) translate3d(0, 2px, 26px);
 }
 
-.link:hover .name {
-  color: #8fc4ff;
+/* The hover lights everything white rather than blue. Off the blue bar it
+   falls back to the page's own text colour, which is what the rest of the
+   header does too. */
+.link:hover .mark,
+.link:hover .name,
+.link:hover {
+  color: color-mix(in srgb, #fff calc(var(--bar-p, 0) * 100%), var(--color-text));
 }
 
 @keyframes orbit {

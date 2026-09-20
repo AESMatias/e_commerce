@@ -1,0 +1,50 @@
+/*
+ * Scroll reveal. The element waits just off its resting place and slides in
+ * the first time it comes into view, the way the hero's Earth arrives on
+ * load. Each direction is only a different starting offset, so one
+ * transition covers them all.
+ */
+.reveal {
+  --shift: 2.5rem;
+
+  opacity: 0;
+  transition:
+    opacity 760ms var(--ease-out),
+    transform 760ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.left {
+  transform: translate3d(calc(var(--shift) * -1), 0, 0);
+}
+
+.right {
+  transform: translate3d(var(--shift), 0, 0);
+}
+
+.up {
+  transform: translate3d(0, var(--shift), 0);
+}
+
+/* The cards rise and tip back towards the page, so they read as coming
+   forward out of it rather than merely sliding. */
+.up3d {
+  transform: perspective(900px) translate3d(0, calc(var(--shift) * 1.4), -120px) rotateX(12deg);
+  transform-origin: 50% 100%;
+}
+
+.reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Without JavaScript, or when motion is unwelcome, everything is simply
+   there: the content must never depend on the animation having run. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

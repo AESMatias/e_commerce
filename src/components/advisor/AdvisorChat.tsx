@@ -74,11 +74,6 @@ export function AdvisorChat() {
       data-busy={isGlowing ? "true" : undefined}
       onAnimationIteration={handleAnimationIteration}
     >
-      <div className={styles.header}>
-        <span className={styles.status} aria-hidden="true" />
-        {t.advisor.title}
-      </div>
-
       <div className={styles.messages} ref={scrollRef} aria-live="polite" aria-label={t.advisor.conversation}>
         {messages.length === 0 && (
           <div className={styles.empty}>

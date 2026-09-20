@@ -49,25 +49,46 @@ export const es: Dictionary = {
     advisorLead:
       "Describe el problema de tu negocio y el asesor IA te recomienda un paquete del catálogo, con su precio, plazo y lo que incluye. No necesitas crear una cuenta.",
     servicesTitle: "Elige el paquete que se ajusta a tu negocio",
-    servicesLead:
-      "Cada servicio viene en tres niveles con alcance, plazo y precio definidos. Compáralos para ver exactamente qué incluye cada uno.",
-    stepsTitle: "De la idea a la llamada inicial en cuatro pasos",
+    stepsTitle: "Cómo empezamos, en tres pasos",
     steps: [
       {
         title: "Describe tu proyecto",
-        description: "Cuéntale al asesor IA el problema de tu negocio y recibe el paquete que mejor se ajusta.",
+        description:
+          "Cuéntale tu problema de negocio a nuestro asesor con IA y recibe el paquete que mejor encaja, con su precio y plazo.",
       },
       {
-        title: "Agenda una llamada inicial",
-        description: "Elige una fecha y hora disponibles para una llamada uno a uno donde definimos los detalles.",
+        title: "Agenda la llamada inicial",
+        description:
+          "Elige una fecha y hora disponibles para una llamada uno a uno donde definimos los detalles juntos.",
       },
       {
-        title: "Asegura tu lugar",
-        description: "Paga el anticipo de forma segura con Stripe para confirmar tu reserva.",
+        title: "Confirma y lo construimos",
+        description:
+          "Paga el anticipo de forma segura con Stripe y entregamos con alcance fijo, con avances en cada hito.",
+      },
+    ],
+    projectsTitle: "Últimos proyectos",
+    projects: [
+      {
+        name: "Nordic Supply Co.",
+        summary:
+          "Un taller de muebles pasó de un catálogo en PDF a una tienda completa con stock, franjas de entrega y pago con tarjeta.",
+        image: "https://picsum.photos/seed/nordic-storefront/900/900",
+        tech: ["next", "stripe", "shopify"] as const,
       },
       {
-        title: "Lo construimos",
-        description: "Entregamos con alcance y plazo fijos, con avances en cada hito.",
+        name: "Asistente de triaje",
+        summary:
+          "Un asistente que lee los mensajes que entran, responde los de siempre y pasa el resto a una persona con el contexto ya resumido.",
+        image: "https://picsum.photos/seed/triage-assistant/900/900",
+        tech: ["python", "whatsapp", "openai"] as const,
+      },
+      {
+        name: "Inteligencia de precios",
+        summary:
+          "Un scraper semanal y un panel que siguen los precios de la competencia en once tiendas, con alertas cuando una línea se mueve de golpe.",
+        image: "https://picsum.photos/seed/price-intelligence/900/900",
+        tech: ["python", "postgres", "chart"] as const,
       },
     ],
   },
@@ -126,7 +147,7 @@ export const es: Dictionary = {
     notFoundTitle: "Paquete no encontrado",
     metaTitle: "Agendar llamada inicial · {name}",
     back: "← Volver a los paquetes",
-    title: "Agenda tu llamada inicial",
+    title: "Agenda tu llamada",
     subtitle:
       "Una llamada de 30 minutos para definir tu proyecto. Tu horario queda confirmado cuando se paga el anticipo.",
     selection: "Tu selección",
