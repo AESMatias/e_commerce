@@ -1,7 +1,8 @@
 # Wholeheartedly
 
 ## YouTube Video
-[![Alt text](https://https://img.youtube.com/vi/Y6AV1TaSasY/0.jpg)](https://www.youtube.com/watch?v=Y6AV1TaSasY)
+[![Alt text](https://img.youtube.com/vi/Y6AV1TaSasY/0.jpg)](https://www.youtube.com/watch?v=Y6AV1TaSasY)
+
 Productized development services website. An AI advisor recommends a service package,
 the client books a kickoff call and pays a deposit through Stripe (test mode).
 
