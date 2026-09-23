@@ -78,7 +78,13 @@
   opacity: var(--cta-glow, 0);
   transition:
     opacity 420ms var(--ease-out),
-    background-position 300ms var(--ease-out);
+    background-position 280ms var(--ease-out);
+
+  /* Animating a background repaints the element every frame. Saying so up
+     front lets the browser keep this plate on its own raster layer, so the
+     wipe runs as smoothly here as it does on the hero buttons, where the
+     layer sits on a small element with nothing else animating over it. */
+  will-change: background-position;
 }
 
 /* Title row */
