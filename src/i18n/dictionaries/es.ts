@@ -69,7 +69,49 @@ export const es: Dictionary = {
       },
     ],
     projectsTitle: "Últimos proyectos",
+    projectDetails: {
+      open: "Ver proyecto",
+      highlights: "Lo destacado",
+      builtWith: "Hecho con",
+      visitSite: "Visitar la web",
+      viewCode: "Ver el código",
+    },
     projects: [
+      {
+        name: "Extracta",
+        summary:
+          "Un SaaS de extracción de documentos con IA: sube PDFs, imágenes o facturas electrónicas XML y obtén datos limpios, gráficos y exportaciones a Excel, CSV o JSON.",
+        description:
+          "Un producto completo, diseñado, construido y funcionando en producción: cuentas con inicio de sesión de Google, planes por página con PayPal, un panel de administración y una cola que lee cada documento con Gemini y valida el resultado contra un esquema estricto antes de mostrarlo.",
+        highlights: [
+          "Diez tipos de documento en cualquier idioma: facturas, boletas, contratos, cartolas, liquidaciones de sueldo y más",
+          "PDFs, escaneos, fotos del celular y facturas electrónicas XML (DTE chileno, CFDI mexicano, UBL), leídos con la visión de la IA en vez de OCR en el servidor",
+          "Precios por página con suscripciones de PayPal, paquetes de páginas y webhooks verificados",
+          "Seguridad desde el diseño: protección contra bombas de descompresión y ataques XML, seguridad por fila y ubicación borrada de las fotos",
+          "Flask, Celery y Redis en Docker sobre un servidor de 2 GB, desplegado desde GitHub en cada push con reversión automática",
+        ],
+        image: "/projects/extracta.webp",
+        tech: ["next", "python", "postgres", "openai"] as const,
+        url: "https://pdf.rapidmov.online",
+        repo: "https://github.com/AESMatias/Extracta",
+      },
+      {
+        name: "Popular Video Fetcher",
+        summary:
+          "Los videos de YouTube en tendencia, recopilados cada día, cada uno con una descripción nueva escrita por IA.",
+        description:
+          "Un sitio rápido y pensado para buscadores, hecho con Astro y React. Cada mañana una tarea programada trae los videos más populares desde la API de YouTube, una IA reescribe cada descripción y se publica una página por video.",
+        highlights: [
+          "Ejecución diaria en GitHub Actions: API de YouTube, luego la IA y luego un sitio nuevo",
+          "Una descripción nueva para cada video, escrita con OpenAI",
+          "Una página indexable por video, con paginación pensada para SEO",
+          "Grilla CSS responsiva de tarjetas de video",
+        ],
+        image: "/projects/video-fetcher.webp",
+        tech: ["astro", "react", "python", "openai"] as const,
+        url: "https://videos.rapidmov.online",
+        repo: "https://github.com/AESMatias/Youtube-Popular-Video-Fetcher",
+      },
       {
         name: "Nordic Supply Co.",
         summary:

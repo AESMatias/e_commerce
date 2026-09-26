@@ -76,7 +76,49 @@ export const en = {
       },
     ],
     projectsTitle: "Latest projects",
+    projectDetails: {
+      open: "View project",
+      highlights: "Highlights",
+      builtWith: "Built with",
+      visitSite: "Visit website",
+      viewCode: "View code",
+    },
     projects: [
+      {
+        name: "Extracta",
+        summary:
+          "An AI document-extraction SaaS: upload PDFs, images or XML e-invoices and get clean data, charts and Excel, CSV or JSON exports.",
+        description:
+          "A complete product, designed, built and running in production: accounts with Google sign-in, per-page plans with PayPal, an admin panel, and a queue that reads each document with Gemini and checks the result against a strict schema before anyone sees it.",
+        highlights: [
+          "Ten document types in any language: invoices, receipts, contracts, bank statements, payslips and more",
+          "PDFs, scans, phone photos and XML e-invoices (Chile's DTE, Mexico's CFDI, UBL), read by the AI's vision instead of server-side OCR",
+          "Per-page pricing with PayPal subscriptions, page packs and verified webhooks",
+          "Security by design: decompression-bomb and XML attack protection, row level security, location data stripped from photos",
+          "Flask, Celery and Redis in Docker on a 2 GB server, deployed from GitHub on every push with automatic rollback",
+        ],
+        image: "/projects/extracta.webp",
+        tech: ["next", "python", "postgres", "openai"] as const,
+        url: "https://pdf.rapidmov.online",
+        repo: "https://github.com/AESMatias/Extracta",
+      },
+      {
+        name: "Popular Video Fetcher",
+        summary:
+          "Trending YouTube videos collected every day, each with a new description written by AI.",
+        description:
+          "A fast, search-friendly site in Astro and React. Every morning a scheduled job pulls the most popular videos from the YouTube Data API, has an AI model rewrite each description, and publishes a page per video.",
+        highlights: [
+          "Daily run on GitHub Actions: YouTube Data API, then the AI, then a fresh build",
+          "A new description for every video, written with OpenAI",
+          "One indexable page per video, with pagination built for SEO",
+          "Responsive CSS grid of video cards",
+        ],
+        image: "/projects/video-fetcher.webp",
+        tech: ["astro", "react", "python", "openai"] as const,
+        url: "https://videos.rapidmov.online",
+        repo: "https://github.com/AESMatias/Youtube-Popular-Video-Fetcher",
+      },
       {
         name: "Nordic Supply Co.",
         summary:

@@ -463,22 +463,25 @@
   padding-block: var(--space-12) var(--space-16);
 }
 
-/* Same reasoning as the steps: three projects have no two-column shape, so
-   below the desktop width they stack one under the other. */
+/* Same reasoning as the steps: projects have no good two-column shape, so
+   below the desktop width they stack one under the other. On desktop they go
+   three per row, and an incomplete last row is centred. */
 .projectGrid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: var(--space-4);
-}
-
-@media (width >= 64rem) {
-  .projectGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 
 .projectItem {
   display: flex;
+  width: 100%;
+}
+
+@media (width >= 64rem) {
+  .projectItem {
+    width: calc((100% - 2 * var(--space-4)) / 3);
+  }
 }
 
 .projectItem > * {
