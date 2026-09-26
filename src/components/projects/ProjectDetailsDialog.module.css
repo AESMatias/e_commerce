@@ -1,0 +1,141 @@
+/*
+ * A project's details, opened from its card. Same dialog as the package
+ * comparison; the screenshot on top sits in a browser-window frame so it
+ * reads as the live site rather than as decoration.
+ */
+.content {
+  gap: var(--space-5);
+}
+
+.frame {
+  /* The dialog is a flex column that scrolls: without this the screenshot
+     would be squashed instead of the dialog scrolling. */
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: #0b1020;
+}
+
+.frameBar {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface-raised);
+}
+
+.frameDot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background-color: rgb(148 163 184 / 45%);
+}
+
+.shot {
+  aspect-ratio: 16 / 10;
+  background-image: var(--shot);
+  background-position: top center;
+  background-size: cover;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.subheading {
+  font-size: var(--text-base);
+}
+
+.highlights {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.highlight {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.checkIcon {
+  flex-shrink: 0;
+  margin-top: 0.2em;
+  color: var(--color-success);
+}
+
+.tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* The same marks as on the card, now with their names always shown. */
+.techItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background-color: var(--color-surface-soft);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+}
+
+.techItem[data-tech="next"] svg {
+  color: var(--color-text); /* Next.js is black on white or white on black */
+}
+
+.techItem[data-tech="react"] svg {
+  color: #61dafb;
+}
+
+.techItem[data-tech="stripe"] svg {
+  color: #a5a0ff;
+}
+
+.techItem[data-tech="python"] svg {
+  color: #ffd43b;
+}
+
+.techItem[data-tech="postgres"] svg {
+  color: #7cb6e8;
+}
+
+.techItem[data-tech="whatsapp"] svg {
+  color: #25d366;
+}
+
+.techItem[data-tech="openai"] svg {
+  color: #4ade80;
+}
+
+.techItem[data-tech="shopify"] svg {
+  color: #a7d95e;
+}
+
+.techItem[data-tech="chart"] svg {
+  color: #93c5fd;
+}
+
+.techItem[data-tech="astro"] svg {
+  color: #ff7a3d;
+}
+
+.link {
+  gap: var(--space-2);
+}
+
+/* Phones: the buttons stack at full width, the main one on top. */
+@media (width < 40rem) {
+  .footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+}

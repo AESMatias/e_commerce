@@ -11,6 +11,7 @@ export const techLabels: Record<TechName, string> = {
   openai: "AI model",
   shopify: "Storefront",
   chart: "Dashboard",
+  astro: "Astro",
 };
 
 /**
@@ -77,6 +78,13 @@ const glyphs: Record<TechName, React.ReactNode> = {
     <>
       <rect x="3" y="4" width="18" height="16" rx="2.5" />
       <path d="M7.5 15.5v-3M12 15.5v-6M16.5 15.5v-4.5" />
+    </>
+  ),
+  astro: (
+    <>
+      <path d="M8.6 15.2 11.2 4.6c.2-.8 1.4-.8 1.6 0l2.6 10.6" />
+      <path d="M8.6 15.2c1 .8 2.2 1.2 3.4 1.2s2.4-.4 3.4-1.2" />
+      <path d="M10.2 18.4c.4 1.4 1 2.4 1.8 3 .8-.6 1.4-1.6 1.8-3" />
     </>
   ),
 };
