@@ -12,6 +12,7 @@ export const techLabels: Record<TechName, string> = {
   shopify: "Storefront",
   chart: "Dashboard",
   astro: "Astro",
+  rust: "Rust",
 };
 
 /**
@@ -78,6 +79,13 @@ const glyphs: Record<TechName, React.ReactNode> = {
     <>
       <rect x="3" y="4" width="18" height="16" rx="2.5" />
       <path d="M7.5 15.5v-3M12 15.5v-6M16.5 15.5v-4.5" />
+    </>
+  ),
+  rust: (
+    <>
+      <circle cx="12" cy="12" r="6.6" />
+      <path d="M12 2.8v2.6M12 18.6v2.6M2.8 12h2.6M18.6 12h2.6M5.5 5.5l1.8 1.8M16.7 16.7l1.8 1.8M5.5 18.5l1.8-1.8M16.7 7.3l1.8-1.8" />
+      <path d="M9.6 15V9h3a1.6 1.6 0 0 1 0 3.2h-3M12.6 12.2 14.4 15" />
     </>
   ),
   astro: (
