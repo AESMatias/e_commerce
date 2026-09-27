@@ -82,6 +82,7 @@ export const en = {
       builtWith: "Built with",
       visitSite: "Visit website",
       viewCode: "View code",
+      openImage: "Open full size",
     },
     projects: [
       {
@@ -103,6 +104,24 @@ export const en = {
         repo: "https://github.com/AESMatias/Extracta",
       },
       {
+        name: "AQP Engine",
+        summary:
+          "A Rust proxy for PostgreSQL that answers dashboard aggregates in milliseconds from a live in-memory sample, with an honest error margin.",
+        description:
+          "An Approximate Query Processing engine written in Rust. It speaks PostgreSQL's own protocol, so psql, BI tools and drivers connect unchanged: exact queries pass straight through, while AVG, SUM, COUNT and COUNT(DISTINCT), with WHERE and GROUP BY, are estimated from a random sample kept in step with the table, and every answer says how far off it can be. A working prototype, verified end to end in a local lab.",
+        highlights: [
+          "Up to 3,839x faster than PostgreSQL on a 5-million-row table: COUNT(DISTINCT) in 0.48 ms instead of 1.8 s",
+          "Errors of 0.14% to 2.28%, every answer with its 95% confidence margin (Central Limit Theorem and HyperLogLog)",
+          "Live: follows every INSERT, UPDATE and DELETE through a replication slot, reflected within seconds",
+          "PostgreSQL wire protocol with TLS and SCRAM authentication; exact queries pass through untouched",
+          "Crash-safe snapshots: restarts in 0.2 s instead of scanning the table again",
+        ],
+        image: "/projects/aqp-architecture.webp",
+        imageKind: "diagram" as const,
+        tech: ["rust", "postgres"] as const,
+        repo: "https://github.com/AESMatias/AQP-Engine",
+      },
+      {
         name: "Popular Video Fetcher",
         summary:
           "Trending YouTube videos collected every day, each with a new description written by AI.",
@@ -118,27 +137,6 @@ export const en = {
         tech: ["astro", "react", "python", "openai"] as const,
         url: "https://videos.rapidmov.online",
         repo: "https://github.com/AESMatias/Youtube-Popular-Video-Fetcher",
-      },
-      {
-        name: "Nordic Supply Co.",
-        summary:
-          "A furniture workshop moved from a catalogue PDF to a full storefront with stock, delivery slots and card payments.",
-        image: "https://picsum.photos/seed/nordic-storefront/900/900",
-        tech: ["next", "stripe", "shopify"] as const,
-      },
-      {
-        name: "Client triage assistant",
-        summary:
-          "An assistant that reads incoming messages, answers the routine ones and hands the rest to a person with the context already summarised.",
-        image: "https://picsum.photos/seed/triage-assistant/900/900",
-        tech: ["python", "whatsapp", "openai"] as const,
-      },
-      {
-        name: "Retail price intelligence",
-        summary:
-          "A weekly scraper and dashboard tracking competitor pricing across eleven stores, with alerts when a line moves sharply.",
-        image: "https://picsum.photos/seed/price-intelligence/900/900",
-        tech: ["python", "postgres", "chart"] as const,
       },
     ],
   },

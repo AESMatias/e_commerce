@@ -32,6 +32,39 @@
   background-color: rgb(148 163 184 / 45%);
 }
 
+/* A diagram keeps its whole shape: contained, on the colour it was drawn on. */
+.diagram {
+  aspect-ratio: 1 / 1;
+  background-color: #0d1117;
+  background-image: var(--shot);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.frameLink {
+  position: relative;
+  display: block;
+}
+
+.openFull {
+  position: absolute;
+  right: var(--space-2);
+  bottom: var(--space-2);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  background-color: rgb(8 12 24 / 85%);
+  color: #f1f5f9;
+  font-size: var(--text-xs);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.frameLink:hover .openFull,
+.frameLink:focus-visible .openFull {
+  opacity: 1;
+}
+
 .shot {
   aspect-ratio: 16 / 10;
   background-image: var(--shot);
@@ -126,6 +159,10 @@
 
 .techItem[data-tech="astro"] svg {
   color: #ff7a3d;
+}
+
+.techItem[data-tech="rust"] svg {
+  color: #f0a36b;
 }
 
 .link {

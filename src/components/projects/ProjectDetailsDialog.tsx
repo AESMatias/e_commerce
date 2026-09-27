@@ -11,18 +11,32 @@ import {
   DialogTitle,
 } from "@/components/ui/Dialog";
 import { useI18n } from "@/i18n/I18nProvider";
+import { cx } from "@/lib/cx";
 import type { Project } from "@/types/projects";
 import { TechIcon, techLabels } from "./TechIcon";
 import styles from "./ProjectDetailsDialog.module.css";
 
-/** The screenshot at the top of the details, framed like a browser window. */
-function Shot({ image, name }: { image: string; name: string }) {
+/**
+ * The picture in the details. A screenshot fills a browser-window frame; a
+ * diagram is shown whole, never cropped, and opens full size in a new tab.
+ */
+function Shot({ project, openLabel }: { project: Project; openLabel: string }) {
   const ref = useRef<HTMLDivElement>(null);
+  const diagram = project.imageKind === "diagram";
 
   // Same as the card: the URL is data, so it is set here, not in the stylesheet.
   useEffect(() => {
-    ref.current?.style.setProperty("--shot", `url("${image}")`);
-  }, [image]);
+    ref.current?.style.setProperty("--shot", `url("${project.image}")`);
+  }, [project.image]);
+
+  if (diagram) {
+    return (
+      <a className={cx(styles.frame, styles.frameLink)} href={project.image} target="_blank" rel="noopener" aria-label={openLabel}>
+        <div ref={ref} className={styles.diagram} role="img" aria-label={project.name} />
+        <span className={styles.openFull}>{openLabel}</span>
+      </a>
+    );
+  }
 
   return (
     <div className={styles.frame}>
@@ -31,7 +45,7 @@ function Shot({ image, name }: { image: string; name: string }) {
         <span className={styles.frameDot} />
         <span className={styles.frameDot} />
       </div>
-      <div ref={ref} className={styles.shot} role="img" aria-label={name} />
+      <div ref={ref} className={styles.shot} role="img" aria-label={project.name} />
     </div>
   );
 }
@@ -52,7 +66,7 @@ export function ProjectDetailsDialog({ project }: { project: Project }) {
         <DialogDescription>{project.description ?? project.summary}</DialogDescription>
       </DialogHeader>
 
-      <Shot image={project.image} name={project.name} />
+      <Shot project={project} openLabel={labels.openImage} />
 
       {project.highlights && project.highlights.length > 0 && (
         <section className={styles.section}>

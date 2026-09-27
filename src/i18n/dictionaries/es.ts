@@ -75,6 +75,7 @@ export const es: Dictionary = {
       builtWith: "Hecho con",
       visitSite: "Visitar la web",
       viewCode: "Ver el código",
+      openImage: "Abrir en tamaño completo",
     },
     projects: [
       {
@@ -96,6 +97,24 @@ export const es: Dictionary = {
         repo: "https://github.com/AESMatias/Extracta",
       },
       {
+        name: "AQP Engine",
+        summary:
+          "Un proxy en Rust para PostgreSQL que responde los agregados de un dashboard en milisegundos desde una muestra en memoria siempre al día, con un margen de error honesto.",
+        description:
+          "Un motor de consultas aproximadas (Approximate Query Processing) escrito en Rust. Habla el protocolo propio de PostgreSQL, así que psql, las herramientas de BI y los drivers se conectan sin cambios: las consultas exactas pasan directo, mientras que AVG, SUM, COUNT y COUNT(DISTINCT), con WHERE y GROUP BY, se estiman desde una muestra aleatoria sincronizada con la tabla, y cada respuesta dice cuánto se puede equivocar. Un prototipo funcional, verificado de punta a punta en un laboratorio local.",
+        highlights: [
+          "Hasta 3.839 veces más rápido que PostgreSQL en una tabla de 5 millones de filas: COUNT(DISTINCT) en 0,48 ms en vez de 1,8 s",
+          "Errores de 0,14% a 2,28%, cada respuesta con su margen de confianza del 95% (Teorema Central del Límite y HyperLogLog)",
+          "En vivo: sigue cada INSERT, UPDATE y DELETE mediante un replication slot y lo refleja en segundos",
+          "Protocolo de PostgreSQL con TLS y autenticación SCRAM; las consultas exactas pasan intactas",
+          "Snapshots a prueba de caídas: reinicia en 0,2 s en vez de volver a recorrer la tabla",
+        ],
+        image: "/projects/aqp-architecture.webp",
+        imageKind: "diagram" as const,
+        tech: ["rust", "postgres"] as const,
+        repo: "https://github.com/AESMatias/AQP-Engine",
+      },
+      {
         name: "Popular Video Fetcher",
         summary:
           "Los videos de YouTube en tendencia, recopilados cada día, cada uno con una descripción nueva escrita por IA.",
@@ -111,27 +130,6 @@ export const es: Dictionary = {
         tech: ["astro", "react", "python", "openai"] as const,
         url: "https://videos.rapidmov.online",
         repo: "https://github.com/AESMatias/Youtube-Popular-Video-Fetcher",
-      },
-      {
-        name: "Nordic Supply Co.",
-        summary:
-          "Un taller de muebles pasó de un catálogo en PDF a una tienda completa con stock, franjas de entrega y pago con tarjeta.",
-        image: "https://picsum.photos/seed/nordic-storefront/900/900",
-        tech: ["next", "stripe", "shopify"] as const,
-      },
-      {
-        name: "Asistente de triaje",
-        summary:
-          "Un asistente que lee los mensajes que entran, responde los de siempre y pasa el resto a una persona con el contexto ya resumido.",
-        image: "https://picsum.photos/seed/triage-assistant/900/900",
-        tech: ["python", "whatsapp", "openai"] as const,
-      },
-      {
-        name: "Inteligencia de precios",
-        summary:
-          "Un scraper semanal y un panel que siguen los precios de la competencia en once tiendas, con alertas cuando una línea se mueve de golpe.",
-        image: "https://picsum.photos/seed/price-intelligence/900/900",
-        tech: ["python", "postgres", "chart"] as const,
       },
     ],
   },

@@ -159,6 +159,10 @@
   color: #ff7a3d;
 }
 
+.techItem[data-tech="rust"] {
+  color: #f0a36b;
+}
+
 /* The name, tucked above its mark until the pointer arrives. */
 .techName {
   position: absolute;
