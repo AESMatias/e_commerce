@@ -169,6 +169,99 @@
   gap: var(--space-2);
 }
 
+/*
+ * The footer buttons wipe like the package dialog's: a slanted plate slides
+ * in from the left on hover (see ServiceDetailsDialog.module.css for how the
+ * 260% layer makes the slant). "Visit website" is the blue one with the pulse,
+ * "View code" the same wipe in GitHub's greys, "Close" the quiet one.
+ */
+.visit:is(a, button) {
+  --wipe-from: #1f4fc2;
+  --wipe-to: #6f9dff;
+  --wipe-fg: #fff;
+  --wipe-border: #6f9dff;
+
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  border-width: 0;
+}
+
+.code:is(a, button) {
+  --wipe-from: #1f2328;
+  --wipe-to: #57606a;
+  --wipe-fg: #fff;
+  --wipe-border: #57606a;
+}
+
+.dismiss:is(a, button) {
+  --wipe-from: var(--color-surface-soft);
+  --wipe-to: var(--color-surface-raised);
+  --wipe-fg: var(--color-text);
+  --wipe-border: var(--color-border-strong);
+}
+
+.visit:is(a, button),
+.code:is(a, button),
+.dismiss:is(a, button) {
+  background-image: linear-gradient(118deg, var(--wipe-from) 0 16%, var(--wipe-to) 50%, rgb(255 255 255 / 0%) 50%);
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    background-position 280ms var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    scale var(--duration-base) var(--ease-out),
+    color 160ms var(--ease-out);
+}
+
+.visit:is(a, button):hover,
+.visit:is(a, button):focus-visible,
+.code:is(a, button):hover,
+.code:is(a, button):focus-visible,
+.dismiss:is(a, button):hover,
+.dismiss:is(a, button):focus-visible {
+  scale: 1.03;
+  background-position: 0 0;
+  border-color: var(--wipe-border);
+  color: var(--wipe-fg);
+}
+
+/* The pulse inside "Visit website", as on the package dialog's "Continue". */
+.visit::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(circle at 50% 50%, #cfe4ff 0%, #60a5fa 45%, transparent 72%);
+  content: "";
+  opacity: 0;
+  animation: visit-pulse 2.4s var(--ease-out) infinite;
+}
+
+@keyframes visit-pulse {
+  0% {
+    opacity: 0;
+    scale: 0.2;
+  }
+
+  30% {
+    opacity: 0.85;
+  }
+
+  100% {
+    opacity: 0;
+    scale: 2.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visit::before {
+    animation: none;
+  }
+}
+
 /* Phones: the buttons stack at full width, the main one on top. */
 @media (width < 40rem) {
   .footer {
