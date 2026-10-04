@@ -33,6 +33,7 @@ export const en = {
     github: "on GitHub",
     x: "on X",
     facebook: "on Facebook",
+    youtube: "on YouTube",
     copyDiscord: "Copy Discord username",
     copied: "Copied",
   },
