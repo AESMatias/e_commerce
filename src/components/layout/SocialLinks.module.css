@@ -6,35 +6,39 @@
   gap: var(--space-2);
 }
 
-/* No frame around the mark: on the footer's solid blue a box reads as a
-   sticker. The lift and the colour carry the hover instead. */
 /*
- * No frame around the mark: on the footer's solid blue a box reads as a
- * sticker. Hover tips the mark forward like a coin, the same move the
- * GitHub credit in the header makes, and lights it white.
+ * Each mark sits in a small glass circle of fixed size, so nothing around it
+ * moves when it is hovered. The hover only lifts it two pixels and lights
+ * it up; there is no 3D tilt or scaling, which is what blurred the marks.
  */
 .link {
   position: relative;
   display: grid;
+  flex-shrink: 0;
   place-items: center;
   width: 2.5rem;
   height: 2.5rem;
-  color: var(--color-text-subtle);
-  transform: perspective(260px) rotateX(0deg) translate3d(0, 0, 0);
-  transform-origin: 50% 0;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 50%;
+  background-color: rgb(255 255 255 / 8%);
+  color: rgb(255 255 255 / 92%);
   transition:
     color var(--duration-fast) var(--ease-out),
-    transform 180ms var(--ease-out);
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    translate 180ms var(--ease-out);
 }
 
 .link:hover,
 .link:focus-visible {
+  border-color: rgb(255 255 255 / 40%);
+  background-color: rgb(255 255 255 / 18%);
   color: #fff;
-  transform: perspective(260px) rotateX(8deg) translate3d(0, 2px, 30px);
+  translate: 0 -2px;
 }
 
-/* Anchored to the button's right edge: it belongs to the last link, which
-   can sit near the screen edge on phones. */
+/* Anchored to the button's right edge, so on phones it grows towards the
+   middle of the row rather than past the screen edge. */
 .tooltip {
   position: absolute;
   right: 0;
