@@ -52,6 +52,38 @@
   font-weight: var(--weight-medium);
 }
 
+/* A fine film grain over the blue, so the band reads as a material rather
+   than a flat fill. It sits under the content thanks to the isolation above. */
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px;
+  mix-blend-mode: soft-light;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/*
+ * A worn bottom edge, like the foot of an old leather cover: the last few
+ * pixels lighten in soft, uneven patches and fade out going up, with no
+ * hard line anywhere.
+ */
+.footer::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 12px;
+  pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.16' numOctaves='4' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.85 0 0 0 0 0.91 0 0 0 0 1 0 0 0 1.5 -0.5'/%3E%3CfeGaussianBlur stdDeviation='0.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23w%29'/%3E%3C/svg%3E") left bottom / 240px 240px,
+    linear-gradient(to top, rgb(207 224 255 / 14%), transparent);
+  mask-image: linear-gradient(to top, #000, rgb(0 0 0 / 45%) 40%, transparent);
+  opacity: 0.4;
+}
+
 :global(html[data-theme="dark"]) .footer {
   --bar-end: #21509f;
   --bar-mid: #143172;
