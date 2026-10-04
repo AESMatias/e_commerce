@@ -97,6 +97,23 @@ export const es: Dictionary = {
         repo: "https://github.com/AESMatias/Extracta",
       },
       {
+        name: "OptiCompras",
+        summary:
+          "Un comparador de precios de supermercados en Chile: armas tu lista y te dice en qué supermercado cercano sale más barata.",
+        description:
+          "Un sitio en vivo, funcionando en producción. Cada madrugada un proceso automático recorre los catálogos online de seis supermercados chilenos a un ritmo pausado, guarda el precio de cada producto, reconoce el mismo producto en las distintas cadenas y publica el resultado antes de que salgas a comprar. Buscas o escaneas un código de barras, sumas productos a tu lista, eliges tus comunas y el optimizador de carrito calcula dónde te sale más barata la compra completa.",
+        highlights: [
+          "Más de 35.000 productos de Líder, Jumbo, Santa Isabel, Unimarc, Alvi y aCuenta, actualizados cada día",
+          "El mismo producto, de verdad: emparejado por código de barras (EAN), o por marca y tamaño solo cuando no hay dudas",
+          "Optimizador de carrito que prueba todas las combinaciones de hasta cinco supermercados, sumando despacho y montos mínimos",
+          "\"Ofertas reales\" detectadas contra el precio habitual de las últimas semanas, no contra un precio \"antes\" inflado",
+          "Escáner de código de barras en el navegador, histórico de precios y más de 1.000 sucursales filtradas por comuna",
+        ],
+        image: "/projects/opticompras.webp",
+        tech: ["astro", "chart"] as const,
+        url: "https://compras.rapidmov.online",
+      },
+      {
         name: "AQP Engine",
         summary:
           "Un proxy en Rust para PostgreSQL que responde los agregados de un dashboard en milisegundos desde una muestra en memoria siempre al día, con un margen de error honesto.",

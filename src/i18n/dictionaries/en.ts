@@ -104,6 +104,23 @@ export const en = {
         repo: "https://github.com/AESMatias/Extracta",
       },
       {
+        name: "OptiCompras",
+        summary:
+          "A grocery price comparator for Chile: build your shopping list and it tells you which nearby supermarket sells it cheapest.",
+        description:
+          "A live site, running in production. Every night an automated job walks the online catalogues of six Chilean supermarkets at a polite pace, saves the price of each product, recognises the same product across chains and publishes the result before anyone goes shopping. You search or scan a barcode, add items to your list, pick your communes, and the cart optimiser works out where the whole list costs least.",
+        highlights: [
+          "More than 35,000 products from Líder, Jumbo, Santa Isabel, Unimarc, Alvi and aCuenta, refreshed every day",
+          "The same product, for real: matched by barcode (EAN), or by brand and size only when there is no doubt",
+          "Cart optimiser that tries every combination of up to five supermarkets, adding delivery costs and minimum orders",
+          "\"Real deals\" spotted against each product's usual price over recent weeks, not the inflated \"before\" price",
+          "Barcode scanner in the browser, price history and over 1,000 stores filtered by commune",
+        ],
+        image: "/projects/opticompras.webp",
+        tech: ["astro", "chart"] as const,
+        url: "https://compras.rapidmov.online",
+      },
+      {
         name: "AQP Engine",
         summary:
           "A Rust proxy for PostgreSQL that answers dashboard aggregates in milliseconds from a live in-memory sample, with an honest error margin.",

@@ -52,6 +52,38 @@
   font-weight: var(--weight-medium);
 }
 
+/* A fine film grain over the blue, so the band reads as a material rather
+   than a flat fill. It sits under the content thanks to the isolation above. */
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px;
+  mix-blend-mode: soft-light;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/*
+ * The finish along the bottom edge, a quieter take on the riveted strip at
+ * the foot of game sites: a lit hairline that fades out towards the sides,
+ * with a row of small notches underneath catching the same light.
+ */
+.footer::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 12px;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgb(191 219 254 / 85%) 50%, transparent) top / 100% 1px no-repeat,
+    repeating-linear-gradient(90deg, rgb(219 234 254 / 60%) 0 2px, transparent 2px 14px) 0 5px / 100% 4px no-repeat,
+    linear-gradient(to top, rgb(147 197 253 / 30%), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+}
+
 :global(html[data-theme="dark"]) .footer {
   --bar-end: #21509f;
   --bar-mid: #143172;
