@@ -197,6 +197,7 @@ export const en = {
       "I run a bakery and want to start selling online.",
       "We get 200 WhatsApp messages a day and cannot keep up.",
       "I need competitor prices collected every week.",
+      "I want a modern website to showcase our business and attract new clients.",
     ],
     typing: "The advisor is typing",
     inputLabel: "Your message",

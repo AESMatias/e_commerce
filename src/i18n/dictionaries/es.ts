@@ -190,6 +190,7 @@ export const es: Dictionary = {
       "Tengo una panadería y quiero empezar a vender en línea.",
       "Recibimos 200 mensajes de WhatsApp al día y no damos abasto.",
       "Necesito recopilar los precios de la competencia cada semana.",
+      "Quiero un sitio web moderno para presentar nuestro negocio y atraer nuevos clientes.",
     ],
     typing: "El asesor está escribiendo",
     inputLabel: "Tu mensaje",

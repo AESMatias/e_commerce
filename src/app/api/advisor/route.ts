@@ -1,14 +1,24 @@
 import { google } from "@ai-sdk/google";
-import { convertToModelMessages, stepCountIs, streamText, tool, type UIMessage } from "ai";
+import {
+  convertToModelMessages,
+  createUIMessageStream,
+  createUIMessageStreamResponse,
+  stepCountIs,
+  streamText,
+  tool,
+  type UIMessage,
+} from "ai";
 import { z } from "zod";
 import { interpolate } from "@/i18n/config";
 import { getDictionary } from "@/i18n/server";
 import { buildAdvisorSystemPrompt } from "@/lib/advisor/prompt";
+import { buildCachedRecommendation, findMatchingScenario } from "@/lib/advisor/scenarios";
 import { saveRecommendation } from "@/lib/advisor/recommendations";
 import { getCatalog } from "@/lib/catalog";
 import { formatPrice } from "@/lib/format";
 import { checkAdvisorRateLimit, getClientIp } from "@/lib/rate-limit";
 import type { PackageRecommendation } from "@/types/advisor";
+import type { Service } from "@/types/catalog";
 
 export const maxDuration = 30;
 
@@ -53,10 +63,6 @@ export async function POST(request: Request) {
     return plainTextResponse(message, 429, { "retry-after": String(rateLimit.retryAfterSeconds) });
   }
 
-  if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-    return plainTextResponse(errors.notConfigured, 503);
-  }
-
   let body: unknown;
   try {
     body = await request.json();
@@ -77,6 +83,53 @@ export async function POST(request: Request) {
 
   if (textLength(messages) > MAX_INPUT_CHARS) {
     return plainTextResponse(errors.conversationTooLong, 413);
+  }
+
+  const firstUserText =
+    messages.length === 1 && lastMessage?.role === "user"
+      ? lastMessage.parts.find((part) => part.type === "text")?.text ?? ""
+      : "";
+
+  const cachedScenario = findMatchingScenario(firstUserText);
+  if (cachedScenario) {
+    let catalog: Service[] = [];
+    try {
+      catalog = await getCatalog(locale);
+    } catch {
+      catalog = [];
+    }
+
+    const localized = cachedScenario.response[locale] ?? cachedScenario.response.en;
+    const recommendation = buildCachedRecommendation(cachedScenario, locale, catalog);
+
+    const stream = createUIMessageStream({
+      execute({ writer }) {
+        writer.write({ type: "text-start", id: "cached-text" });
+        writer.write({ type: "text-delta", id: "cached-text", delta: localized.text });
+        writer.write({ type: "text-end", id: "cached-text" });
+        writer.write({
+          type: "tool-input-available",
+          toolCallId: `call_${cachedScenario.id}`,
+          toolName: "recommendPackage",
+          input: {
+            packageSlug: cachedScenario.packageSlug,
+            problemSummary: localized.problemSummary,
+            reasoning: localized.reasoning,
+          },
+        });
+        writer.write({
+          type: "tool-output-available",
+          toolCallId: `call_${cachedScenario.id}`,
+          output: recommendation,
+        });
+      },
+    });
+
+    return createUIMessageStreamResponse({ stream });
+  }
+
+  if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    return plainTextResponse(errors.notConfigured, 503);
   }
 
   const catalog = await getCatalog(locale);
