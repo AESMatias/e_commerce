@@ -80,6 +80,22 @@ export const es: Dictionary = {
     },
     projects: [
       {
+        name: "Strada Bikes",
+        summary:
+          "Tienda online de bicicletas y accesorios de alta gama construida sobre WooCommerce y PHP, con pasarelas de pago globales y locales integradas.",
+        description:
+          "Una plataforma de comercio electrónico en producción para la venta de bicicletas, repuestos e indumentaria ciclista. Desarrollada a medida sobre WooCommerce y PHP, con un checkout ágil y pasarelas de pago totalmente integradas: Stripe, PayPal, Mercado Pago, Openpay, Google Pay y Apple Pay.",
+        highlights: [
+          "Múltiples pasarelas de pago integradas: Stripe, PayPal, Mercado Pago, Openpay, Google Pay y Apple Pay",
+          "Desarrollo a medida sobre PHP y WooCommerce enfocado en alta conversión y velocidad",
+          "Gestión automatizada de catálogo de productos, inventario en tiempo real y costos de envío",
+          "Checkout seguro con validaciones en tiempo real y notificaciones automáticas de pedidos",
+        ],
+        image: "/projects/stradabikes.webp",
+        tech: ["woocommerce", "php", "stripe"] as const,
+        url: "https://stradabikes.com/",
+      },
+      {
         name: "Extracta",
         summary:
           "Un SaaS de extracción de documentos con IA: sube PDFs, imágenes o facturas electrónicas XML y obtén datos limpios, gráficos y exportaciones a Excel, CSV o JSON.",

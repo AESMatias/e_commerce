@@ -10,7 +10,9 @@ export type TechName =
   | "shopify"
   | "chart"
   | "astro"
-  | "rust";
+  | "rust"
+  | "woocommerce"
+  | "php";
 
 export interface Project {
   name: string;

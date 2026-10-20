@@ -60,7 +60,7 @@ export function ProjectDetailsDialog({ project }: { project: Project }) {
   const labels = t.home.projectDetails;
 
   return (
-    <DialogContent size="lg" className={styles.content}>
+    <DialogContent size="lg" className={styles.content} onCloseAutoFocus={(event) => event.preventDefault()}>
       <DialogHeader>
         <DialogTitle>{project.name}</DialogTitle>
         <DialogDescription>{project.description ?? project.summary}</DialogDescription>

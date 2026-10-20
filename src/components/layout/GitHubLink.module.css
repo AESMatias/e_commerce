@@ -80,6 +80,11 @@
   transform: perspective(240px) rotateX(8deg) translate3d(0, 2px, 26px);
 }
 
+.link:hover .mark::before {
+  opacity: 0;
+  animation: none;
+}
+
 /* The hover lights everything white rather than blue. Off the blue bar it
    falls back to the page's own text colour, which is what the rest of the
    header does too. */

@@ -31,7 +31,7 @@
 }
 
 .card:hover,
-.card:focus-within {
+.card:has(:focus-visible) {
   translate: 0 -4px;
   box-shadow: var(--shadow-lift);
 }
@@ -54,7 +54,7 @@
 }
 
 .card:hover .photo,
-.card:focus-within .photo {
+.card:has(:focus-visible) .photo {
   scale: 1;
   filter: brightness(1.04) saturate(1.05);
 }
@@ -77,7 +77,7 @@
 }
 
 .card:hover .scrim,
-.card:focus-within .scrim {
+.card:has(:focus-visible) .scrim {
   opacity: 0.94;
 }
 
@@ -163,6 +163,14 @@
   color: #f0a36b;
 }
 
+.techItem[data-tech="woocommerce"] {
+  color: #96588a;
+}
+
+.techItem[data-tech="php"] {
+  color: #8892bf;
+}
+
 /* The name, tucked above its mark until the pointer arrives. */
 .techName {
   position: absolute;
@@ -226,7 +234,7 @@
 }
 
 .card:hover .open,
-.card:focus-within .open {
+.card:has(:focus-visible) .open {
   opacity: 1;
   translate: 0 0;
 }
@@ -253,7 +261,7 @@
   }
 
   .card:hover .photo,
-  .card:focus-within .photo {
+  .card:has(:focus-visible) .photo {
     scale: 1.16;
   }
 }

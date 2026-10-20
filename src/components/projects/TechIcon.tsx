@@ -13,6 +13,8 @@ export const techLabels: Record<TechName, string> = {
   chart: "Dashboard",
   astro: "Astro",
   rust: "Rust",
+  woocommerce: "WooCommerce",
+  php: "PHP",
 };
 
 /**
@@ -93,6 +95,19 @@ const glyphs: Record<TechName, React.ReactNode> = {
       <path d="M8.6 15.2 11.2 4.6c.2-.8 1.4-.8 1.6 0l2.6 10.6" />
       <path d="M8.6 15.2c1 .8 2.2 1.2 3.4 1.2s2.4-.4 3.4-1.2" />
       <path d="M10.2 18.4c.4 1.4 1 2.4 1.8 3 .8-.6 1.4-1.6 1.8-3" />
+    </>
+  ),
+  woocommerce: (
+    <>
+      <rect x="3" y="5" width="18" height="14" rx="4" />
+      <path d="M6.5 9.5 8 14.5l1.8-3.5 1.8 3.5 1.5-5" />
+      <path d="M14.5 9.5 16 14.5l1.5-5" />
+    </>
+  ),
+  php: (
+    <>
+      <ellipse cx="12" cy="12" rx="9.5" ry="6.5" />
+      <path d="M7 10v4M7 10h2a1.5 1.5 0 0 1 0 3H7M11 14V9.5h1.5a1.5 1.5 0 0 1 0 3H11M16 10v4M16 10h2a1.5 1.5 0 0 1 0 3h-2" />
     </>
   ),
 };

@@ -87,6 +87,22 @@ export const en = {
     },
     projects: [
       {
+        name: "Strada Bikes",
+        summary:
+          "A high-end bicycle and gear e-commerce store built on WooCommerce and PHP, featuring Stripe, PayPal, Mercado Pago, and mobile wallet payments.",
+        description:
+          "A live production e-commerce store for bicycles, components and cycling gear. Custom built on WooCommerce and PHP with an optimized checkout flow integrating Stripe, PayPal, Mercado Pago, Openpay, Google Pay, and Apple Pay.",
+        highlights: [
+          "Multi-gateway payment integrations: Stripe, PayPal, Mercado Pago, Openpay, Google Pay, and Apple Pay",
+          "Custom WooCommerce and PHP architecture tuned for fast loading times and mobile conversions",
+          "Dynamic product catalog with real-time stock management and automated shipping calculations",
+          "Secure checkout pipeline with instant transaction validation and webhook order confirmations",
+        ],
+        image: "/projects/stradabikes.webp",
+        tech: ["woocommerce", "php", "stripe"] as const,
+        url: "https://stradabikes.com/",
+      },
+      {
         name: "Extracta",
         summary:
           "An AI document-extraction SaaS: upload PDFs, images or XML e-invoices and get clean data, charts and Excel, CSV or JSON exports.",

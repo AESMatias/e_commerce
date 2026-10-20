@@ -165,6 +165,14 @@
   color: #f0a36b;
 }
 
+.techItem[data-tech="woocommerce"] svg {
+  color: #96588a;
+}
+
+.techItem[data-tech="php"] svg {
+  color: #8892bf;
+}
+
 .link {
   gap: var(--space-2);
 }
@@ -238,6 +246,12 @@
   content: "";
   opacity: 0;
   animation: visit-pulse 2.4s var(--ease-out) infinite;
+}
+
+.visit:is(a, button):hover::before,
+.visit:is(a, button):focus-visible::before {
+  animation: none;
+  opacity: 0;
 }
 
 @keyframes visit-pulse {
