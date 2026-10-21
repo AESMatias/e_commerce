@@ -103,6 +103,22 @@ export const en = {
         url: "https://stradabikes.com/",
       },
       {
+        name: "FaroTrend",
+        summary:
+          "A digital culture, gaming, and technical guide portal powered by continuous data scraping and AI synthesis models.",
+        description:
+          "A live production digital culture and gaming portal. It features a continuous data-scraping pipeline monitoring industry sources, a fast PostgreSQL database architecture, and AI models that synthesize and verify step-by-step troubleshooting guides for PC and console errors.",
+        highlights: [
+          "Continuous automated web scraping monitoring gaming news, patch notes, and error telemetry",
+          "AI model synthesis producing structured step-by-step guides and technical summaries",
+          "PostgreSQL database backend designed for instant queries and high concurrency",
+          "Next.js frontend with multilingual routing, dynamic SEO metadata, and rapid page loads",
+        ],
+        image: "/projects/farotrend.webp",
+        tech: ["next", "postgres", "python", "openai"] as const,
+        url: "https://farotrend.com/",
+      },
+      {
         name: "Extracta",
         summary:
           "An AI document-extraction SaaS: upload PDFs, images or XML e-invoices and get clean data, charts and Excel, CSV or JSON exports.",

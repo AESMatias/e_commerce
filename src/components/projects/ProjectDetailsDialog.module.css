@@ -47,6 +47,28 @@
   display: block;
 }
 
+.shotLink {
+  display: block;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.shotLink .shot {
+  transition: filter var(--duration-fast) var(--ease-out);
+}
+
+.shotLink:hover {
+  border-color: #6f9dff;
+  box-shadow: 0 0 24px rgb(111 157 255 / 18%);
+}
+
+.shotLink:hover .shot {
+  filter: brightness(1.08) contrast(1.02);
+}
+
 .openFull {
   position: absolute;
   right: var(--space-2);

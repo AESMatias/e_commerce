@@ -38,16 +38,33 @@ function Shot({ project, openLabel }: { project: Project; openLabel: string }) {
     );
   }
 
-  return (
-    <div className={styles.frame}>
+  const destination = project.url ?? project.repo;
+  const content = (
+    <>
       <div className={styles.frameBar} aria-hidden="true">
         <span className={styles.frameDot} />
         <span className={styles.frameDot} />
         <span className={styles.frameDot} />
       </div>
       <div ref={ref} className={styles.shot} role="img" aria-label={project.name} />
-    </div>
+    </>
   );
+
+  if (destination) {
+    return (
+      <a
+        className={cx(styles.frame, styles.shotLink)}
+        href={destination}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={project.name}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return <div className={styles.frame}>{content}</div>;
 }
 
 /**

@@ -279,6 +279,12 @@
   animation: continue-pulse 2.4s var(--ease-out) infinite;
 }
 
+.continue:is(a, button):hover::before,
+.continue:is(a, button):focus-visible::before {
+  animation: none;
+  opacity: 0;
+}
+
 @keyframes continue-pulse {
   0% {
     opacity: 0;

@@ -51,7 +51,14 @@
 }
 
 .lg {
-  max-width: 44rem;
+  max-width: 58rem;
+}
+
+@media (min-width: 64rem) {
+  .lg {
+    width: min(70vw, 58rem);
+    max-width: min(70vw, 58rem);
+  }
 }
 
 .close {

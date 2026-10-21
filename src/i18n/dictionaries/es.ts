@@ -96,6 +96,22 @@ export const es: Dictionary = {
         url: "https://stradabikes.com/",
       },
       {
+        name: "FaroTrend",
+        summary:
+          "Portal de cultura digital, videojuegos y guías técnicas impulsado por recopilación continua de datos y modelos de IA.",
+        description:
+          "Un portal editorial de cultura digital y videojuegos en producción. Cuenta con un sistema continuo de web scraping para monitorear tendencias, novedades y fallos en gaming, base de datos PostgreSQL para indexación rápida, y modelos de IA para estructurar y sintetizar soluciones paso a paso.",
+        highlights: [
+          "Pipeline continuo de web scraping para recopilación de novedades y telemetría de errores",
+          "Modelos de IA aplicados para síntesis de artículos y guías técnicas paso a paso",
+          "Base de datos PostgreSQL optimizada para búsquedas instantáneas y alto tráfico",
+          "Frontend en Next.js con renderizado dinámico, SEO automatizado y alto rendimiento",
+        ],
+        image: "/projects/farotrend.webp",
+        tech: ["next", "postgres", "python", "openai"] as const,
+        url: "https://farotrend.com/",
+      },
+      {
         name: "Extracta",
         summary:
           "Un SaaS de extracción de documentos con IA: sube PDFs, imágenes o facturas electrónicas XML y obtén datos limpios, gráficos y exportaciones a Excel, CSV o JSON.",
