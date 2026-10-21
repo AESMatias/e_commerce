@@ -105,9 +105,21 @@
   height: 2rem;
   border-radius: var(--radius-sm);
   color: var(--color-text-muted);
+  fill: currentColor;
   transition:
     background-color var(--duration-fast) var(--ease-out),
-    color var(--duration-fast) var(--ease-out);
+    color var(--duration-fast) var(--ease-out),
+    fill var(--duration-fast) var(--ease-out);
+}
+
+.navButton svg {
+  fill: currentColor;
+}
+
+:global(:root[data-theme="dark"]) .navButton,
+:global(:root[data-theme="dark"]) .navButton svg {
+  color: #fff;
+  fill: #fff;
 }
 
 .navButton:hover {
@@ -115,9 +127,19 @@
   color: var(--color-text);
 }
 
+:global(:root[data-theme="dark"]) .navButton:hover {
+  color: #fff;
+  fill: #fff;
+}
+
 .navButton:disabled {
   opacity: 0.35;
   pointer-events: none;
+}
+
+.chevron {
+  display: inline-block;
+  fill: currentColor;
 }
 
 .grid {

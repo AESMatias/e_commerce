@@ -21,6 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getDictionary();
 
   return {
+    metadataBase: new URL(siteConfig.url),
     title: {
       default: siteConfig.name,
       template: `%s · ${siteConfig.name}`,

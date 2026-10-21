@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Dialog, DialogTrigger } from "@/components/ui/Dialog";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -29,12 +30,32 @@ export function ProjectCard({ project }: { project: Project }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <article className={styles.card} onClick={() => setOpen(true)}>
+      <article
+        className={styles.card}
+        onClick={() => {
+          if (typeof window !== "undefined") {
+            window.getSelection()?.removeAllRanges();
+          }
+          setOpen(true);
+        }}
+      >
         <div ref={ref} className={styles.photo} aria-hidden="true" />
         <div className={styles.scrim} aria-hidden="true" />
 
         <div className={styles.body}>
           <h3 className={styles.name}>
+            {project.icon && (
+              <span className={styles.iconWrap} aria-hidden="true">
+                <Image
+                  src={project.icon}
+                  alt=""
+                  className={styles.cardIcon}
+                  width={22}
+                  height={22}
+                  unoptimized={project.icon.endsWith(".svg")}
+                />
+              </span>
+            )}
             <DialogTrigger className={styles.nameButton}>{project.name}</DialogTrigger>
           </h3>
           <p className={styles.summary}>{project.summary}</p>

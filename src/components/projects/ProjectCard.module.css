@@ -24,6 +24,8 @@
   isolation: isolate;
   background-color: #0b1020;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
   transition:
     border-color var(--duration-base) var(--ease-out),
     box-shadow 420ms var(--ease-out),
@@ -196,8 +198,47 @@
 }
 
 .name {
+  display: flex;
+  align-items: center;
   font-size: var(--text-lg);
   line-height: 1.2;
+}
+
+.iconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0;
+  height: 1.4rem;
+  margin-right: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: scale(0.6) translateX(-6px);
+  pointer-events: none;
+  flex-shrink: 0;
+  transition:
+    width 340ms cubic-bezier(0.16, 1, 0.3, 1),
+    margin-right 340ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 260ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 340ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover .iconWrap,
+.card:has(:focus-visible) .iconWrap {
+  width: 1.4rem;
+  margin-right: 0.55rem;
+  opacity: 1;
+  transform: scale(1) translateX(0);
+}
+
+.cardIcon {
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 22.5%;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
+  border: 1px solid rgb(255 255 255 / 15%);
 }
 
 /* The name is the card's button for keyboard users; it looks like a title. */
@@ -209,6 +250,8 @@
   font: inherit;
   text-align: left;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .nameButton:focus-visible {

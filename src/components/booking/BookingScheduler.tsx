@@ -155,6 +155,7 @@ export function BookingScheduler({
                   nav: styles.nav,
                   button_previous: styles.navButton,
                   button_next: styles.navButton,
+                  chevron: styles.chevron,
                   month_grid: styles.grid,
                   weekdays: styles.weekdays,
                   weekday: styles.weekday,

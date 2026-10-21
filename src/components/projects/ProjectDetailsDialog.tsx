@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/Button";
 import {
@@ -77,9 +78,31 @@ export function ProjectDetailsDialog({ project }: { project: Project }) {
   const labels = t.home.projectDetails;
 
   return (
-    <DialogContent size="lg" className={styles.content} onCloseAutoFocus={(event) => event.preventDefault()}>
+    <DialogContent
+      size="lg"
+      className={styles.content}
+      onOpenAutoFocus={(event) => {
+        event.preventDefault();
+        if (typeof window !== "undefined") {
+          window.getSelection()?.removeAllRanges();
+        }
+      }}
+      onCloseAutoFocus={(event) => event.preventDefault()}
+    >
       <DialogHeader>
-        <DialogTitle>{project.name}</DialogTitle>
+        <DialogTitle className={styles.title}>
+          {project.icon && (
+            <Image
+              src={project.icon}
+              alt=""
+              className={styles.dialogIcon}
+              width={28}
+              height={28}
+              unoptimized={project.icon.endsWith(".svg")}
+            />
+          )}
+          <span>{project.name}</span>
+        </DialogTitle>
         <DialogDescription>{project.description ?? project.summary}</DialogDescription>
       </DialogHeader>
 

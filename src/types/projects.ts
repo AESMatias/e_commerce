@@ -21,6 +21,8 @@ export interface Project {
   image: string;
   /** A diagram is shown whole in the details (a screenshot fills a browser frame). */
   imageKind?: "screenshot" | "diagram";
+  /** Compressed brand/website icon with Apple rounded corners. */
+  icon?: string;
   tech: readonly TechName[];
   /** The longer story shown when the card is opened; the summary is used without it. */
   description?: string;

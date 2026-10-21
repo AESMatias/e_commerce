@@ -1,6 +1,8 @@
 export const siteConfig = {
   name: "Wholeheartedly",
   author: "AESMatias",
+  /** Canonical site URL used for metadata, sitemap and search engines. */
+  url: process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || "https://aesmatias.com",
   /** Public contact for customers, privacy requests and refunds. */
   contactEmail: "plutarco1677@gmail.com",
   /**
