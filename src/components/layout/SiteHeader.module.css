@@ -246,7 +246,7 @@
     calc(var(--nav-wipe) - 6px) 100%
   );
   content: "";
-  transition: --nav-wipe 240ms var(--ease-out);
+  transition: --nav-wipe 240ms var(--ease-wipe);
 }
 
 .navLink:hover,

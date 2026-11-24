@@ -86,13 +86,13 @@
 /* The wipe rides as a second background layer over the button's own
    gradient; see ServiceDetailsDialog for how the layer is built. */
 .glowButton:is(a, button) {
-  --wipe-from: #1f4fc2;
-  --wipe-to: #6f9dff;
+  --wipe-from: #2958cc;
+  --wipe-to: #7ea8ff;
   --wipe-fg: #fff;
-  --wipe-border: #6f9dff;
+  --wipe-border: #7ea8ff;
 
   background-image:
-    linear-gradient(118deg, var(--wipe-from) 0 16%, var(--wipe-to) 50%, rgb(255 255 255 / 0) 50%),
+    linear-gradient(118deg, var(--wipe-from) 0 16%, var(--wipe-to) 49.4%, rgb(255 255 255 / 0) 50%),
     linear-gradient(180deg, #4d82ff 0%, var(--color-accent) 100%);
   background-repeat: no-repeat;
 
@@ -107,7 +107,7 @@
   transition:
     filter var(--duration-fast) var(--ease-out),
     box-shadow var(--duration-fast) var(--ease-out),
-    background-position 280ms var(--ease-out),
+    background-position 280ms var(--ease-wipe),
     border-color var(--duration-fast) var(--ease-out),
     scale var(--duration-base) var(--ease-out),
     color 160ms var(--ease-out);
@@ -128,14 +128,14 @@
    and echoes the robot's lit antenna. The element selector outranks
    Button's own colours whatever the stylesheet order. */
 .goldButton:is(a, button) {
-  --wipe-from: #fcd77a;
+  --wipe-from: #fddb86;
   --wipe-to: #fff6dd;
   --wipe-fg: #3b2605;
   --wipe-border: #fff0c4;
 
   border-color: rgb(254 243 199 / 60%);
   background-image:
-    linear-gradient(118deg, var(--wipe-from) 0 16%, var(--wipe-to) 50%, rgb(255 255 255 / 0) 50%),
+    linear-gradient(118deg, var(--wipe-from) 0 16%, var(--wipe-to) 49.4%, rgb(255 255 255 / 0) 50%),
     linear-gradient(135deg, #fde68a 0%, #fbbf24 45%, #d97706 100%);
   background-repeat: no-repeat;
 
@@ -152,7 +152,7 @@
   transition:
     filter var(--duration-fast) var(--ease-out),
     box-shadow var(--duration-fast) var(--ease-out),
-    background-position 280ms var(--ease-out),
+    background-position 280ms var(--ease-wipe),
     border-color var(--duration-fast) var(--ease-out),
     scale var(--duration-base) var(--ease-out),
     color 160ms var(--ease-out);

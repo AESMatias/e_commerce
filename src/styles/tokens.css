@@ -97,6 +97,11 @@
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
 
+    /* Hover wipes. With --ease-out the edge crossed the button in four or
+       five frames and you could see each one; this spreads the same 280ms
+       more evenly. */
+    --ease-wipe: cubic-bezier(0.5, 1, 0.89, 1);
+
     /* Layout */
     --container-max: 72rem;
     --container-gutter: clamp(1rem, 4vw, 2rem);
