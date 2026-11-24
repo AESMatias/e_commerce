@@ -55,7 +55,7 @@
 .card[data-leaving="true"]::before {
   /* An even curve: --ease-out is so front-loaded the retreat was over
      before the eye caught it. */
-  animation: corner-retreat 430ms cubic-bezier(0.4, 0, 0.2, 1);
+  animation: corner-retreat 180ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Rises while the blue is still fading, so one colour washes into the other

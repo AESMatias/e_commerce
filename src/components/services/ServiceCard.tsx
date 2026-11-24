@@ -10,7 +10,7 @@ import { ServiceIcon } from "./ServiceIcon";
 import styles from "./ServiceCard.module.css";
 
 /** How long the white corner light takes to pull back in. */
-const RETREAT_MS = 430;
+const RETREAT_MS = 180;
 
 export function ServiceCard({ service }: { service: Service }) {
   const { t } = useI18n();

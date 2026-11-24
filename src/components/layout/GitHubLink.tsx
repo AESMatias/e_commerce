@@ -1,10 +1,6 @@
 import styles from "./GitHubLink.module.css";
 
-/**
- * The author credit in the header. The mark keeps a slow orbit of light and
- * spins once when pointed at, so the brand block has something alive in it
- * without pulling attention from the navigation.
- */
+/** The author credit in the header. */
 export function GitHubLink({ username, byLabel }: { username: string; byLabel: string }) {
   return (
     <a

@@ -18,79 +18,22 @@
   line-height: 1.15;
 }
 
-/*
- * The mark behaves like a coin standing on the page: hover tips its bottom
- * edge towards the viewer and brings it forward, so the lower half grows
- * while the top stays put. The perspective must live on the element itself,
- * because its parent is a plain inline row.
- *
- * It is drawn at its hovered size and pushed back at rest, not drawn small
- * and pulled forward: the browser rasters it once and then scales that
- * bitmap, so growing it on hover made the logo blurry. The negative margin
- * keeps the row the same size as before.
- */
+/* Hover only changes colour: scaling the mark up made it look soft. */
 .mark {
-  --mark: 1.5rem;
-
-  position: relative;
   display: grid;
   place-items: center;
-  width: calc(var(--mark) * 1.12);
-  height: calc(var(--mark) * 1.12);
-  margin: calc(var(--mark) * -0.06);
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: var(--radius-full);
-  color: color-mix(in srgb, #fff calc(var(--bar-p, 0) * 100%), var(--color-text-muted));
-  transform: perspective(240px) rotateX(0deg) translateZ(-26px);
-  transform-origin: 50% 0;
-  transition:
-    color var(--duration-base) var(--ease-out),
-    transform 180ms var(--ease-out);
-}
-
-/* A ring of light that keeps circling the mark. */
-.mark::before {
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    var(--color-accent) 40deg,
-    transparent 120deg,
-    transparent 360deg
-  );
-  opacity: 0.55;
-  content: "";
-  animation: orbit 9s linear infinite;
-}
-
-.mark::after {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
   background-color: color-mix(in srgb, rgb(255 255 255 / 12%) calc(var(--bar-p, 0) * 100%), var(--color-bg));
-  content: "";
-}
-
-.mark svg {
-  position: relative;
-  z-index: 1;
+  color: color-mix(in srgb, #fff calc(var(--bar-p, 0) * 100%), var(--color-text-muted));
+  transition: color var(--duration-base) var(--ease-out);
 }
 
 .name {
   color: color-mix(in srgb, #fff calc(var(--bar-p, 0) * 100%), var(--color-text-muted));
   font-weight: var(--weight-medium);
   transition: color var(--duration-fast) var(--ease-out);
-}
-
-/* Tipped forward and pulled towards the viewer, not spun. */
-.link:hover .mark {
-  transform: perspective(240px) rotateX(8deg) translate3d(0, 2px, 0);
-}
-
-.link:hover .mark::before {
-  opacity: 0;
-  animation: none;
 }
 
 /* The hover lights everything white rather than blue. Off the blue bar it
@@ -100,12 +43,6 @@
 .link:hover .name,
 .link:hover {
   color: color-mix(in srgb, #fff calc(var(--bar-p, 0) * 100%), var(--color-text));
-}
-
-@keyframes orbit {
-  to {
-    rotate: 360deg;
-  }
 }
 
 /* Narrow phones keep the credit visible, but compact it so the theme button
@@ -121,6 +58,7 @@
   }
 
   .mark {
-    --mark: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
   }
 }

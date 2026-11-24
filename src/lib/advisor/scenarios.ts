@@ -41,7 +41,7 @@ export const CACHED_SCENARIOS: readonly CachedScenario[] = [
           serviceName: "E-commerce Store",
           packageName: "Starter",
           summary: "Start selling online with a simple, reliable store.",
-          price: "$50",
+          price: "$80",
           deposit: "$5",
           timeline: "1–2 weeks",
           deliverables: [
@@ -62,7 +62,7 @@ export const CACHED_SCENARIOS: readonly CachedScenario[] = [
           serviceName: "Tienda e-commerce",
           packageName: "Inicial",
           summary: "Empieza a vender en línea con una tienda simple y confiable.",
-          price: "$50",
+          price: "$80",
           deposit: "$5",
           timeline: "1–2 semanas",
           deliverables: [
@@ -91,7 +91,7 @@ export const CACHED_SCENARIOS: readonly CachedScenario[] = [
           serviceName: "Automation Bots",
           packageName: "Growth",
           summary: "Automate bookings or orders and sync them with your tools.",
-          price: "$50",
+          price: "$80",
           deposit: "$5",
           timeline: "1–2 weeks",
           deliverables: [
@@ -112,7 +112,7 @@ export const CACHED_SCENARIOS: readonly CachedScenario[] = [
           serviceName: "Bots de automatización",
           packageName: "Crecimiento",
           summary: "Automatiza reservas o pedidos y sincronízalos con tus herramientas.",
-          price: "$50",
+          price: "$80",
           deposit: "$5",
           timeline: "1–2 semanas",
           deliverables: [
@@ -141,7 +141,7 @@ export const CACHED_SCENARIOS: readonly CachedScenario[] = [
           serviceName: "Custom Scripts & Scraping",
           packageName: "Growth",
           summary: "Scheduled automation that runs in the cloud.",
-          price: "$50",
+          price: "$55",
           deposit: "$5",
           timeline: "1–2 weeks",
           deliverables: [
@@ -161,7 +161,7 @@ export const CACHED_SCENARIOS: readonly CachedScenario[] = [
           serviceName: "Scripts a medida y web scraping",
           packageName: "Crecimiento",
           summary: "Automatización programada que se ejecuta en la nube.",
-          price: "$50",
+          price: "$55",
           deposit: "$5",
           timeline: "1–2 semanas",
           deliverables: [
@@ -189,7 +189,7 @@ export const CACHED_SCENARIOS: readonly CachedScenario[] = [
           serviceName: "Corporate or Personal Website",
           packageName: "Growth",
           summary: "A multi-page site your team can manage on its own.",
-          price: "$50",
+          price: "$75",
           deposit: "$5",
           timeline: "1–2 weeks",
           deliverables: [
@@ -210,7 +210,7 @@ export const CACHED_SCENARIOS: readonly CachedScenario[] = [
           serviceName: "Sitio web corporativo o personal",
           packageName: "Crecimiento",
           summary: "Un sitio de varias páginas que tu equipo puede administrar solo.",
-          price: "$50",
+          price: "$75",
           deposit: "$5",
           timeline: "1–2 semanas",
           deliverables: [

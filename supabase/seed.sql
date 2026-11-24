@@ -75,7 +75,7 @@ from (
     -- Corporate Website
     ('corporate-website', 'corporate-website-starter', 'starter', 'Starter',
      'A polished one-page site to launch fast.',
-     2500, 500, 1, 1,
+     3000, 500, 1, 1,
      array[
        'Single-page responsive website (up to 5 sections)',
        'Contact form delivered to your inbox',
@@ -85,7 +85,7 @@ from (
      ], false, 1),
     ('corporate-website', 'corporate-website-growth', 'growth', 'Growth',
      'A multi-page site your team can manage on its own.',
-     5000, 500, 1, 2,
+     7500, 500, 1, 2,
      array[
        'Everything in Starter, plus:',
        'Up to 6 custom-designed pages',
@@ -97,7 +97,7 @@ from (
      ], true, 2),
     ('corporate-website', 'corporate-website-scale', 'scale', 'Scale',
      'A content-rich, multilingual site built to grow.',
-     10000, 500, 2, 3,
+     12500, 500, 2, 3,
      array[
        'Everything in Growth, plus:',
        'Up to 15 custom-designed pages',
@@ -111,7 +111,7 @@ from (
     -- E-commerce Store
     ('ecommerce-store', 'ecommerce-store-starter', 'starter', 'Starter',
      'Start selling online with a simple, reliable store.',
-     5000, 500, 1, 2,
+     8000, 500, 1, 2,
      array[
        'Mobile-first storefront',
        'Up to 50 products',
@@ -122,7 +122,7 @@ from (
      ], false, 1),
     ('ecommerce-store', 'ecommerce-store-growth', 'growth', 'Growth',
      'A full-featured store for a growing catalog.',
-     10000, 500, 1, 3,
+     12500, 500, 1, 3,
      array[
        'Everything in Starter, plus:',
        'Up to 500 products with variants and inventory',
@@ -134,7 +134,7 @@ from (
      ], true, 2),
     ('ecommerce-store', 'ecommerce-store-scale', 'scale', 'Scale',
      'Advanced commerce with integrations and automation.',
-     17500, 500, 2, 4,
+     20000, 500, 2, 4,
      array[
        'Everything in Growth, plus:',
        'Unlimited products',
@@ -164,7 +164,7 @@ from (
      ], false, 1),
     ('automation-bots', 'automation-bots-growth', 'growth', 'Growth',
      'Automate bookings or orders and sync them with your tools.',
-     5000, 500, 1, 2,
+     8000, 500, 1, 2,
      array[
        'Everything in Starter, plus:',
        'WhatsApp Business API, Discord API and Telegram',
@@ -176,7 +176,7 @@ from (
      ], true, 2),
     ('automation-bots', 'automation-bots-scale', 'scale', 'Scale',
      'An AI-powered assistant trained on your business knowledge.',
-     12000, 500, 2, 4,
+     15000, 500, 2, 4,
      array[
        'Everything in Growth, plus:',
        'AI answers grounded in your knowledge base',
@@ -193,7 +193,7 @@ from (
     -- Custom Scripts & Web Scraping
     ('custom-scripts-scraping', 'custom-scripts-scraping-starter', 'starter', 'Starter',
      'One script that automates a single task or data source.',
-     2500, 500, 1, 1,
+     3000, 500, 1, 1,
      array[
        'Feasibility and terms-of-use review',
        'One script for one task or website',
@@ -203,7 +203,7 @@ from (
      ], false, 1),
     ('custom-scripts-scraping', 'custom-scripts-scraping-growth', 'growth', 'Growth',
      'Scheduled automation that runs in the cloud.',
-     5000, 500, 1, 2,
+     5500, 500, 1, 2,
      array[
        'Everything in Starter, plus:',
        'Up to 3 sources or tasks',
@@ -229,7 +229,7 @@ from (
     -- Data Science & Analytics
     ('data-science-analytics', 'data-science-analytics-starter', 'starter', 'Starter',
      'Understand what your data is telling you.',
-     2500, 500, 1, 1,
+     4000, 500, 1, 1,
      array[
        'Data audit and cleaning (up to 3 datasets)',
        'Exploratory analysis report',
@@ -239,7 +239,7 @@ from (
      ], false, 1),
     ('data-science-analytics', 'data-science-analytics-growth', 'growth', 'Growth',
      'Track your key metrics in a live dashboard.',
-     5000, 500, 1, 2,
+     10000, 500, 1, 2,
      array[
        'Everything in Starter, plus:',
        'Interactive dashboard (Looker Studio, Power BI or Metabase)',
@@ -250,7 +250,7 @@ from (
      ], true, 2),
     ('data-science-analytics', 'data-science-analytics-scale', 'scale', 'Scale',
      'Predict what comes next with custom models.',
-     12000, 500, 2, 3,
+     16500, 500, 2, 3,
      array[
        'Everything in Growth, plus:',
        'Predictive model (forecasting, churn or segmentation)',
