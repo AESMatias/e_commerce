@@ -176,6 +176,23 @@ export const en = {
         repo: "https://github.com/AESMatias/AQP-Engine",
       },
       {
+        name: "BareSpec",
+        summary:
+          "VPS sizing calculators and self-hosting guides: know the exact RAM, vCPU and disk a stack needs before you pay for a server.",
+        description:
+          "A live site that sizes servers from measured numbers instead of guesses. Pick the apps you want to run and the calculators work out idle and peak RAM, vCPU headroom, NVMe storage and what it costs over two or three years, next to a library of Docker Compose blueprints with real memory limits.",
+        highlights: [
+          "Five calculators: n8n, Docker stacks, game servers, LLM VRAM and cloud total cost of ownership",
+          "40 production-ready Docker Compose guides with measured idle and peak memory",
+          "Cost comparisons that include egress, backups and renewal prices, not just the first month",
+          "Next.js site in English and Spanish, with a quick-jump search and dark mode",
+        ],
+        image: "/projects/barespec.webp",
+        icon: "/projects/icons/barespec.svg",
+        tech: ["next", "chart"] as const,
+        url: "https://barespec.com/en",
+      },
+      {
         name: "Popular Video Fetcher",
         summary:
           "Trending YouTube videos collected every day, each with a new description written by AI.",

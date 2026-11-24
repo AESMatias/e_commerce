@@ -169,6 +169,23 @@ export const es: Dictionary = {
         repo: "https://github.com/AESMatias/AQP-Engine",
       },
       {
+        name: "BareSpec",
+        summary:
+          "Calculadoras para dimensionar un VPS y guías de self-hosting: sabe cuánta RAM, vCPU y disco necesita tu stack antes de pagar el servidor.",
+        description:
+          "Un sitio en producción que dimensiona servidores con números medidos en vez de estimaciones. Eliges las apps que quieres correr y las calculadoras sacan la RAM en reposo y en peak, el margen de vCPU, el almacenamiento NVMe y el costo a dos o tres años, junto a una biblioteca de blueprints de Docker Compose con límites de memoria reales.",
+        highlights: [
+          "Cinco calculadoras: n8n, stacks de Docker, servidores de juegos, VRAM para LLM y costo total en la nube",
+          "40 guías de Docker Compose listas para producción, con memoria medida en reposo y en peak",
+          "Comparaciones de costo que suman egress, backups y precios de renovación, no solo el primer mes",
+          "Sitio en Next.js en inglés y español, con búsqueda rápida y modo oscuro",
+        ],
+        image: "/projects/barespec.webp",
+        icon: "/projects/icons/barespec.svg",
+        tech: ["next", "chart"] as const,
+        url: "https://barespec.com/es",
+      },
+      {
         name: "Popular Video Fetcher",
         summary:
           "Los videos de YouTube en tendencia, recopilados cada día, cada uno con una descripción nueva escrita por IA.",
